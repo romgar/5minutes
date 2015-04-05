@@ -14,6 +14,10 @@ To generate new site from sources:
 
 - `make regenerate`
 
+To generate new site to publish (production urls, ...):
+
+- `make publish`
+
 To deploy latest version to GitHub Pages:
 
 - `make github`
