@@ -16,28 +16,132 @@
                 <h1><a href="http://romgar.github.io/openblog/">OpenBlog </a></h1>
                 <nav><ul>
                     <li><a href="http://romgar.github.io/openblog/pages/about-us.html">About</a></li>
-                    <li><a href="http://romgar.github.io/openblog/category/technical.html">Technical</a></li>
+                    <li><a href="http://romgar.github.io/openblog/category/tech.html">Tech</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="http://romgar.github.io/openblog/howto-manage-ghpages-project.html">How to manage GitHub Pages front-end project</a></h1>
+                    <h1 class="entry-title"><a href="http://romgar.github.io/openblog/howto-manage-ghpages-project.html">How to manage GitHub Pages on front-end project</a></h1>
 <footer class="post-info">
-        <abbr class="published" title="2015-05-05T17:47:00+02:00">
-                Published: mar. 05 mai 2015
+        <abbr class="published" title="2015-04-05T17:47:00+02:00">
+                Published: dim. 05 avril 2015
         </abbr>
 		<br />
-        <abbr class="modified" title="2015-05-05T17:47:00+02:00">
-                Updated: mar. 05 mai 2015
+        <abbr class="modified" title="2015-04-05T17:47:00+02:00">
+                Updated: dim. 05 avril 2015
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="http://romgar.github.io/openblog/author/romain-garrigues.html">Romain Garrigues</a>
         </address>
-<p>In <a href="http://romgar.github.io/openblog/category/technical.html">Technical</a>. </p>
+<p>In <a href="http://romgar.github.io/openblog/category/tech.html">Tech</a>. </p>
 <p>tags: <a href="http://romgar.github.io/openblog/tag/github.html">GitHub</a> <a href="http://romgar.github.io/openblog/tag/front-end.html">front-end</a> </p>
-</footer><!-- /.post-info --><p>If you are working on a frond-end project hosted on GitHub, with lot of useful tools (grunt/gulp, sass, ...), and you want to know how to properly manage generated files from this project on GitHub Pages, this post is for you.</p>                </article>
+</footer><!-- /.post-info --><p>You are working on a frond-end project hosted on GitHub, with lot of useful tools (grunt/gulp, sass, ...), and you want to properly manage generated files from this project on GitHub Pages ?</p>
+<p>Let's imagine this kind of folder on your <code>master</code> branch:</p>
+<div class="highlight"><pre>.
++-- Gruntfile.js
++-- bower.json
++-- package.json
++-- README.md
++-- dist  &lt;-- You need this folder to be the root of the gh-pages branch
+|   +-- index.html
+|   +-- other_page.html
+|   +-- theme
+|   |    +-- main.css
+</pre></div>
+
+
+<p>If you want to use <a href="https://pages.github.com/">GitHub pages</a> to access your static files, then you need to :</p>
+<ol>
+<li>create a branch named <code>gh-pages</code>,</li>
+<li>have all your static files at the branch root (including <code>index.html</code>).</li>
+</ol>
+<p>So that, when you checkout <code>gh-pages</code>, you need to have:</p>
+<div class="highlight"><pre>.
++-- index.html
++-- other_page.html
++-- theme
+|   +-- main.css
+</pre></div>
+
+
+<h1>Solution 1</h1>
+<p>You could copy your <code>dist</code> folder of <code>master</code> in another folder (outside of this git project), then checkout to <code>gh-pages</code>, paste copied folder to this branch, and commit.
+We feel easily that it's not a clean way to manage it, we will have to manually copy/paste each time...</p>
+<p>A script could be written to do this kind of task each time we need to deploy on <code>gh-pages</code>, but
+ somebody has already done that for us : <a href="https://github.com/davisp/ghp-import">ghp-import</a></p>
+<p>You can install it via <code>pip</code>:</p>
+<div class="highlight"><pre>pip install ghp-import
+</pre></div>
+
+
+<p>And then, go to your <code>master</code> branch, and to deploy your <code>dist</code> folder:</p>
+<div class="highlight"><pre><span class="n">ghp</span><span class="o">-</span><span class="kn">import</span> <span class="nn">dist</span>
+</pre></div>
+
+
+<p>It will then create a new commit (and push it) on your <code>gh-pages</code> branch with the current files of your <code>dist</code> folder.</p>
+<h1>Solution 2</h1>
+<p>Clone another time your project in the same project folder:</p>
+<div class="highlight"><pre>.
++-- Gruntfile.js
++-- bower.json
++-- package.json
++-- README.md
++-- dist
+|   +-- index.html
+|   +-- other_page.html
+|   +-- theme
+|   |    +-- main.css
++-- your_project &lt;-- Your cloned project repository on master branch
+    +-- Gruntfile.js
+    +-- bower.json
+    +-- package.json
+    +-- README.md
+    +-- dist
+    |   +-- index.html
+    |   +-- other_page.html
+    |   +-- theme
+    |   |    +-- main.css
+</pre></div>
+
+
+<p>Checkout your sub-cloned project to gh-pages branch, and remove everything no more needed in your <code>gh-pages</code> branch.</p>
+<div class="highlight"><pre>.
++-- Gruntfile.js
++-- bower.json
++-- package.json
++-- README.md
++-- dist
+|   +-- index.html
+|   +-- other_page.html
+|   +-- theme
+|   |    +-- main.css
++-- your_project &lt;-- Your cloned project repository on gh-pages branch
+    +-- index.html
+    +-- other_page.html
+    +-- theme
+    |    +-- main.css
+</pre></div>
+
+
+<p>Remove <code>dist</code> folder in your <code>master branch</code>, and replace it with a symbolic link to <code>your_project</code> repository:</p>
+<div class="highlight"><pre>.
++-- Gruntfile.js
++-- bower.json
++-- package.json
++-- README.md
++-- dist &lt;-- Now a symlink to your_project
++-- your_project &lt;-- Your cloned project repository on gh-pages branch
+    +-- index.html
+    +-- other_page.html
+    +-- theme
+    |    +-- main.css
+</pre></div>
+
+
+<p>Your tools, that were working on <code>dist</code> folder, will now generate new content on the project <code>gh-pages</code> branch, and you can commit them when you want.</p>                </article>
 <p class="paginator">
     Page 1 / 1
 </p>
