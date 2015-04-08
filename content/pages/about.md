@@ -7,5 +7,4 @@ Slug: about-us
 Authors: Romain Garrigues
 Summary: Description of blog aim
 
-This blog aims to share technical experiences of subjects related to python, Django or anything else at the end.
-
+5 minutes is what you will need to read a blog post. No more.
