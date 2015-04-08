@@ -1,6 +1,6 @@
 Title: How to manage GitHub Pages on front-end project
-Date: 2015-04-05 17:47
-Modified: 2015-04-05 17:47
+Date: 2015-04-08 20:47
+Modified: 2015-04-08 20:47
 Category: Tech
 Tags: GitHub, front-end
 Slug: howto-manage-ghpages-project
