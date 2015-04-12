@@ -23,5 +23,5 @@ EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},}
 
 # Following items are often useful when publishing
 
-#DISQUS_SITENAME = ""
+DISQUS_SITENAME = "5minutes-youkidea.disqus.com"
 GOOGLE_ANALYTICS = "UA-48336731-4"
