@@ -22,7 +22,105 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html">How to manage GitHub Pages on front-end project</a></h1>
+                    <h1 class="entry-title"><a href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html">How to deploy a python package on PyPi with GitHub and travis-ci</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-05-05T08:12:00+02:00">
+                Published: mar. 05 mai 2015
+        </abbr>
+		<br />
+        <abbr class="modified" title="2015-05-05T08:12:00+02:00">
+                Updated: mar. 05 mai 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://5minutes.youkidea.com/author/romain-garrigues.html">Romain Garrigues</a>
+        </address>
+<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>. </p>
+<p>tags: <a href="http://5minutes.youkidea.com/tag/github.html">GitHub</a> <a href="http://5minutes.youkidea.com/tag/travis-ci.html">travis-ci</a> <a href="http://5minutes.youkidea.com/tag/python.html">python</a> <a href="http://5minutes.youkidea.com/tag/pypi.html">PyPi</a> </p>
+</footer><!-- /.post-info --><p>You want to make a python package available on PyPi without spending ages to learn how to do it ?</p>
+<p>If you are using GitHub to host your project, this article is for you !</p>
+<h1>Create your setup.py file</h1>
+<p>Every python package needs a <code>setup.py</code> file to be deployed with <code>pip</code>.</p>
+<p>You can use a <code>setup.py</code> example available on <a href="https://docs.djangoproject.com/fr/1.8/intro/reusable-apps/">Django website</a> to create yours.</p>
+<p>Then, your <code>GitHub</code> repository seems like:</p>
+<div class="highlight"><pre>.
++-- my_python_package &lt;-- The package you want to deploy on PyPi
++-- setup.py
++-- README.rst
+</pre></div>
+
+
+<h1>Configure Travis CI</h1>
+<p>You need to configure <code>Tracis CI</code> to use continuous integration for your <code>GitHub</code> repository.</p>
+<p>If it's your first time, go to <a href="http://travis-ci.org/">Tracis CI</a>, sign-in with <code>GitHub</code>, and activate your <code>GitHub</code> repository (<code>Travis CI</code> has access to your repositories, but their are disabled by default).</p>
+<p>Then add a <code>.travis.yml</code> file, on your <code>GitHub</code> repository root, with this content:</p>
+<div class="highlight"><pre><span class="n">language</span><span class="o">:</span> <span class="n">python</span>
+
+<span class="n">python</span><span class="o">:</span>
+  <span class="o">-</span> <span class="s2">&quot;2.7&quot;</span>
+
+<span class="n">script</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">touch</span> <span class="n">foo</span>
+</pre></div>
+
+
+<p>For now, your <code>Travis CI</code> configuration is executing something totally useless (<code>touch foo</code>) on each commit, but usually people are using it to run tests.</p>
+<h1>Configure PyPi deployment with travis-ci</h1>
+<p>Now we also want our project to be deployed on <code>PyPi</code>. <code>Travis CI</code> can do that for us if we add a <code>deploy</code> section in <code>.travis.yml</code>, that is now:</p>
+<div class="highlight"><pre><span class="n">language</span><span class="o">:</span> <span class="n">python</span>
+
+<span class="n">python</span><span class="o">:</span>
+  <span class="o">-</span> <span class="s2">&quot;2.7&quot;</span>
+
+<span class="n">script</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">touch</span> <span class="n">foo</span>
+
+<span class="n">deploy</span><span class="o">:</span>
+  <span class="n">provider</span><span class="o">:</span> <span class="n">pypi</span>
+  <span class="n">user</span><span class="o">:</span> <span class="n">romgar</span>
+  <span class="n">password</span><span class="o">:</span>
+    <span class="n">secure</span><span class="o">:</span> <span class="n">my_secure_password</span>
+  <span class="n">on</span><span class="o">:</span>
+    <span class="n">tags</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="n">branch</span><span class="o">:</span> <span class="n">master</span>
+</pre></div>
+
+
+<p>With that configuration, this project will be deployed on <code>Pypi</code> with user <code>romgar</code> and password <code>my_secure_password</code>, but only when you create (and push) new tags on <code>master</code>.</p>
+<h1>Get PyPi deployment credentials</h1>
+<p>The username is the one you have used to register on <a href="http://pypi.python.org/">Pypi</a>. Yes, you have to create an account on <code>Pypi</code>.</p>
+<p>You also need to generate an encrypted password with <code>Travis CI</code> command line client.</p>
+<p>To install it (more details on <a href="http://blog.travis-ci.com/2013-01-14-new-client/">Travis blog</a>):</p>
+<div class="highlight"><pre><span class="nv">$ </span>gem install travis
+</pre></div>
+
+
+<p>Maybe you will miss rdoc gem in some cases, depending on your OS. Just install it before:</p>
+<div class="highlight"><pre><span class="nv">$ </span>gem install rdoc
+</pre></div>
+
+
+<p>Then encrypt your PyPi password with <code>travis</code> cli:</p>
+<div class="highlight"><pre><span class="nv">$ </span>travis encrypt --add deploy.password
+</pre></div>
+
+
+<p>The generated password will be automatically added to your <code>.travis.yml</code> config file.</p>
+<h1>Finally</h1>
+<p>At the end, you have a repository that is automatically deploying a new version of your python package each time you add a new tag on <code>master</code> !! Well done.</p><p>There are <a href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html" rel="bookmark"
+                           title="Permalink to How to manage GitHub Pages on front-end project">How to manage GitHub Pages on front-end project</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2015-04-08T20:47:00+02:00">
                 Published: mer. 08 avril 2015
@@ -37,115 +135,15 @@
         </address>
 <p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>. </p>
 <p>tags: <a href="http://5minutes.youkidea.com/tag/github.html">GitHub</a> <a href="http://5minutes.youkidea.com/tag/front-end.html">front-end</a> </p>
-</footer><!-- /.post-info --><p>You are working on a frond-end project hosted on GitHub, with lot of useful tools (grunt/gulp, sass, ...), and you want to properly manage generated files from this project on GitHub Pages ?</p>
-<p>Let's imagine this kind of folder on your <code>master</code> branch:</p>
-<div class="highlight"><pre>.
-+-- Gruntfile.js
-+-- bower.json
-+-- package.json
-+-- README.md
-+-- dist  &lt;-- You need this folder to be the root of the gh-pages branch
-|   +-- index.html
-|   +-- other_page.html
-|   +-- theme
-|   |    +-- main.css
-</pre></div>
-
-
-<p>If you want to use <a href="https://pages.github.com/">GitHub pages</a> to access your static files, then you need to :</p>
-<ol>
-<li>create a branch named <code>gh-pages</code>,</li>
-<li>have all your static files at the branch root (including <code>index.html</code>).</li>
-</ol>
-<p>So that, when you checkout <code>gh-pages</code>, you need to have:</p>
-<div class="highlight"><pre>.
-+-- index.html
-+-- other_page.html
-+-- theme
-|   +-- main.css
-</pre></div>
-
-
-<h1>Solution 1</h1>
-<p>You could copy your <code>dist</code> folder of <code>master</code> in another folder (outside of this git project), then checkout to <code>gh-pages</code>, paste copied folder to this branch, and commit.
-We feel easily that it's not a clean way to manage it, we will have to manually copy/paste each time...</p>
-<p>A script could be written to do this kind of task each time we need to deploy on <code>gh-pages</code>, but
- somebody has already done that for us : <a href="https://github.com/davisp/ghp-import">ghp-import</a></p>
-<p>You can install it via <code>pip</code>:</p>
-<div class="highlight"><pre>pip install ghp-import
-</pre></div>
-
-
-<p>And then, go to your <code>master</code> branch, and to deploy your <code>dist</code> folder:</p>
-<div class="highlight"><pre><span class="n">ghp</span><span class="o">-</span><span class="kn">import</span> <span class="nn">dist</span>
-</pre></div>
-
-
-<p>It will then create a new commit (and push it) on your <code>gh-pages</code> branch with the current files of your <code>dist</code> folder.</p>
-<h1>Solution 2</h1>
-<p>Clone another time your project in the same project folder:</p>
-<div class="highlight"><pre>.
-+-- Gruntfile.js
-+-- bower.json
-+-- package.json
-+-- README.md
-+-- dist
-|   +-- index.html
-|   +-- other_page.html
-|   +-- theme
-|   |    +-- main.css
-+-- your_project &lt;-- Your cloned project repository on master branch
-    +-- Gruntfile.js
-    +-- bower.json
-    +-- package.json
-    +-- README.md
-    +-- dist
-    |   +-- index.html
-    |   +-- other_page.html
-    |   +-- theme
-    |   |    +-- main.css
-</pre></div>
-
-
-<p>Checkout your sub-cloned project to gh-pages branch, and remove everything no more needed in your <code>gh-pages</code> branch.</p>
-<div class="highlight"><pre>.
-+-- Gruntfile.js
-+-- bower.json
-+-- package.json
-+-- README.md
-+-- dist
-|   +-- index.html
-|   +-- other_page.html
-|   +-- theme
-|   |    +-- main.css
-+-- your_project &lt;-- Your cloned project repository on gh-pages branch
-    +-- index.html
-    +-- other_page.html
-    +-- theme
-    |    +-- main.css
-</pre></div>
-
-
-<p>Remove <code>dist</code> folder in your <code>master branch</code>, and replace it with a symbolic link to <code>your_project</code> repository:</p>
-<div class="highlight"><pre>.
-+-- Gruntfile.js
-+-- bower.json
-+-- package.json
-+-- README.md
-+-- dist &lt;-- Now a symlink to your_project
-+-- your_project &lt;-- Your cloned project repository on gh-pages branch
-    +-- index.html
-    +-- other_page.html
-    +-- theme
-    |    +-- main.css
-</pre></div>
-
-
-<p>Your tools, that were working on <code>dist</code> folder, will now generate new content on the project <code>gh-pages</code> branch, and you can commit them when you want.</p><p>There are <a href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html#disqus_thread">comments</a>.</p>                </article>
+</footer><!-- /.post-info -->                <p>How to manage GitHub Pages on front-end project</p>
+                <a class="readmore" href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html">read more</a>
+<p>There are <a href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
 <p class="paginator">
     Page 1 / 1
 </p>
-            </aside><!-- /#featured -->
+                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>

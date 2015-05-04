@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>5minutes</title>
+        <title>Reuse the same database for django test suite</title>
         <link rel="stylesheet" href="http://5minutes.youkidea.com/theme/css/main.css" />
         <link href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="5minutes Atom Feed" />
 
@@ -16,18 +16,41 @@
                 <h1><a href="http://5minutes.youkidea.com/">5minutes </a></h1>
                 <nav><ul>
                     <li><a href="http://5minutes.youkidea.com/pages/about-us.html">About</a></li>
-                    <li><a href="http://5minutes.youkidea.com/category/tech.html">Tech</a></li>
+                    <li class="active"><a href="http://5minutes.youkidea.com/category/tech.html">Tech</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 <section id="content" class="body">
-<h1>Archives for 5minutes</h1>
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://5minutes.youkidea.com/drafts/reuse-same-db-django-tests.html" rel="bookmark"
+           title="Permalink to Reuse the same database for django test suite">Reuse the same database for django test suite</a></h1>
+    </header>
 
-<dl>
-    <dt>mar. 05 mai 2015</dt>
-    <dd><a href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html">How to deploy a python package on PyPi with GitHub and travis-ci</a></dd>
-    <dt>mer. 08 avril 2015</dt>
-    <dd><a href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html">How to manage GitHub Pages on front-end project</a></dd>
-</dl>
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-04-22T23:51:00+02:00">
+                Published: mer. 22 avril 2015
+        </abbr>
+		<br />
+        <abbr class="modified" title="2015-04-22T23:51:00+02:00">
+                Updated: mer. 22 avril 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://5minutes.youkidea.com/author/romain-garrigues.html">Romain Garrigues</a>
+        </address>
+<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>. </p>
+<p>tags: <a href="http://5minutes.youkidea.com/tag/django.html">Django</a> <a href="http://5minutes.youkidea.com/tag/database.html">database</a> </p>
+</footer><!-- /.post-info -->      <p>You are using django test command, and are annoyed because it takes time for django to create/delete the database on each test suite running (and also apply every <code>south</code> migration you have ?).</p>
+<h1>Since Django 1.8</h1>
+<p>A new <code>test</code> option, named <code>--keepdb</code>, appears in Django 1.8 to avoid this. The same database is then reused on each test running.</p>
+<h1>Before Django 1.8</h1>
+<p>Before Django 1.8, there is no built-in solution for now.</p>
+<p>I have then spend some time to see exactly how Django was managing the database creation/deletion, and created a <code>Django</code> app to reuse the same database for people that can't upgrade for now to 1.8</p>
+    </div><!-- /.entry-content -->
+
+  </article>
 </section>
         <section id="extras" class="body">
                 <div class="blogroll">

@@ -1,5 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>5minutes</title><link href="http://5minutes.youkidea.com/" rel="alternate"></link><link href="http://5minutes.youkidea.com/feeds/all.atom.xml" rel="self"></link><id>http://5minutes.youkidea.com/</id><updated>2015-04-08T20:47:00+02:00</updated><entry><title>How to manage GitHub Pages on front-end project</title><link href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html" rel="alternate"></link><updated>2015-04-08T20:47:00+02:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2015-04-08:howto-manage-ghpages-project.html</id><summary type="html">&lt;p&gt;You are working on a frond-end project hosted on GitHub, with lot of useful tools (grunt/gulp, sass, ...), and you want to properly manage generated files from this project on GitHub Pages ?&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>5minutes</title><link href="http://5minutes.youkidea.com/" rel="alternate"></link><link href="http://5minutes.youkidea.com/feeds/all.atom.xml" rel="self"></link><id>http://5minutes.youkidea.com/</id><updated>2015-05-05T08:12:00+02:00</updated><entry><title>How to deploy a python package on PyPi with GitHub and travis-ci</title><link href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html" rel="alternate"></link><updated>2015-05-05T08:12:00+02:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2015-05-05:howto-deploy-python-package-on-pypi-with-github-and-travis.html</id><summary type="html">&lt;p&gt;You want to make a python package available on PyPi without spending ages to learn how to do it ?&lt;/p&gt;
+&lt;p&gt;If you are using GitHub to host your project, this article is for you !&lt;/p&gt;
+&lt;h1&gt;Create your setup.py file&lt;/h1&gt;
+&lt;p&gt;Every python package needs a &lt;code&gt;setup.py&lt;/code&gt; file to be deployed with &lt;code&gt;pip&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;You can use a &lt;code&gt;setup.py&lt;/code&gt; example available on &lt;a href="https://docs.djangoproject.com/fr/1.8/intro/reusable-apps/"&gt;Django website&lt;/a&gt; to create yours.&lt;/p&gt;
+&lt;p&gt;Then, your &lt;code&gt;GitHub&lt;/code&gt; repository seems like:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;.
++-- my_python_package &amp;lt;-- The package you want to deploy on PyPi
++-- setup.py
++-- README.rst
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Configure Travis CI&lt;/h1&gt;
+&lt;p&gt;You need to configure &lt;code&gt;Tracis CI&lt;/code&gt; to use continuous integration for your &lt;code&gt;GitHub&lt;/code&gt; repository.&lt;/p&gt;
+&lt;p&gt;If it's your first time, go to &lt;a href="http://travis-ci.org/"&gt;Tracis CI&lt;/a&gt;, sign-in with &lt;code&gt;GitHub&lt;/code&gt;, and activate your &lt;code&gt;GitHub&lt;/code&gt; repository (&lt;code&gt;Travis CI&lt;/code&gt; has access to your repositories, but their are disabled by default).&lt;/p&gt;
+&lt;p&gt;Then add a &lt;code&gt;.travis.yml&lt;/code&gt; file, on your &lt;code&gt;GitHub&lt;/code&gt; repository root, with this content:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;language&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;
+
+&lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;2.7&amp;quot;&lt;/span&gt;
+
+&lt;span class="n"&gt;script&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;touch&lt;/span&gt; &lt;span class="n"&gt;foo&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;For now, your &lt;code&gt;Travis CI&lt;/code&gt; configuration is executing something totally useless (&lt;code&gt;touch foo&lt;/code&gt;) on each commit, but usually people are using it to run tests.&lt;/p&gt;
+&lt;h1&gt;Configure PyPi deployment with travis-ci&lt;/h1&gt;
+&lt;p&gt;Now we also want our project to be deployed on &lt;code&gt;PyPi&lt;/code&gt;. &lt;code&gt;Travis CI&lt;/code&gt; can do that for us if we add a &lt;code&gt;deploy&lt;/code&gt; section in &lt;code&gt;.travis.yml&lt;/code&gt;, that is now:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;language&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;
+
+&lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;2.7&amp;quot;&lt;/span&gt;
+
+&lt;span class="n"&gt;script&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;touch&lt;/span&gt; &lt;span class="n"&gt;foo&lt;/span&gt;
+
+&lt;span class="n"&gt;deploy&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;provider&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;pypi&lt;/span&gt;
+  &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;romgar&lt;/span&gt;
+  &lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;secure&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;my_secure_password&lt;/span&gt;
+  &lt;span class="n"&gt;on&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;tags&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;
+    &lt;span class="n"&gt;branch&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;master&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;With that configuration, this project will be deployed on &lt;code&gt;Pypi&lt;/code&gt; with user &lt;code&gt;romgar&lt;/code&gt; and password &lt;code&gt;my_secure_password&lt;/code&gt;, but only when you create (and push) new tags on &lt;code&gt;master&lt;/code&gt;.&lt;/p&gt;
+&lt;h1&gt;Get PyPi deployment credentials&lt;/h1&gt;
+&lt;p&gt;The username is the one you have used to register on &lt;a href="http://pypi.python.org/"&gt;Pypi&lt;/a&gt;. Yes, you have to create an account on &lt;code&gt;Pypi&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;You also need to generate an encrypted password with &lt;code&gt;Travis CI&lt;/code&gt; command line client.&lt;/p&gt;
+&lt;p&gt;To install it (more details on &lt;a href="http://blog.travis-ci.com/2013-01-14-new-client/"&gt;Travis blog&lt;/a&gt;):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;gem install travis
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Maybe you will miss rdoc gem in some cases, depending on your OS. Just install it before:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;gem install rdoc
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then encrypt your PyPi password with &lt;code&gt;travis&lt;/code&gt; cli:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;travis encrypt --add deploy.password
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The generated password will be automatically added to your &lt;code&gt;.travis.yml&lt;/code&gt; config file.&lt;/p&gt;
+&lt;h1&gt;Finally&lt;/h1&gt;
+&lt;p&gt;At the end, you have a repository that is automatically deploying a new version of your python package each time you add a new tag on &lt;code&gt;master&lt;/code&gt; !! Well done.&lt;/p&gt;</summary><category term="GitHub"></category><category term="travis-ci"></category><category term="python"></category><category term="PyPi"></category></entry><entry><title>How to manage GitHub Pages on front-end project</title><link href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html" rel="alternate"></link><updated>2015-04-08T20:47:00+02:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2015-04-08:howto-manage-ghpages-project.html</id><summary type="html">&lt;p&gt;You are working on a frond-end project hosted on GitHub, with lot of useful tools (grunt/gulp, sass, ...), and you want to properly manage generated files from this project on GitHub Pages ?&lt;/p&gt;
 &lt;p&gt;Let's imagine this kind of folder on your &lt;code&gt;master&lt;/code&gt; branch:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;.
 +-- Gruntfile.js
