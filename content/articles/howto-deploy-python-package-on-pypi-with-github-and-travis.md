@@ -1,15 +1,15 @@
-Title: How to deploy a python package on PyPi with GitHub and travis-ci
+Title: How to deploy a python package on PyPi with GitHub and Travis CI
 Date: 2015-05-05 08:12
 Modified: 2015-05-05 08:12
 Category: Tech
 Tags: GitHub, travis-ci, python, PyPi
 Slug: howto-deploy-python-package-on-pypi-with-github-and-travis
 Authors: Romain Garrigues
-Summary: How to deploy a python package on PyPi with GitHub and travis-ci
+Summary: How to deploy a python package on PyPi with GitHub and Travis CI
 
-You want to make a python package available on PyPi without spending ages to learn how to do it ?
+You want to make a python package available on `PyPi` without spending ages to learn how to do it ?
 
-If you are using GitHub to host your project, this article is for you !
+If you are using `GitHub` to host your project, this article is for you !
 
 Create your setup.py file
 =========================
