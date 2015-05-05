@@ -7,6 +7,6 @@ Slug: about-us
 Authors: Romain Garrigues
 Summary: Blog description
 
-5 minutes is a blog created by @rgarrigues(https://twitter.com/rgarrigues/) and @jrmipp (https://twitter.com/rgarrigues/) to share their tips and tricks on www.
+5 minutes is a blog created by [@rgarrigues](https://twitter.com/rgarrigues/) and [@jrmipp](https://twitter.com/rgarrigues/) to share their tips and tricks on www.
 
 5 minutes, and no more, for articles reading. Enjoy like we enjoy writting them.
