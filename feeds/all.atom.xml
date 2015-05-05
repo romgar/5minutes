@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>5minutes</title><link href="http://5minutes.youkidea.com/" rel="alternate"></link><link href="http://5minutes.youkidea.com/feeds/all.atom.xml" rel="self"></link><id>http://5minutes.youkidea.com/</id><updated>2015-05-05T08:12:00+02:00</updated><entry><title>How to deploy a python package on PyPi with GitHub and Travis CI</title><link href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html" rel="alternate"></link><updated>2015-05-05T08:12:00+02:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2015-05-05:howto-deploy-python-package-on-pypi-with-github-and-travis.html</id><summary type="html">&lt;p&gt;You want to make a python package available on &lt;code&gt;PyPi&lt;/code&gt; without spending ages to learn how to do it ?&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>5minutes</title><link href="http://5minutes.youkidea.com/" rel="alternate"></link><link href="http://5minutes.youkidea.com/feeds/all.atom.xml" rel="self"></link><id>http://5minutes.youkidea.com/</id><updated>2015-05-06T08:12:00+02:00</updated><entry><title>How to deploy a python package on PyPi with GitHub and Travis CI</title><link href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html" rel="alternate"></link><updated>2015-05-06T08:12:00+02:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2015-05-06:howto-deploy-python-package-on-pypi-with-github-and-travis.html</id><summary type="html">&lt;p&gt;You want to make a python package available on &lt;code&gt;PyPi&lt;/code&gt; without spending ages to learn how to do it ?&lt;/p&gt;
 &lt;p&gt;If you are using &lt;code&gt;GitHub&lt;/code&gt; to host your project, this article is for you !&lt;/p&gt;
 &lt;h1&gt;Create your setup.py file&lt;/h1&gt;
 &lt;p&gt;Every python package needs a &lt;code&gt;setup.py&lt;/code&gt; file to be deployed with &lt;code&gt;pip&lt;/code&gt;.&lt;/p&gt;
@@ -50,8 +50,8 @@
 
 &lt;p&gt;With that configuration, this project will be deployed on &lt;code&gt;Pypi&lt;/code&gt; with user &lt;code&gt;romgar&lt;/code&gt; and password &lt;code&gt;my_secure_password&lt;/code&gt;, but only when you create (and push) new tags on &lt;code&gt;master&lt;/code&gt;.&lt;/p&gt;
 &lt;h1&gt;Get PyPi deployment credentials&lt;/h1&gt;
-&lt;p&gt;The username is the one you have used to register on &lt;a href="http://pypi.python.org/"&gt;Pypi&lt;/a&gt;. Yes, you have to create an account on &lt;code&gt;Pypi&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;You also need to generate an encrypted password with &lt;code&gt;Travis CI&lt;/code&gt; command line client.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;user&lt;/code&gt; name is the one you have used to register on &lt;a href="http://pypi.python.org/"&gt;Pypi&lt;/a&gt;. Yes, you have to create an account on &lt;code&gt;Pypi&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;You also need to replace &lt;code&gt;my_secure_password&lt;/code&gt; with your secure password, generated with &lt;code&gt;Travis CI&lt;/code&gt; command line client.&lt;/p&gt;
 &lt;p&gt;To install it (more details on &lt;a href="http://blog.travis-ci.com/2013-01-14-new-client/"&gt;Travis blog&lt;/a&gt;):&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;gem install travis
 &lt;/pre&gt;&lt;/div&gt;
