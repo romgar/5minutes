@@ -1,6 +1,6 @@
 Title: How to deploy a python package on PyPi with GitHub and Travis CI
-Date: 2015-05-05 08:12
-Modified: 2015-05-05 08:12
+Date: 2015-05-06 08:12
+Modified: 2015-05-06 08:12
 Category: Tech
 Tags: GitHub, travis-ci, python, PyPi
 Slug: howto-deploy-python-package-on-pypi-with-github-and-travis
@@ -71,9 +71,9 @@ With that configuration, this project will be deployed on `Pypi` with user `romg
 Get PyPi deployment credentials
 ===============================
 
-The username is the one you have used to register on [Pypi](http://pypi.python.org/). Yes, you have to create an account on `Pypi`.
+The `user` name is the one you have used to register on [Pypi](http://pypi.python.org/). Yes, you have to create an account on `Pypi`.
 
-You also need to generate an encrypted password with `Travis CI` command line client.
+You also need to replace `my_secure_password` with your secure password, generated with `Travis CI` command line client.
 
 To install it (more details on [Travis blog](http://blog.travis-ci.com/2013-01-14-new-client/)):
 
