@@ -14,7 +14,7 @@
 
 &lt;h1&gt;Configure Travis CI&lt;/h1&gt;
 &lt;p&gt;You need to configure &lt;code&gt;Tracis CI&lt;/code&gt; to use continuous integration for your &lt;code&gt;GitHub&lt;/code&gt; repository.&lt;/p&gt;
-&lt;p&gt;If it's your first time, go to &lt;a href="http://travis-ci.org/"&gt;Tracis CI&lt;/a&gt;, sign-in with &lt;code&gt;GitHub&lt;/code&gt;, and activate your &lt;code&gt;GitHub&lt;/code&gt; repository (&lt;code&gt;Travis CI&lt;/code&gt; has access to your repositories, but their are disabled by default).&lt;/p&gt;
+&lt;p&gt;If it's your first time, go to &lt;a href="http://travis-ci.org/"&gt;Tracis CI&lt;/a&gt;, sign-in with &lt;code&gt;GitHub&lt;/code&gt;, and activate your &lt;code&gt;GitHub&lt;/code&gt; repository (&lt;code&gt;Travis CI&lt;/code&gt; has access to your repositories, but they are disabled by default).&lt;/p&gt;
 &lt;p&gt;Then add a &lt;code&gt;.travis.yml&lt;/code&gt; file, on your &lt;code&gt;GitHub&lt;/code&gt; repository root, with this content:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;language&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;
 
