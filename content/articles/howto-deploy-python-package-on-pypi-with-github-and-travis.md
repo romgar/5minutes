@@ -30,7 +30,7 @@ Configure Travis CI
 
 You need to configure `Tracis CI` to use continuous integration for your `GitHub` repository.
 
-If it's your first time, go to [Tracis CI](http://travis-ci.org/), sign-in with `GitHub`, and activate your `GitHub` repository (`Travis CI` has access to your repositories, but their are disabled by default).
+If it's your first time, go to [Tracis CI](http://travis-ci.org/), sign-in with `GitHub`, and activate your `GitHub` repository (`Travis CI` has access to your repositories, but they are disabled by default).
 
 Then add a `.travis.yml` file, on your `GitHub` repository root, with this content:
 
