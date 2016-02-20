@@ -71,14 +71,19 @@ Nice !
 
 But there are still some issues, even with this option.
 
+Contraints errors
+---
+If you are working with Django 1.7.x/1.8.x, you have maybe encountered this error 'IntegrityError: duplicate key value violates unique constraint "django_content_type_app_label_<some_hex>_uniq"'
+There is a StackOverflow thread about that http://stackoverflow.com/questions/29226869/django-transactiontestcase-with-rollback-emulation/35359897 that I recommand you to read carefully.
 
+A patch has been created and shipped with django 1.9.x (https://github.com/django/django/commit/d3fdaf907db6a5be4d0391532d7e65688c19e851)
+But if, like me, you can't really afford to work on latest stable version of Django, you can add a setting
+`TEST_NON_SERIALIZED_APPS = ['django.contrib.contenttypes']`
 
-Problem1: (django 1.7-1.8) http://stackoverflow.com/questions/29226869/django-transactiontestcase-with-rollback-emulation/35359897
-There are some constraint errors, fixed in a patch deployed in django 1.9.x (https://github.com/django/django/commit/d3fdaf907db6a5be4d0391532d7e65688c19e851)
-Can be avoided in previous versions by using TEST_NON_SERIALIZED_APPS = ['django.contrib.contenttypes', 'django.contrib.auth']
-
-Problem2: If you want to keep the database for future tests with —keepdb option, the last TransactionTestCase run will still delete all the data in the database…
-I have proposed a patch for that: https://code.djangoproject.com/ticket/25251#comment:5
+Database empty at the end of the test run suite, even with --keepdb option
+---
+If you want to keep the database for future tests with —keepdb option, the last TransactionTestCase run will still delete all the data in the database.
+There is an opened ticket related to that issue: https://code.djangoproject.com/ticket/25251
 
 Finally, after all these tests, I can keep my TransactionTestCase tests and my data are still in the database \o/
 
