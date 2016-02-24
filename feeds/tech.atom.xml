@@ -80,7 +80,7 @@ There is an &lt;a href="https://code.djangoproject.com/ticket/25251"&gt;open tic
 &lt;ul&gt;
 &lt;li&gt;Pre-setup db state: A&lt;/li&gt;
 &lt;li&gt;Test: some data created -&amp;gt; db in state B&lt;/li&gt;
-&lt;li&gt;TearDown step: flushing everything, db in state Z&lt;/li&gt;
+&lt;li&gt;TearDown step: flushing everything, db in state E&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Post-TearDown step: loading initial data -&amp;gt; db in state A&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
@@ -89,7 +89,7 @@ There is an &lt;a href="https://code.djangoproject.com/ticket/25251"&gt;open tic
 &lt;ul&gt;
 &lt;li&gt;Pre-setup db state: A (loaded after the last flush from previous &lt;code&gt;TransactionTestCase&lt;/code&gt;)&lt;/li&gt;
 &lt;li&gt;Test: some data created -&amp;gt; db in state B&lt;/li&gt;
-&lt;li&gt;TearDown step: flushing everything, db in state Z&lt;/li&gt;
+&lt;li&gt;TearDown step: flushing everything, db in state E&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Post-TearDown step: loading initial data -&amp;gt; db in state A&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;

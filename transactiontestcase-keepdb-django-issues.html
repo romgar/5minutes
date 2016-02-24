@@ -123,7 +123,7 @@ There is an <a href="https://code.djangoproject.com/ticket/25251">open ticket</a
 <ul>
 <li>Pre-setup db state: A</li>
 <li>Test: some data created -&gt; db in state B</li>
-<li>TearDown step: flushing everything, db in state Z</li>
+<li>TearDown step: flushing everything, db in state E</li>
 <li><strong>Post-TearDown step: loading initial data -&gt; db in state A</strong></li>
 </ul>
 </li>
@@ -132,7 +132,7 @@ There is an <a href="https://code.djangoproject.com/ticket/25251">open ticket</a
 <ul>
 <li>Pre-setup db state: A (loaded after the last flush from previous <code>TransactionTestCase</code>)</li>
 <li>Test: some data created -&gt; db in state B</li>
-<li>TearDown step: flushing everything, db in state Z</li>
+<li>TearDown step: flushing everything, db in state E</li>
 <li><strong>Post-TearDown step: loading initial data -&gt; db in state A</strong></li>
 </ul>
 </li>
