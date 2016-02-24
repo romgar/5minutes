@@ -46,8 +46,7 @@ serialized_rollback option
 ==========================
 To be sure that your `TransactionTestCase` are not dependent from each others, you can use `serialised_rollback = True` option.
 
-If you use it, at the beginning (`SetUp` step) of each test, Django will load the data coming from initial migrations.
-How ? Django is serializing these initial data, and loading them if you ask it.
+If you use it, at the beginning (`SetUp` step) of each test, Django will load the data coming from initial data migrations.
 
 What will happens then is:
 
@@ -71,25 +70,25 @@ Nice !
 
 *But there are still some issues, even with this option.*
 
-Constraints errors
-==================
+Issue 1: Constraints errors
+===========================
 If you are working with Django 1.7.x/1.8.x, you have maybe encountered this error:
 
     IntegrityError: duplicate key value violates unique constraint "django_content_type_app_label_<some_hex>_uniq"
 
-There is a [StackOverflow thread](http://stackoverflow.com/questions/29226869/django-transactiontestcase-with-rollback-emulation/35359897) that I recommend you to read carefully.
+There is a [StackOverflow thread](http://stackoverflow.com/questions/29226869/django-transactiontestcase-with-rollback-emulation/35359897) about this topic.
 
 A [patch](https://github.com/django/django/commit/d3fdaf907db6a5be4d0391532d7e65688c19e851) has been created and shipped with django 1.9.x.
-But if, like me, you can't really afford to work on latest stable version of Django, you can add a setting:
+But if, like me, you can't always work with latest stable version of Django, you can add a setting:
 
     TEST_NON_SERIALIZED_APPS = ['django.contrib.contenttypes']
 
-Empty database at the end of the test run suite, even with --keepdb option
+Issue 2: Empty database at the end of the tests, even with --keepdb option
 ==========================================================================
 If you want to keep the database for future tests with `-—keepdb` option, the last `TransactionTestCase` run will still delete all the data in the database.
 There is an [open ticket](https://code.djangoproject.com/ticket/25251) related to that issue.
 
-I have proposed a [solution](https://github.com/django/django/pull/6137) that resolves this problem by changing where we load the initial data.
+I have proposed a [solution](https://github.com/django/django/pull/6137) that resolves this problem by updating where we load the initial data.
 
 - Database initial state: A
 
@@ -107,4 +106,4 @@ I have proposed a [solution](https://github.com/django/django/pull/6137) that re
     - TearDown step: flushing everything, db in state Z
     - **Post-TearDown step: loading initial data -> db in state A**
 
-Finally, after all these tests, I can keep my `TransactionTestCase` tests and my data are still in the database \o/
+Finally, after all these tests, I can keep my `TransactionTestCase` tests and my data are still in the database. Victory.
