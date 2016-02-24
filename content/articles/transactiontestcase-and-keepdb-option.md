@@ -6,7 +6,6 @@ Tags: Django, database, tests
 Slug: transactiontestcase-keepdb-django-issues
 Authors: Romain Garrigues
 Summary: Using keepdb with TransactionTestCase in Django test suite
-Status: draft
 
 Few days ago, I had several issues with some data (from migrations) that were no more in my database after running tests,
 even with `--keepdb` option.
