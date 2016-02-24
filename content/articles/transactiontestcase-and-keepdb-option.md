@@ -95,14 +95,14 @@ I have proposed a [solution](https://github.com/django/django/pull/6137) that re
 
     - Pre-setup db state: A
     - Test: some data created -> db in state B
-    - TearDown step: flushing everything, db in state Z
+    - TearDown step: flushing everything, db in state E
     - **Post-TearDown step: loading initial data -> db in state A**
 
 - Second TransactionTestCase with `serialized_rollback = True`:
 
     - Pre-setup db state: A (loaded after the last flush from previous `TransactionTestCase`)
     - Test: some data created -> db in state B
-    - TearDown step: flushing everything, db in state Z
+    - TearDown step: flushing everything, db in state E
     - **Post-TearDown step: loading initial data -> db in state A**
 
 Finally, after all these tests, I can keep my `TransactionTestCase` tests and my data are still in the database. Victory.
