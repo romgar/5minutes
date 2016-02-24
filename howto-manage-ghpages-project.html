@@ -7,7 +7,7 @@
         <link href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="5minutes Atom Feed" />
 
         <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 </head>
 
@@ -30,21 +30,21 @@
     <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2015-04-08T20:47:00+02:00">
-                Published: mer. 08 avril 2015
+                Published: Wed 08 April 2015
         </abbr>
 		<br />
         <abbr class="modified" title="2015-04-08T20:47:00+02:00">
-                Updated: mer. 08 avril 2015
+                Updated: Wed 08 April 2015
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="http://5minutes.youkidea.com/author/romain-garrigues.html">Romain Garrigues</a>
         </address>
-<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>. </p>
+<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>.</p>
 <p>tags: <a href="http://5minutes.youkidea.com/tag/github.html">GitHub</a> <a href="http://5minutes.youkidea.com/tag/front-end.html">front-end</a> </p>
 </footer><!-- /.post-info -->      <p>You are working on a frond-end project hosted on GitHub, with lot of useful tools (grunt/gulp, sass, ...), and you want to properly manage generated files from this project on GitHub Pages ?</p>
 <p>Let's imagine this kind of folder on your <code>master</code> branch:</p>
-<div class="highlight"><pre>.
+<div class="highlight"><pre><span></span>.
 +-- Gruntfile.js
 +-- bower.json
 +-- package.json
@@ -63,7 +63,7 @@
 <li>have all your static files at the branch root (including <code>index.html</code>).</li>
 </ol>
 <p>So that, when you checkout <code>gh-pages</code>, you need to have:</p>
-<div class="highlight"><pre>.
+<div class="highlight"><pre><span></span>.
 +-- index.html
 +-- other_page.html
 +-- theme
@@ -77,19 +77,19 @@ We feel easily that it's not a clean way to manage it, we will have to manually 
 <p>A script could be written to do this kind of task each time we need to deploy on <code>gh-pages</code>, but
  somebody has already done that for us : <a href="https://github.com/davisp/ghp-import">ghp-import</a></p>
 <p>You can install it via <code>pip</code>:</p>
-<div class="highlight"><pre>pip install ghp-import
+<div class="highlight"><pre><span></span>pip install ghp-import
 </pre></div>
 
 
 <p>And then, go to your <code>master</code> branch, and to deploy your <code>dist</code> folder:</p>
-<div class="highlight"><pre><span class="n">ghp</span><span class="o">-</span><span class="kn">import</span> <span class="nn">dist</span>
+<div class="highlight"><pre><span></span><span class="n">ghp</span><span class="o">-</span><span class="kn">import</span> <span class="nn">dist</span>
 </pre></div>
 
 
 <p>It will then create a new commit (and push it) on your <code>gh-pages</code> branch with the current files of your <code>dist</code> folder.</p>
 <h1>Solution 2</h1>
 <p>Clone another time your project in the same project folder:</p>
-<div class="highlight"><pre>.
+<div class="highlight"><pre><span></span>.
 +-- Gruntfile.js
 +-- bower.json
 +-- package.json
@@ -113,7 +113,7 @@ We feel easily that it's not a clean way to manage it, we will have to manually 
 
 
 <p>Checkout your sub-cloned project to gh-pages branch, and remove everything no more needed in your <code>gh-pages</code> branch.</p>
-<div class="highlight"><pre>.
+<div class="highlight"><pre><span></span>.
 +-- Gruntfile.js
 +-- bower.json
 +-- package.json
@@ -132,7 +132,7 @@ We feel easily that it's not a clean way to manage it, we will have to manually 
 
 
 <p>Remove <code>dist</code> folder in your <code>master branch</code>, and replace it with a symbolic link to <code>your_project</code> repository:</p>
-<div class="highlight"><pre>.
+<div class="highlight"><pre><span></span>.
 +-- Gruntfile.js
 +-- bower.json
 +-- package.json
@@ -200,7 +200,7 @@ We feel easily that it's not a clean way to manage it, we will have to manually 
     _gaq.push(['_trackPageview']);
     (function() {
         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        ga.src = 'https://ssl.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
     </script>
@@ -209,7 +209,7 @@ We feel easily that it's not a clean way to manage it, we will have to manually 
     (function () {
         var s = document.createElement('script'); s.async = true;
         s.type = 'text/javascript';
-        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
         (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
     }());
 </script>

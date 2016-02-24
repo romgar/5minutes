@@ -7,7 +7,7 @@
         <link href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="5minutes Atom Feed" />
 
         <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 </head>
 
@@ -30,17 +30,17 @@
     <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2015-05-06T08:12:00+02:00">
-                Published: mer. 06 mai 2015
+                Published: Wed 06 May 2015
         </abbr>
 		<br />
         <abbr class="modified" title="2015-05-06T08:12:00+02:00">
-                Updated: mer. 06 mai 2015
+                Updated: Wed 06 May 2015
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="http://5minutes.youkidea.com/author/romain-garrigues.html">Romain Garrigues</a>
         </address>
-<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>. </p>
+<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>.</p>
 <p>tags: <a href="http://5minutes.youkidea.com/tag/github.html">GitHub</a> <a href="http://5minutes.youkidea.com/tag/travis-ci.html">travis-ci</a> <a href="http://5minutes.youkidea.com/tag/python.html">python</a> <a href="http://5minutes.youkidea.com/tag/pypi.html">PyPi</a> </p>
 </footer><!-- /.post-info -->      <p>You want to make a python package available on <code>PyPi</code> without spending ages to learn how to do it ?</p>
 <p>If you are using <code>GitHub</code> to host your project, this article is for you !</p>
@@ -48,7 +48,7 @@
 <p>Every python package needs a <code>setup.py</code> file to be deployed with <code>pip</code>.</p>
 <p>You can use a <code>setup.py</code> example available on <a href="https://docs.djangoproject.com/fr/1.8/intro/reusable-apps/">Django website</a> to create yours.</p>
 <p>Then, your <code>GitHub</code> repository seems like:</p>
-<div class="highlight"><pre>.
+<div class="highlight"><pre><span></span>.
 +-- my_python_package &lt;-- The package you want to deploy on PyPi
 +-- setup.py
 +-- README.rst
@@ -59,7 +59,7 @@
 <p>You need to configure <code>Tracis CI</code> to use continuous integration for your <code>GitHub</code> repository.</p>
 <p>If it's your first time, go to <a href="http://travis-ci.org/">Tracis CI</a>, sign-in with <code>GitHub</code>, and activate your <code>GitHub</code> repository (<code>Travis CI</code> has access to your repositories, but they are disabled by default).</p>
 <p>Then add a <code>.travis.yml</code> file, on your <code>GitHub</code> repository root, with this content:</p>
-<div class="highlight"><pre><span class="n">language</span><span class="o">:</span> <span class="n">python</span>
+<div class="highlight"><pre><span></span><span class="n">language</span><span class="o">:</span> <span class="n">python</span>
 
 <span class="n">python</span><span class="o">:</span>
   <span class="o">-</span> <span class="s2">&quot;2.7&quot;</span>
@@ -72,7 +72,7 @@
 <p>For now, your <code>Travis CI</code> configuration is executing something totally useless (<code>touch foo</code>) on each commit, but usually people are using it to run tests.</p>
 <h1>Configure PyPi deployment with travis-ci</h1>
 <p>Now we also want our project to be deployed on <code>PyPi</code>. <code>Travis CI</code> can do that for us if we add a <code>deploy</code> section in <code>.travis.yml</code>, that is now:</p>
-<div class="highlight"><pre><span class="n">language</span><span class="o">:</span> <span class="n">python</span>
+<div class="highlight"><pre><span></span><span class="n">language</span><span class="o">:</span> <span class="n">python</span>
 
 <span class="n">python</span><span class="o">:</span>
   <span class="o">-</span> <span class="s2">&quot;2.7&quot;</span>
@@ -96,17 +96,17 @@
 <p>The <code>user</code> name is the one you have used to register on <a href="http://pypi.python.org/">Pypi</a>. Yes, you have to create an account on <code>Pypi</code>.</p>
 <p>You also need to replace <code>my_secure_password</code> with your secure password, generated with <code>Travis CI</code> command line client.</p>
 <p>To install it (more details on <a href="http://blog.travis-ci.com/2013-01-14-new-client/">Travis blog</a>):</p>
-<div class="highlight"><pre><span class="nv">$ </span>gem install travis
+<div class="highlight"><pre><span></span>$ gem install travis
 </pre></div>
 
 
 <p>Maybe you will miss rdoc gem in some cases, depending on your OS. Just install it before:</p>
-<div class="highlight"><pre><span class="nv">$ </span>gem install rdoc
+<div class="highlight"><pre><span></span>$ gem install rdoc
 </pre></div>
 
 
 <p>Then encrypt your PyPi password with <code>travis</code> cli:</p>
-<div class="highlight"><pre><span class="nv">$ </span>travis encrypt --add deploy.password
+<div class="highlight"><pre><span></span>$ travis encrypt --add deploy.password
 </pre></div>
 
 
@@ -166,7 +166,7 @@
     _gaq.push(['_trackPageview']);
     (function() {
         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        ga.src = 'https://ssl.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
     </script>
@@ -175,7 +175,7 @@
     (function () {
         var s = document.createElement('script'); s.async = true;
         s.type = 'text/javascript';
-        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
         (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
     }());
 </script>
