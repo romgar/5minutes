@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>TransactionTestCase and keepdb issues in Django</title>
+        <title>5minutes - database</title>
         <link rel="stylesheet" href="http://5minutes.youkidea.com/theme/css/main.css" />
         <link href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="5minutes Atom Feed" />
 
@@ -16,18 +16,13 @@
                 <h1><a href="http://5minutes.youkidea.com/">5minutes </a></h1>
                 <nav><ul>
                     <li><a href="http://5minutes.youkidea.com/pages/about-us.html">About</a></li>
-                    <li class="active"><a href="http://5minutes.youkidea.com/category/tech.html">Tech</a></li>
+                    <li><a href="http://5minutes.youkidea.com/category/tech.html">Tech</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
-<section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="http://5minutes.youkidea.com/drafts/transactiontestcase-keepdb-django-issues.html" rel="bookmark"
-           title="Permalink to TransactionTestCase and keepdb issues in Django">TransactionTestCase and keepdb issues in Django</a></h1>
-    </header>
 
-    <div class="entry-content">
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html">TransactionTestCase and keepdb issues in Django</a></h1>
 <footer class="post-info">
         <abbr class="published" title="2016-02-22T23:51:00+01:00">
                 Published: Mon 22 February 2016
@@ -42,7 +37,7 @@
         </address>
 <p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>.</p>
 <p>tags: <a href="http://5minutes.youkidea.com/tag/django.html">Django</a> <a href="http://5minutes.youkidea.com/tag/database.html">database</a> <a href="http://5minutes.youkidea.com/tag/tests.html">tests</a> </p>
-</footer><!-- /.post-info -->      <p>Few days ago, I had several issues with some data (from migrations) that were no more in my database after running tests,
+</footer><!-- /.post-info --><p>Few days ago, I had several issues with some data (from migrations) that were no more in my database after running tests,
 even with <code>--keepdb</code> option.
 Let's see what happened.</p>
 <h1>Database tests cleaning</h1>
@@ -137,11 +132,8 @@ There is an <a href="https://code.djangoproject.com/ticket/25251">open ticket</a
 </ul>
 </li>
 </ul>
-<p>Finally, after all these tests, I can keep my <code>TransactionTestCase</code> tests and my data are still in the database. Victory.</p>
-    </div><!-- /.entry-content -->
-
-  </article>
-</section>
+<p>Finally, after all these tests, I can keep my <code>TransactionTestCase</code> tests and my data are still in the database. Victory.</p><p>There are <a href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>

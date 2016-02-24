@@ -1,5 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>5minutes</title><link href="http://5minutes.youkidea.com/" rel="alternate"></link><link href="http://5minutes.youkidea.com/feeds/all.atom.xml" rel="self"></link><id>http://5minutes.youkidea.com/</id><updated>2015-05-06T08:12:00+02:00</updated><entry><title>How to deploy a python package on PyPi with GitHub and Travis CI</title><link href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html" rel="alternate"></link><updated>2015-05-06T08:12:00+02:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2015-05-06:howto-deploy-python-package-on-pypi-with-github-and-travis.html</id><summary type="html">&lt;p&gt;You want to make a python package available on &lt;code&gt;PyPi&lt;/code&gt; without spending ages to learn how to do it ?&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>5minutes</title><link href="http://5minutes.youkidea.com/" rel="alternate"></link><link href="http://5minutes.youkidea.com/feeds/all.atom.xml" rel="self"></link><id>http://5minutes.youkidea.com/</id><updated>2016-02-22T23:51:00+01:00</updated><entry><title>TransactionTestCase and keepdb issues in Django</title><link href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html" rel="alternate"></link><updated>2016-02-22T23:51:00+01:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2016-02-22:transactiontestcase-keepdb-django-issues.html</id><summary type="html">&lt;p&gt;Few days ago, I had several issues with some data (from migrations) that were no more in my database after running tests,
+even with &lt;code&gt;--keepdb&lt;/code&gt; option.
+Let's see what happened.&lt;/p&gt;
+&lt;h1&gt;Database tests cleaning&lt;/h1&gt;
+&lt;p&gt;First, let's summarise how database test cleaning is working in Django.&lt;/p&gt;
+&lt;h1&gt;TestCase&lt;/h1&gt;
+&lt;p&gt;If you inherit from TestCase, each test you are writing is wrapped in a transaction (and since Django 1.9, there is also
+a transaction wrapping all tests, which makes setUpClass and tearDownClass really useful, specially for test speed).
+It means, for each test:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Before: database in state A,&lt;/li&gt;
+&lt;li&gt;During: you can change some data in your database, which will be in state B,&lt;/li&gt;
+&lt;li&gt;After: there is a rollback that brings you back to state A.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Neat.&lt;/p&gt;
+&lt;h1&gt;TransactionTestCase&lt;/h1&gt;
+&lt;p&gt;If you need to test some &lt;a href="https://docs.djangoproject.com/en/1.9/topics/testing/tools/#django.test.TransactionTestCase"&gt;specific database behaviours&lt;/a&gt;,
+you may need to use a &lt;code&gt;TransactionTestCase&lt;/code&gt;, that is no more wrapping each test in a transaction.
+What happens for each test is:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Before: database in state A,&lt;/li&gt;
+&lt;li&gt;During: you can change some data in your database, which will be in state B,&lt;/li&gt;
+&lt;li&gt;After: all tables are emptied (TRUNCATE), your database is in state E (Empty).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;But then, what happens if you have 2 &lt;code&gt;TransactionTestCase&lt;/code&gt; that need the same initial state A ?
+The second one will be run with an empty database, which is maybe not what you wanted.&lt;/p&gt;
+&lt;h1&gt;serialized_rollback option&lt;/h1&gt;
+&lt;p&gt;To be sure that your &lt;code&gt;TransactionTestCase&lt;/code&gt; are not dependent from each others, you can use &lt;code&gt;serialised_rollback = True&lt;/code&gt; option.&lt;/p&gt;
+&lt;p&gt;If you use it, at the beginning (&lt;code&gt;SetUp&lt;/code&gt; step) of each test, Django will load the data coming from initial data migrations.&lt;/p&gt;
+&lt;p&gt;What will happens then is:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Database initial state: A&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;First TransactionTestCase with &lt;code&gt;serialized_rollback = True&lt;/code&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Pre-setup db state: A&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SetUp step: loading initial data -&amp;gt; db in state A (unchanged)&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Test: some data created -&amp;gt; db in state B&lt;/li&gt;
+&lt;li&gt;TearDown step: flushing everything, db in state E&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Second TransactionTestCase with &lt;code&gt;serialized_rollback = True&lt;/code&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Pre-setup db state: E (cleaned by previous TransactionTestCase)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SetUp step: loading initial data -&amp;gt; db in state A&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Test: some data created -&amp;gt; db in state B&lt;/li&gt;
+&lt;li&gt;TearDown step: flushing everything, db in state E&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Nice !&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;But there are still some issues, even with this option.&lt;/em&gt;&lt;/p&gt;
+&lt;h1&gt;Issue 1: Constraints errors&lt;/h1&gt;
+&lt;p&gt;If you are working with Django 1.7.x/1.8.x, you have maybe encountered this error:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;IntegrityError&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;duplicate&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="n"&gt;violates&lt;/span&gt; &lt;span class="n"&gt;unique&lt;/span&gt; &lt;span class="n"&gt;constraint&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;django_content_type_app_label_&amp;lt;some_hex&amp;gt;_uniq&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There is a &lt;a href="http://stackoverflow.com/questions/29226869/django-transactiontestcase-with-rollback-emulation/35359897"&gt;StackOverflow thread&lt;/a&gt; about this topic.&lt;/p&gt;
+&lt;p&gt;A &lt;a href="https://github.com/django/django/commit/d3fdaf907db6a5be4d0391532d7e65688c19e851"&gt;patch&lt;/a&gt; has been created and shipped with django 1.9.x.
+But if, like me, you can't always work with latest stable version of Django, you can add a setting:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;TEST_NON_SERIALIZED_APPS = [&amp;#39;django.contrib.contenttypes&amp;#39;]
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Issue 2: Empty database at the end of the tests, even with --keepdb option&lt;/h1&gt;
+&lt;p&gt;If you want to keep the database for future tests with &lt;code&gt;-—keepdb&lt;/code&gt; option, the last &lt;code&gt;TransactionTestCase&lt;/code&gt; run will still delete all the data in the database.
+There is an &lt;a href="https://code.djangoproject.com/ticket/25251"&gt;open ticket&lt;/a&gt; related to that issue.&lt;/p&gt;
+&lt;p&gt;I have proposed a &lt;a href="https://github.com/django/django/pull/6137"&gt;solution&lt;/a&gt; that resolves this problem by updating where we load the initial data.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Database initial state: A&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;First TransactionTestCase with &lt;code&gt;serialized_rollback = True&lt;/code&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Pre-setup db state: A&lt;/li&gt;
+&lt;li&gt;Test: some data created -&amp;gt; db in state B&lt;/li&gt;
+&lt;li&gt;TearDown step: flushing everything, db in state Z&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Post-TearDown step: loading initial data -&amp;gt; db in state A&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Second TransactionTestCase with &lt;code&gt;serialized_rollback = True&lt;/code&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Pre-setup db state: A (loaded after the last flush from previous &lt;code&gt;TransactionTestCase&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;Test: some data created -&amp;gt; db in state B&lt;/li&gt;
+&lt;li&gt;TearDown step: flushing everything, db in state Z&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Post-TearDown step: loading initial data -&amp;gt; db in state A&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Finally, after all these tests, I can keep my &lt;code&gt;TransactionTestCase&lt;/code&gt; tests and my data are still in the database. Victory.&lt;/p&gt;</summary><category term="Django"></category><category term="database"></category><category term="tests"></category></entry><entry><title>How to deploy a python package on PyPi with GitHub and Travis CI</title><link href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html" rel="alternate"></link><updated>2015-05-06T08:12:00+02:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2015-05-06:howto-deploy-python-package-on-pypi-with-github-and-travis.html</id><summary type="html">&lt;p&gt;You want to make a python package available on &lt;code&gt;PyPi&lt;/code&gt; without spending ages to learn how to do it ?&lt;/p&gt;
 &lt;p&gt;If you are using &lt;code&gt;GitHub&lt;/code&gt; to host your project, this article is for you !&lt;/p&gt;
 &lt;h1&gt;Create your setup.py file&lt;/h1&gt;
 &lt;p&gt;Every python package needs a &lt;code&gt;setup.py&lt;/code&gt; file to be deployed with &lt;code&gt;pip&lt;/code&gt;.&lt;/p&gt;

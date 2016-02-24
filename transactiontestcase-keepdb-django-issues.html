@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>5minutes - Tech</title>
+        <title>TransactionTestCase and keepdb issues in Django</title>
         <link rel="stylesheet" href="http://5minutes.youkidea.com/theme/css/main.css" />
         <link href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="5minutes Atom Feed" />
 
@@ -19,10 +19,15 @@
                     <li class="active"><a href="http://5minutes.youkidea.com/category/tech.html">Tech</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html" rel="bookmark"
+           title="Permalink to TransactionTestCase and keepdb issues in Django">TransactionTestCase and keepdb issues in Django</a></h1>
+    </header>
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html">TransactionTestCase and keepdb issues in Django</a></h1>
+    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2016-02-22T23:51:00+01:00">
                 Published: Mon 22 February 2016
@@ -37,7 +42,7 @@
         </address>
 <p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>.</p>
 <p>tags: <a href="http://5minutes.youkidea.com/tag/django.html">Django</a> <a href="http://5minutes.youkidea.com/tag/database.html">database</a> <a href="http://5minutes.youkidea.com/tag/tests.html">tests</a> </p>
-</footer><!-- /.post-info --><p>Few days ago, I had several issues with some data (from migrations) that were no more in my database after running tests,
+</footer><!-- /.post-info -->      <p>Few days ago, I had several issues with some data (from migrations) that were no more in my database after running tests,
 even with <code>--keepdb</code> option.
 Let's see what happened.</p>
 <h1>Database tests cleaning</h1>
@@ -132,66 +137,26 @@ There is an <a href="https://code.djangoproject.com/ticket/25251">open ticket</a
 </ul>
 </li>
 </ul>
-<p>Finally, after all these tests, I can keep my <code>TransactionTestCase</code> tests and my data are still in the database. Victory.</p><p>There are <a href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<p>Finally, after all these tests, I can keep my <code>TransactionTestCase</code> tests and my data are still in the database. Victory.</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = '5minutes-youkidea';
+        var disqus_identifier = 'transactiontestcase-keepdb-django-issues.html';
+        var disqus_url = 'http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//5minutes-youkidea.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html" rel="bookmark"
-                           title="Permalink to How to deploy a python package on PyPi with GitHub and Travis CI">How to deploy a python package on PyPi with GitHub and Travis CI</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2015-05-06T08:12:00+02:00">
-                Published: Wed 06 May 2015
-        </abbr>
-		<br />
-        <abbr class="modified" title="2015-05-06T08:12:00+02:00">
-                Updated: Wed 06 May 2015
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="http://5minutes.youkidea.com/author/romain-garrigues.html">Romain Garrigues</a>
-        </address>
-<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>.</p>
-<p>tags: <a href="http://5minutes.youkidea.com/tag/github.html">GitHub</a> <a href="http://5minutes.youkidea.com/tag/travis-ci.html">travis-ci</a> <a href="http://5minutes.youkidea.com/tag/python.html">python</a> <a href="http://5minutes.youkidea.com/tag/pypi.html">PyPi</a> </p>
-</footer><!-- /.post-info -->                <p>How to deploy a python package on PyPi with GitHub and Travis CI</p>
-                <a class="readmore" href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html">read more</a>
-<p>There are <a href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html" rel="bookmark"
-                           title="Permalink to How to manage GitHub Pages on front-end project">How to manage GitHub Pages on front-end project</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2015-04-08T20:47:00+02:00">
-                Published: Wed 08 April 2015
-        </abbr>
-		<br />
-        <abbr class="modified" title="2015-04-08T20:47:00+02:00">
-                Updated: Wed 08 April 2015
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="http://5minutes.youkidea.com/author/romain-garrigues.html">Romain Garrigues</a>
-        </address>
-<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>.</p>
-<p>tags: <a href="http://5minutes.youkidea.com/tag/github.html">GitHub</a> <a href="http://5minutes.youkidea.com/tag/front-end.html">front-end</a> </p>
-</footer><!-- /.post-info -->                <p>How to manage GitHub Pages on front-end project</p>
-                <a class="readmore" href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html">read more</a>
-<p>There are <a href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>
