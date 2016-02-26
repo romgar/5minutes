@@ -24,12 +24,8 @@
                 <article>
                     <h1 class="entry-title"><a href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html">TransactionTestCase and keepdb issues in Django</a></h1>
 <footer class="post-info">
-        <abbr class="published" title="2016-02-22T23:51:00+01:00">
-                Published: Mon 22 February 2016
-        </abbr>
-		<br />
-        <abbr class="modified" title="2016-02-22T23:51:00+01:00">
-                Updated: Mon 22 February 2016
+        <abbr class="published" title="2016-02-25T23:51:00+01:00">
+                Published: Thu 25 February 2016
         </abbr>
 
         <address class="vcard author">
@@ -39,9 +35,7 @@
 <p>tags: <a href="http://5minutes.youkidea.com/tag/django.html">Django</a> <a href="http://5minutes.youkidea.com/tag/database.html">database</a> <a href="http://5minutes.youkidea.com/tag/tests.html">tests</a> </p>
 </footer><!-- /.post-info --><p>Few days ago, I had several issues with some data (from migrations) that were no more in my database after running tests,
 even with <code>--keepdb</code> option.
-Let's see what happened.</p>
-<h1>Database tests cleaning</h1>
-<p>First, let's summarise how database test cleaning is working in Django.</p>
+Let's see what happened, but before that, here is a quick reminder of how database test cleaning is working in Django.</p>
 <h1>TestCase</h1>
 <p>If you inherit from TestCase, each test you are writing is wrapped in a transaction (and since Django 1.9, there is also
 a transaction wrapping all tests, which makes setUpClass and tearDownClass really useful, specially for test speed).
@@ -85,7 +79,7 @@ The second one will be run with an empty database, which is maybe not what you w
 <ul>
 <li>Pre-setup db state: E (cleaned by previous TransactionTestCase)</li>
 <li><strong>SetUp step: loading initial data -&gt; db in state A</strong></li>
-<li>Test: some data created -&gt; db in state B</li>
+<li>Test: some data created -&gt; db in state C</li>
 <li>TearDown step: flushing everything, db in state E</li>
 </ul>
 </li>
@@ -126,7 +120,7 @@ There is an <a href="https://code.djangoproject.com/ticket/25251">open ticket</a
 <p>Second TransactionTestCase with <code>serialized_rollback = True</code>:</p>
 <ul>
 <li>Pre-setup db state: A (loaded after the last flush from previous <code>TransactionTestCase</code>)</li>
-<li>Test: some data created -&gt; db in state B</li>
+<li>Test: some data created -&gt; db in state C</li>
 <li>TearDown step: flushing everything, db in state E</li>
 <li><strong>Post-TearDown step: loading initial data -&gt; db in state A</strong></li>
 </ul>
