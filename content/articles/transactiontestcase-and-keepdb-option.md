@@ -1,6 +1,5 @@
 Title: TransactionTestCase and keepdb issues in Django
-Date: 2016-02-22 23:51
-Modified: 2016-02-22 23:51
+Date: 2016-02-25 23:51
 Category: Tech
 Tags: Django, database, tests
 Slug: transactiontestcase-keepdb-django-issues
@@ -9,12 +8,7 @@ Summary: Using keepdb with TransactionTestCase in Django test suite
 
 Few days ago, I had several issues with some data (from migrations) that were no more in my database after running tests,
 even with `--keepdb` option.
-Let's see what happened.
-
-Database tests cleaning
-=======================
-
-First, let's summarise how database test cleaning is working in Django.
+Let's see what happened, but before that, here is a quick reminder of how database test cleaning is working in Django.
 
 TestCase
 ========
@@ -62,7 +56,7 @@ What will happens then is:
 
     - Pre-setup db state: E (cleaned by previous TransactionTestCase)
     - **SetUp step: loading initial data -> db in state A**
-    - Test: some data created -> db in state B
+    - Test: some data created -> db in state C
     - TearDown step: flushing everything, db in state E
 
 Nice !
@@ -101,7 +95,7 @@ I have proposed a [solution](https://github.com/django/django/pull/6137) that re
 - Second TransactionTestCase with `serialized_rollback = True`:
 
     - Pre-setup db state: A (loaded after the last flush from previous `TransactionTestCase`)
-    - Test: some data created -> db in state B
+    - Test: some data created -> db in state C
     - TearDown step: flushing everything, db in state E
     - **Post-TearDown step: loading initial data -> db in state A**
 
