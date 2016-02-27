@@ -1,67 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>5minutes</title><link href="http://5minutes.youkidea.com/" rel="alternate"></link><link href="http://5minutes.youkidea.com/feeds/all.atom.xml" rel="self"></link><id>http://5minutes.youkidea.com/</id><updated>2016-02-25T23:51:00+01:00</updated><entry><title>TransactionTestCase and keepdb issues in Django</title><link href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html" rel="alternate"></link><updated>2016-02-25T23:51:00+01:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2016-02-25:transactiontestcase-keepdb-django-issues.html</id><summary type="html">&lt;p&gt;Few days ago, I had several issues with some data (from migrations) that were no more in my database after running tests,
+<feed xmlns="http://www.w3.org/2005/Atom"><title>5minutes</title><link href="http://5minutes.youkidea.com/" rel="alternate"></link><link href="http://5minutes.youkidea.com/feeds/all.atom.xml" rel="self"></link><id>http://5minutes.youkidea.com/</id><updated>2016-02-27T10:08:00+01:00</updated><entry><title>TransactionTestCase and keepdb issues in Django</title><link href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html" rel="alternate"></link><updated>2016-02-27T10:08:00+01:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2016-02-25:transactiontestcase-keepdb-django-issues.html</id><summary type="html">&lt;p&gt;Few days ago, I had several issues with some data (from migrations) that were no more in my database after running tests,
 even with &lt;code&gt;--keepdb&lt;/code&gt; option.
 Let's see what happened, but before that, here is a quick reminder of how database test cleaning is working in Django.&lt;/p&gt;
 &lt;h1&gt;TestCase&lt;/h1&gt;
 &lt;p&gt;If you inherit from TestCase, each test you are writing is wrapped in a transaction (and since Django 1.9, there is also
 a transaction wrapping all tests, which makes setUpClass and tearDownClass really useful, specially for test speed).
 It means, for each test:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Before: database in state A,&lt;/li&gt;
-&lt;li&gt;During: you can change some data in your database, which will be in state B,&lt;/li&gt;
-&lt;li&gt;After: there is a rollback that brings you back to state A.&lt;/li&gt;
-&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;- Before: database in state A,
+- During: you can change some data in your database, which will be in state B,
+- After: there is a rollback that brings you back to state A.
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;Neat.&lt;/p&gt;
 &lt;h1&gt;TransactionTestCase&lt;/h1&gt;
 &lt;p&gt;If you need to test some &lt;a href="https://docs.djangoproject.com/en/1.9/topics/testing/tools/#django.test.TransactionTestCase"&gt;specific database behaviours&lt;/a&gt;,
 you may need to use a &lt;code&gt;TransactionTestCase&lt;/code&gt;, that is no more wrapping each test in a transaction.
 What happens for each test is:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Before: database in state A,&lt;/li&gt;
-&lt;li&gt;During: you can change some data in your database, which will be in state B,&lt;/li&gt;
-&lt;li&gt;After: all tables are emptied (TRUNCATE), your database is in state E (Empty).&lt;/li&gt;
-&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;- Before: database in state A,
+- During: you can change some data in your database, which will be in state B,
+- After: all tables are emptied (TRUNCATE), your database is in state E (Empty).
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;But then, what happens if you have 2 &lt;code&gt;TransactionTestCase&lt;/code&gt; that need the same initial state A ?
 The second one will be run with an empty database, which is maybe not what you wanted.&lt;/p&gt;
 &lt;h1&gt;serialized_rollback option&lt;/h1&gt;
 &lt;p&gt;To be sure that your &lt;code&gt;TransactionTestCase&lt;/code&gt; are not dependent from each others, you can use &lt;code&gt;serialised_rollback = True&lt;/code&gt; option.&lt;/p&gt;
 &lt;p&gt;If you use it, at the beginning (&lt;code&gt;SetUp&lt;/code&gt; step) of each test, Django will load the data coming from initial data migrations.&lt;/p&gt;
 &lt;p&gt;What will happens then is:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Database initial state: A&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;First TransactionTestCase with &lt;code&gt;serialized_rollback = True&lt;/code&gt;:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Pre-setup db state: A&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;SetUp step: loading initial data -&amp;gt; db in state A (unchanged)&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Test: some data created -&amp;gt; db in state B&lt;/li&gt;
-&lt;li&gt;TearDown step: flushing everything, db in state E&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Second TransactionTestCase with &lt;code&gt;serialized_rollback = True&lt;/code&gt;:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Pre-setup db state: E (cleaned by previous TransactionTestCase)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;SetUp step: loading initial data -&amp;gt; db in state A&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Test: some data created -&amp;gt; db in state C&lt;/li&gt;
-&lt;li&gt;TearDown step: flushing everything, db in state E&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;- Database initial state: A
+
+- First TransactionTestCase with `serialized_rollback = True`:
+
+    - Pre-setup db state: A
+    - &amp;gt;&amp;gt;&amp;gt; SetUp step: loading initial data -&amp;gt; db in state A (unchanged) &amp;lt;&amp;lt;&amp;lt;
+    - Test: some data created -&amp;gt; db in state B
+    - TearDown step: flushing everything, db in state E
+
+- Second TransactionTestCase with `serialized_rollback = True`:
+
+    - Pre-setup db state: E (cleaned by previous TransactionTestCase)
+    - &amp;gt;&amp;gt;&amp;gt; SetUp step: loading initial data -&amp;gt; db in state A &amp;lt;&amp;lt;&amp;lt;
+    - Test: some data created -&amp;gt; db in state C
+    - TearDown step: flushing everything, db in state E
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;Nice !&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;But there are still some issues, even with this option.&lt;/em&gt;&lt;/p&gt;
 &lt;h1&gt;Issue 1: Constraints errors&lt;/h1&gt;
 &lt;p&gt;If you are working with Django 1.7.x/1.8.x, you have maybe encountered this error:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;IntegrityError&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;duplicate&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="n"&gt;violates&lt;/span&gt; &lt;span class="n"&gt;unique&lt;/span&gt; &lt;span class="n"&gt;constraint&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;django_content_type_app_label_&amp;lt;some_hex&amp;gt;_uniq&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;IntegrityError&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;duplicate&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="n"&gt;violates&lt;/span&gt; &lt;span class="n"&gt;unique&lt;/span&gt; &lt;span class="n"&gt;constraint&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;django_content_type_app_label_&amp;lt;some_hex&amp;gt;_uniq&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;There is a &lt;a href="http://stackoverflow.com/questions/29226869/django-transactiontestcase-with-rollback-emulation/35359897"&gt;StackOverflow thread&lt;/a&gt; about this topic.&lt;/p&gt;
 &lt;p&gt;A &lt;a href="https://github.com/django/django/commit/d3fdaf907db6a5be4d0391532d7e65688c19e851"&gt;patch&lt;/a&gt; has been created and shipped with django 1.9.x.
 But if, like me, you can't always work with latest stable version of Django, you can add a setting:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;TEST_NON_SERIALIZED_APPS = [&amp;#39;django.contrib.contenttypes&amp;#39;]
+&lt;div class="highlight"&gt;&lt;pre&gt;TEST_NON_SERIALIZED_APPS = [&amp;#39;django.contrib.contenttypes&amp;#39;]
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -69,36 +66,31 @@ But if, like me, you can't always work with latest stable version of Django, you
 &lt;p&gt;If you want to keep the database for future tests with &lt;code&gt;-—keepdb&lt;/code&gt; option, the last &lt;code&gt;TransactionTestCase&lt;/code&gt; run will still delete all the data in the database.
 There is an &lt;a href="https://code.djangoproject.com/ticket/25251"&gt;open ticket&lt;/a&gt; related to that issue.&lt;/p&gt;
 &lt;p&gt;I have proposed a &lt;a href="https://github.com/django/django/pull/6137"&gt;solution&lt;/a&gt; that resolves this problem by updating where we load the initial data.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Database initial state: A&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;First TransactionTestCase with &lt;code&gt;serialized_rollback = True&lt;/code&gt;:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Pre-setup db state: A&lt;/li&gt;
-&lt;li&gt;Test: some data created -&amp;gt; db in state B&lt;/li&gt;
-&lt;li&gt;TearDown step: flushing everything, db in state E&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Post-TearDown step: loading initial data -&amp;gt; db in state A&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Second TransactionTestCase with &lt;code&gt;serialized_rollback = True&lt;/code&gt;:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Pre-setup db state: A (loaded after the last flush from previous &lt;code&gt;TransactionTestCase&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;Test: some data created -&amp;gt; db in state C&lt;/li&gt;
-&lt;li&gt;TearDown step: flushing everything, db in state E&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Post-TearDown step: loading initial data -&amp;gt; db in state A&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;- Database initial state: A
+
+- First TransactionTestCase with `serialized_rollback = True`:
+
+    - Pre-setup db state: A
+    - Test: some data created -&amp;gt; db in state B
+    - TearDown step: flushing everything, db in state E
+    - &amp;gt;&amp;gt;&amp;gt; Post-TearDown step: loading initial data -&amp;gt; db in state A &amp;lt;&amp;lt;&amp;lt;
+
+- Second TransactionTestCase with `serialized_rollback = True`:
+
+    - Pre-setup db state: A (loaded after the last flush from previous `TransactionTestCase`)
+    - Test: some data created -&amp;gt; db in state C
+    - TearDown step: flushing everything, db in state E
+    - &amp;gt;&amp;gt;&amp;gt; Post-TearDown step: loading initial data -&amp;gt; db in state A &amp;lt;&amp;lt;&amp;lt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;p&gt;Finally, after all these tests, I can keep my &lt;code&gt;TransactionTestCase&lt;/code&gt; tests and my data are still in the database. Victory.&lt;/p&gt;</summary><category term="Django"></category><category term="database"></category><category term="tests"></category></entry><entry><title>How to deploy a python package on PyPi with GitHub and Travis CI</title><link href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html" rel="alternate"></link><updated>2015-05-06T08:12:00+02:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2015-05-06:howto-deploy-python-package-on-pypi-with-github-and-travis.html</id><summary type="html">&lt;p&gt;You want to make a python package available on &lt;code&gt;PyPi&lt;/code&gt; without spending ages to learn how to do it ?&lt;/p&gt;
 &lt;p&gt;If you are using &lt;code&gt;GitHub&lt;/code&gt; to host your project, this article is for you !&lt;/p&gt;
 &lt;h1&gt;Create your setup.py file&lt;/h1&gt;
 &lt;p&gt;Every python package needs a &lt;code&gt;setup.py&lt;/code&gt; file to be deployed with &lt;code&gt;pip&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;You can use a &lt;code&gt;setup.py&lt;/code&gt; example available on &lt;a href="https://docs.djangoproject.com/fr/1.8/intro/reusable-apps/"&gt;Django website&lt;/a&gt; to create yours.&lt;/p&gt;
 &lt;p&gt;Then, your &lt;code&gt;GitHub&lt;/code&gt; repository seems like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;.
+&lt;div class="highlight"&gt;&lt;pre&gt;.
 +-- my_python_package &amp;lt;-- The package you want to deploy on PyPi
 +-- setup.py
 +-- README.rst
@@ -109,7 +101,7 @@ There is an &lt;a href="https://code.djangoproject.com/ticket/25251"&gt;open tic
 &lt;p&gt;You need to configure &lt;code&gt;Tracis CI&lt;/code&gt; to use continuous integration for your &lt;code&gt;GitHub&lt;/code&gt; repository.&lt;/p&gt;
 &lt;p&gt;If it's your first time, go to &lt;a href="http://travis-ci.org/"&gt;Tracis CI&lt;/a&gt;, sign-in with &lt;code&gt;GitHub&lt;/code&gt;, and activate your &lt;code&gt;GitHub&lt;/code&gt; repository (&lt;code&gt;Travis CI&lt;/code&gt; has access to your repositories, but they are disabled by default).&lt;/p&gt;
 &lt;p&gt;Then add a &lt;code&gt;.travis.yml&lt;/code&gt; file, on your &lt;code&gt;GitHub&lt;/code&gt; repository root, with this content:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;language&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;language&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;
 
 &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
   &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;2.7&amp;quot;&lt;/span&gt;
@@ -122,7 +114,7 @@ There is an &lt;a href="https://code.djangoproject.com/ticket/25251"&gt;open tic
 &lt;p&gt;For now, your &lt;code&gt;Travis CI&lt;/code&gt; configuration is executing something totally useless (&lt;code&gt;touch foo&lt;/code&gt;) on each commit, but usually people are using it to run tests.&lt;/p&gt;
 &lt;h1&gt;Configure PyPi deployment with travis-ci&lt;/h1&gt;
 &lt;p&gt;Now we also want our project to be deployed on &lt;code&gt;PyPi&lt;/code&gt;. &lt;code&gt;Travis CI&lt;/code&gt; can do that for us if we add a &lt;code&gt;deploy&lt;/code&gt; section in &lt;code&gt;.travis.yml&lt;/code&gt;, that is now:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;language&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;language&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;
 
 &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
   &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;2.7&amp;quot;&lt;/span&gt;
@@ -146,17 +138,17 @@ There is an &lt;a href="https://code.djangoproject.com/ticket/25251"&gt;open tic
 &lt;p&gt;The &lt;code&gt;user&lt;/code&gt; name is the one you have used to register on &lt;a href="http://pypi.python.org/"&gt;Pypi&lt;/a&gt;. Yes, you have to create an account on &lt;code&gt;Pypi&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;You also need to replace &lt;code&gt;my_secure_password&lt;/code&gt; with your secure password, generated with &lt;code&gt;Travis CI&lt;/code&gt; command line client.&lt;/p&gt;
 &lt;p&gt;To install it (more details on &lt;a href="http://blog.travis-ci.com/2013-01-14-new-client/"&gt;Travis blog&lt;/a&gt;):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ gem install travis
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;gem install travis
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Maybe you will miss rdoc gem in some cases, depending on your OS. Just install it before:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ gem install rdoc
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;gem install rdoc
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Then encrypt your PyPi password with &lt;code&gt;travis&lt;/code&gt; cli:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ travis encrypt --add deploy.password
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;travis encrypt --add deploy.password
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -164,7 +156,7 @@ There is an &lt;a href="https://code.djangoproject.com/ticket/25251"&gt;open tic
 &lt;h1&gt;Finally&lt;/h1&gt;
 &lt;p&gt;At the end, you have a repository that is automatically deploying a new version of your python package each time you add a new tag on &lt;code&gt;master&lt;/code&gt; !! Well done.&lt;/p&gt;</summary><category term="GitHub"></category><category term="travis-ci"></category><category term="python"></category><category term="PyPi"></category></entry><entry><title>How to manage GitHub Pages on front-end project</title><link href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html" rel="alternate"></link><updated>2015-04-08T20:47:00+02:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2015-04-08:howto-manage-ghpages-project.html</id><summary type="html">&lt;p&gt;You are working on a frond-end project hosted on GitHub, with lot of useful tools (grunt/gulp, sass, ...), and you want to properly manage generated files from this project on GitHub Pages ?&lt;/p&gt;
 &lt;p&gt;Let's imagine this kind of folder on your &lt;code&gt;master&lt;/code&gt; branch:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;.
+&lt;div class="highlight"&gt;&lt;pre&gt;.
 +-- Gruntfile.js
 +-- bower.json
 +-- package.json
@@ -183,7 +175,7 @@ There is an &lt;a href="https://code.djangoproject.com/ticket/25251"&gt;open tic
 &lt;li&gt;have all your static files at the branch root (including &lt;code&gt;index.html&lt;/code&gt;).&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;So that, when you checkout &lt;code&gt;gh-pages&lt;/code&gt;, you need to have:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;.
+&lt;div class="highlight"&gt;&lt;pre&gt;.
 +-- index.html
 +-- other_page.html
 +-- theme
@@ -197,19 +189,19 @@ We feel easily that it's not a clean way to manage it, we will have to manually 
 &lt;p&gt;A script could be written to do this kind of task each time we need to deploy on &lt;code&gt;gh-pages&lt;/code&gt;, but
  somebody has already done that for us : &lt;a href="https://github.com/davisp/ghp-import"&gt;ghp-import&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;You can install it via &lt;code&gt;pip&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install ghp-import
+&lt;div class="highlight"&gt;&lt;pre&gt;pip install ghp-import
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;And then, go to your &lt;code&gt;master&lt;/code&gt; branch, and to deploy your &lt;code&gt;dist&lt;/code&gt; folder:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;ghp&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;dist&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;ghp&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;dist&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;It will then create a new commit (and push it) on your &lt;code&gt;gh-pages&lt;/code&gt; branch with the current files of your &lt;code&gt;dist&lt;/code&gt; folder.&lt;/p&gt;
 &lt;h1&gt;Solution 2&lt;/h1&gt;
 &lt;p&gt;Clone another time your project in the same project folder:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;.
+&lt;div class="highlight"&gt;&lt;pre&gt;.
 +-- Gruntfile.js
 +-- bower.json
 +-- package.json
@@ -233,7 +225,7 @@ We feel easily that it's not a clean way to manage it, we will have to manually 
 
 
 &lt;p&gt;Checkout your sub-cloned project to gh-pages branch, and remove everything no more needed in your &lt;code&gt;gh-pages&lt;/code&gt; branch.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;.
+&lt;div class="highlight"&gt;&lt;pre&gt;.
 +-- Gruntfile.js
 +-- bower.json
 +-- package.json
@@ -252,7 +244,7 @@ We feel easily that it's not a clean way to manage it, we will have to manually 
 
 
 &lt;p&gt;Remove &lt;code&gt;dist&lt;/code&gt; folder in your &lt;code&gt;master branch&lt;/code&gt;, and replace it with a symbolic link to &lt;code&gt;your_project&lt;/code&gt; repository:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;.
+&lt;div class="highlight"&gt;&lt;pre&gt;.
 +-- Gruntfile.js
 +-- bower.json
 +-- package.json
