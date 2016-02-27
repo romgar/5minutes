@@ -1,5 +1,6 @@
 Title: TransactionTestCase and keepdb issues in Django
 Date: 2016-02-25 23:51
+Modified: 2016-02-27 10:08
 Category: Tech
 Tags: Django, database, tests
 Slug: transactiontestcase-keepdb-django-issues
@@ -16,9 +17,9 @@ If you inherit from TestCase, each test you are writing is wrapped in a transact
 a transaction wrapping all tests, which makes setUpClass and tearDownClass really useful, specially for test speed).
 It means, for each test:
 
-- Before: database in state A,
-- During: you can change some data in your database, which will be in state B,
-- After: there is a rollback that brings you back to state A.
+    - Before: database in state A,
+    - During: you can change some data in your database, which will be in state B,
+    - After: there is a rollback that brings you back to state A.
 
 Neat.
 
@@ -28,9 +29,9 @@ If you need to test some [specific database behaviours](https://docs.djangoproje
 you may need to use a `TransactionTestCase`, that is no more wrapping each test in a transaction.
 What happens for each test is:
 
-- Before: database in state A,
-- During: you can change some data in your database, which will be in state B,
-- After: all tables are emptied (TRUNCATE), your database is in state E (Empty).
+    - Before: database in state A,
+    - During: you can change some data in your database, which will be in state B,
+    - After: all tables are emptied (TRUNCATE), your database is in state E (Empty).
 
 But then, what happens if you have 2 `TransactionTestCase` that need the same initial state A ?
 The second one will be run with an empty database, which is maybe not what you wanted.
@@ -43,21 +44,21 @@ If you use it, at the beginning (`SetUp` step) of each test, Django will load th
 
 What will happens then is:
 
-- Database initial state: A
+    - Database initial state: A
 
-- First TransactionTestCase with `serialized_rollback = True`:
+    - First TransactionTestCase with `serialized_rollback = True`:
 
-    - Pre-setup db state: A
-    - **SetUp step: loading initial data -> db in state A (unchanged)**
-    - Test: some data created -> db in state B
-    - TearDown step: flushing everything, db in state E
+        - Pre-setup db state: A
+        - >>> SetUp step: loading initial data -> db in state A (unchanged) <<<
+        - Test: some data created -> db in state B
+        - TearDown step: flushing everything, db in state E
 
-- Second TransactionTestCase with `serialized_rollback = True`:
+    - Second TransactionTestCase with `serialized_rollback = True`:
 
-    - Pre-setup db state: E (cleaned by previous TransactionTestCase)
-    - **SetUp step: loading initial data -> db in state A**
-    - Test: some data created -> db in state C
-    - TearDown step: flushing everything, db in state E
+        - Pre-setup db state: E (cleaned by previous TransactionTestCase)
+        - >>> SetUp step: loading initial data -> db in state A <<<
+        - Test: some data created -> db in state C
+        - TearDown step: flushing everything, db in state E
 
 Nice !
 
@@ -83,20 +84,20 @@ There is an [open ticket](https://code.djangoproject.com/ticket/25251) related t
 
 I have proposed a [solution](https://github.com/django/django/pull/6137) that resolves this problem by updating where we load the initial data.
 
-- Database initial state: A
+    - Database initial state: A
 
-- First TransactionTestCase with `serialized_rollback = True`:
+    - First TransactionTestCase with `serialized_rollback = True`:
 
-    - Pre-setup db state: A
-    - Test: some data created -> db in state B
-    - TearDown step: flushing everything, db in state E
-    - **Post-TearDown step: loading initial data -> db in state A**
+        - Pre-setup db state: A
+        - Test: some data created -> db in state B
+        - TearDown step: flushing everything, db in state E
+        - >>> Post-TearDown step: loading initial data -> db in state A <<<
 
-- Second TransactionTestCase with `serialized_rollback = True`:
+    - Second TransactionTestCase with `serialized_rollback = True`:
 
-    - Pre-setup db state: A (loaded after the last flush from previous `TransactionTestCase`)
-    - Test: some data created -> db in state C
-    - TearDown step: flushing everything, db in state E
-    - **Post-TearDown step: loading initial data -> db in state A**
+        - Pre-setup db state: A (loaded after the last flush from previous `TransactionTestCase`)
+        - Test: some data created -> db in state C
+        - TearDown step: flushing everything, db in state E
+        - >>> Post-TearDown step: loading initial data -> db in state A <<<
 
 Finally, after all these tests, I can keep my `TransactionTestCase` tests and my data are still in the database. Victory.
