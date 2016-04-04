@@ -8,9 +8,10 @@ Authors: Romain Garrigues
 Summary: Collecting related objects in Django
 Status: Draft
 
-I was working on an anonymisation feature for one of my project when I realised that I needed to update all objects that
+I was working on a download feature for one of my project: I needed to get all objects that
 were related to my user.
-How to get all these objects then ?
+How to get all these objects ?
+You can directly have a look at https://github.com/iwoca/django-deep-collector or first read this article :-)
 
 Django built-in `NestedCollector`
 ===
@@ -60,6 +61,22 @@ The only thing you have to do is call the `collect` method:
     related_objects = collector.get_collected_objects()
 
 
+Import
+===
+If, like me, you wanted to download some data from a website and import it in another one, you can get the collected objects
+as a serialized json to be directly used by default Django load_data command:
+
+    string_buffer = collector.get_json_serialized_objects()
+
+This string can be saved in a file...
+
+    with open("string_buffer.json") as string_buffer_file:
+        string_buffer_file.write(string_buffer)
+
+...and imported in another instance of Django for example (from production to local env):
+
+    manage.py load_data string_buffer.json
 
 
-
+You will find more details on the github page of the project (https://github.com/iwoca/django-deep-collector), feel free
+to leave any comment/bug/feature request !!
