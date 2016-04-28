@@ -1,10 +1,18 @@
-Title: TransactionTestCase and keepdb issues in Django
+Title: Upgrade Django on big projects
 Date: 2016-02-25 23:51
 Modified: 2016-02-27 10:08
 Category: Tech
-Tags: Django, database, tests
-Slug: transactiontestcase-keepdb-django-issues
+Tags: Django, upgrade
+Slug: django-upgrade-big-project
 Authors: Romain Garrigues
-Summary: Using keepdb with TransactionTestCase in Django test suite
+Summary: How to upgrade Django version on big projects
 Status: Draft
 
+Process
+
+- compat module with abstract interface
+- deprecation rules
+
+When upgrading
+
+- sticking with LTS compared to upgrading on each versionY
