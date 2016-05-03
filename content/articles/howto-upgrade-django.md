@@ -15,4 +15,4 @@ Process
 
 When upgrading
 
-- sticking with LTS compared to upgrading on each versionY
+- sticking with LTS compared to upgrading on each version
