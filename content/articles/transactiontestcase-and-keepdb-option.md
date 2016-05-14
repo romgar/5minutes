@@ -101,3 +101,11 @@ I have proposed a [solution](https://github.com/django/django/pull/6137) that re
         - >>> Post-TearDown step: loading initial data -> db in state A <<<
 
 Finally, after all these tests, I can keep my `TransactionTestCase` tests and my data are still in the database. Victory.
+
+Update: Issue 3 from Issue 2
+===
+After some discussions about the ticket I created in Django tracker, I realized that the approach described below is not working well.
+Indeed, as soon as you have at least 1 `TransactionTestCase` class without `serialized_rollback` set to `True`, you still won't have your data at the end of the test suite.
+
+I have proposed another [solution](https://github.com/django/django/pull/6297) that seems to be right now the best fix: not modify the current `TransactionTestCase` logic anymore but load the initial data migration at the end of the test suite, only in `--keepdb` mode.
+
