@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Django collector for objects related to a given one</title>
+        <link rel="stylesheet" href="http://5minutes.youkidea.com/theme/css/main.css" />
+        <link href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="5minutes Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://5minutes.youkidea.com/">5minutes </a></h1>
+                <nav><ul>
+                    <li><a href="http://5minutes.youkidea.com/pages/about-us.html">About</a></li>
+                    <li class="active"><a href="http://5minutes.youkidea.com/category/tech.html">Tech</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://5minutes.youkidea.com/drafts/django-deep-collector.html" rel="bookmark"
+           title="Permalink to Django collector for objects related to a given one">Django collector for objects related to a given one</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2016-02-25T23:51:00+01:00">
+                Published: jeu. 25 février 2016
+        </abbr>
+		<br />
+        <abbr class="modified" title="2016-02-27T10:08:00+01:00">
+                Updated: sam. 27 février 2016
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://5minutes.youkidea.com/author/romain-garrigues.html">Romain Garrigues</a>
+        </address>
+<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>. </p>
+<p>tags: <a href="http://5minutes.youkidea.com/tag/django.html">Django</a> <a href="http://5minutes.youkidea.com/tag/orm.html">orm</a> </p>
+</footer><!-- /.post-info -->      <p>I was working on a download feature for one of my project: I needed to get all objects that
+were related to my user.
+How to get all these objects ?
+You can directly have a look at https://github.com/iwoca/django-deep-collector or first read this article :-)</p>
+<h1>Django built-in <code>NestedCollector</code></h1>
+<p>There is a built-in feature in Django that is doing something really close to that: <code>NestedCollector</code>.
+You have maybe never seen that class, but there is a high chance that you have used it without knowing: when you delete
+an entry in the Django admin.
+Do you remember that Django is displaying the whole list of objects that will be deleted with the current one if you do it ?</p>
+<p><screenshot></p>
+<p>Django is following all reverse foreign key / one-to-one relations to determine which data are related to the one you are deleting
+and also delete them, on a recursive way.
+For information, you can change the default behaviour (delete <code>ON_CASCADE</code>) and you will have to define it explicitly from Django 1.?</p>
+<p>This is nice, but not enough for us, as we also want to get the direct foreign keys and many-to-many relations.</p>
+<h1>Django Deep Collector</h1>
+<p>I have tried to spend some time to extend the <code>NestedCollector</code> without a lot of success, so I decided to write a "full" collector
+from scratch.</p>
+<p>The algorithm is quite simple:
+1. Start with a given object <code>A</code>,
+2. Collect all objects that are linked to the object <code>A</code>, following all relations (one-to-one, foreign keys and many-to-many) in
+both directions (direct and reverse),
+3. For each collected objects, come back to step 2, but <code>A</code> is now each of collected objects.</p>
+<p>There are some rules/parameters that allows the algorithm to be effective:
+- Never collect again an object already collected,
+- Disable some models to be collected.
+- Disable some relations to be followed.</p>
+<h1>Usage</h1>
+<p>The only thing you have to do is call the <code>collect</code> method:</p>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">deep_collector.core</span> <span class="kn">import</span> <span class="n">RelatedObjectsCollector</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">collector</span> <span class="o">=</span> <span class="n">RelatedObjectsCollector</span><span class="p">()</span>
+
+<span class="c"># We give &quot;user&quot; as a starting point of this collection</span>
+<span class="n">collector</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+
+<span class="c"># related_objects contains a list of all objects linked to &quot;user&quot;</span>
+<span class="n">related_objects</span> <span class="o">=</span> <span class="n">collector</span><span class="o">.</span><span class="n">get_collected_objects</span><span class="p">()</span>
+</pre></div>
+
+
+<h1>Import</h1>
+<p>If, like me, you wanted to download some data from a website and import it in another one, you can get the collected objects
+as a serialized json to be directly used by default Django load_data command:</p>
+<div class="highlight"><pre>string_buffer = collector.get_json_serialized_objects()
+</pre></div>
+
+
+<p>This string can be saved in a file...</p>
+<div class="highlight"><pre>with open(&quot;string_buffer.json&quot;) as string_buffer_file:
+    string_buffer_file.write(string_buffer)
+</pre></div>
+
+
+<p>...and imported in another instance of Django for example (from production to local env):</p>
+<div class="highlight"><pre>manage.py load_data string_buffer.json
+</pre></div>
+
+
+<p>You will find more details on the github page of the project (https://github.com/iwoca/django-deep-collector), feel free
+to leave any comment/bug/feature request !!</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = '5minutes-youkidea';
+        var disqus_identifier = 'drafts/django-deep-collector.html';
+        var disqus_url = 'http://5minutes.youkidea.com/drafts/django-deep-collector.html';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//5minutes-youkidea.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="https://twitter.com/jrmipp/">@jrmi</a></li>
+                            <li><a href="https://twitter.com/rgarrigues/">@rgarrigues</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-48336731-4']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = '5minutes-youkidea';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

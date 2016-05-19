@@ -122,7 +122,11 @@ There is an <a href="https://code.djangoproject.com/ticket/25251">open ticket</a
 </pre></div>
 
 
-<p>Finally, after all these tests, I can keep my <code>TransactionTestCase</code> tests and my data are still in the database. Victory.</p><p>There are <a href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html#disqus_thread">comments</a>.</p>                </article>
+<p>Finally, after all these tests, I can keep my <code>TransactionTestCase</code> tests and my data are still in the database. Victory.</p>
+<h1>Update: Issue 3 from Issue 2</h1>
+<p>After some discussions about the ticket I created in Django tracker, I realized that the approach described below is not working well.
+Indeed, as soon as you have at least 1 <code>TransactionTestCase</code> class without <code>serialized_rollback</code> set to <code>True</code>, you still won't have your data at the end of the test suite.</p>
+<p>I have proposed another <a href="https://github.com/django/django/pull/6297">solution</a> that seems to be right now the best fix: not modify the current <code>TransactionTestCase</code> logic anymore but load the initial data migration at the end of the test suite, only in <code>--keepdb</code> mode.</p><p>There are <a href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html#disqus_thread">comments</a>.</p>                </article>
 <p class="paginator">
     Page 1 / 1
 </p>
