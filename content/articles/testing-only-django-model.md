@@ -1,10 +1,10 @@
-Title: TransactionTestCase and keepdb issues in Django
+Title: Django Models in testing environment
 Date: 2016-02-25 23:51
 Modified: 2016-02-27 10:08
 Category: Tech
-Tags: Django, database, tests
-Slug: transactiontestcase-keepdb-django-issues
+Tags: Django, models, tests
+Slug: django-models-tests-only
 Authors: Romain Garrigues
-Summary: Using keepdb with TransactionTestCase in Django test suite
+Summary: How to define models to be used in testing environment only
 Status: Draft
 
