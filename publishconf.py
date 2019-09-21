@@ -10,18 +10,16 @@ import sys
 sys.path.append(os.curdir)
 from pelicanconf import *
 
-SITEURL = 'http://5minutes.youkidea.com'
+# If your site is available via HTTPS, make sure SITEURL begins with https://
+SITEURL = '5minutes.youkidea.com'
 RELATIVE_URLS = False
 
 FEED_ALL_ATOM = 'feeds/all.atom.xml'
-CATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
+CATEGORY_FEED_ATOM = 'feeds/{slug}.atom.xml'
 
 DELETE_OUTPUT_DIRECTORY = True
 
-STATIC_PATHS = ['extra/CNAME']
-EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},}
-
 # Following items are often useful when publishing
 
-DISQUS_SITENAME = "5minutes-youkidea"
-GOOGLE_ANALYTICS = "UA-48336731-4"
+#DISQUS_SITENAME = ""
+#GOOGLE_ANALYTICS = ""
