@@ -1,4 +1,4 @@
-Title: Prepape your career path session
+Title: Prepare your career path session
 Date: 2019-10-09 21:20
 Category: Management
 Tags: Career, Management, Coaching
@@ -6,7 +6,7 @@ Slug: prepare-your-career-path-session
 Authors: Romain Garrigues
 Summary: How to be prepared to have a constructive career path discussion
 
-Ok, as manager we decided to do the big jump and start a career path discussion!
+Ok, as manager we decided to do the big jump and start a career path discussion with our direct reports!
 
 From there, we can roughly be in 3 situations:
 
