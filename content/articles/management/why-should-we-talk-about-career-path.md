@@ -40,5 +40,5 @@ Here is what you may find of interest depending on your situation:
 - You are a junior and just started working: the junior guide (in progress),
 - You are mid-level developer and start noticing that you learn less these days in your company: the mid-level challenges (in progress),
 - You are senior and currently really passive in your career: the full career guide (in progress),
-- You are a manager and would like to help your reports to have a career plan: the career path session preparation and the career path session example (in progress),
+- You are a manager and would like to help your reports to have a career plan: the [career path session preparation]({filename}./career-path-session-preparation.md) and the career path session example (in progress),
 - You are a developer that starts having more of a tech lead role, as well as new management duties: the should-I-be-a-manager guide (in progress).
