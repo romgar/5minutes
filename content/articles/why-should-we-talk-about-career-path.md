@@ -1,12 +1,11 @@
 Title: Why should we talk about career path
-Date: 2019-09-21 11:13
-Modified: 2019-09-21 11:13
+Date: 2019-10-09 12:36
+Modified: 2019-10-09 12:36
 Category: Management
 Tags: Career, Management, Coaching
 Slug: why-should-we-talk-about-career-path
 Authors: Romain Garrigues
 Summary: Why should we talk about career path
-Status: draft
 
 Did you already wonder where will you be in 5 years?
 
@@ -30,7 +29,7 @@ That's where you can act right now! Instead of waiting for things to happen, sta
 You want to manage big teams in the future? Few chances that it will happen if you don't start managing 1-2 people first.
 You want to work for company Y? What are the technologies they are using? Their culture? The challenges they are currently facing?
 
-Let's be clear here: I'm not talking about a bullet-proof to have 100% chances to get to your dream job in Z years, but to increase your chances. To be prepared in the right way. To have a solid story to tell about when you describe what drives you.
+Let's be clear here: I'm not talking about a bullet-proof method to have 100% chances to get to your dream job in X years, but to increase your chances. To be prepared in the right way. To have a solid story to tell about when you describe what drives you.
 
 You remember, I told you that I initiated this discussion with my reports during quarterly reviews. That were the most productive sessions I ever had with them, by far (more about these sessions <here>)
 
@@ -38,8 +37,8 @@ You remember, I told you that I initiated this discussion with my reports during
 
 Here is what you may find of interest depending on your situation:
 
-- You are a junior and just started working: the junior guide,
-- You are mid-level developer and start noticing that you learn less these days in your company: the mid-level challenges,
-- You are senior and currently really passive in your career: the full career guide,
-- You are a manager and would like to help your reports to have a career plan: the career path session preparation and the career path session example,
-- You are a developer that starts having more of a tech lead role, as well as new management duties: the should-I-be-a-manager guide.
+- You are a junior and just started working: the junior guide (in progress),
+- You are mid-level developer and start noticing that you learn less these days in your company: the mid-level challenges (in progress),
+- You are senior and currently really passive in your career: the full career guide (in progress),
+- You are a manager and would like to help your reports to have a career plan: the career path session preparation and the career path session example (in progress),
+- You are a developer that starts having more of a tech lead role, as well as new management duties: the should-I-be-a-manager guide (in progress).
