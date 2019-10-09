@@ -12,6 +12,7 @@
                 <h1><a href="http://5minutes.youkidea.com/">5minutes </a></h1>
                 <nav><ul>
                     <li><a href="http://5minutes.youkidea.com/pages/about-us.html">About</a></li>
+                    <li><a href="http://5minutes.youkidea.com/category/management.html">Management</a></li>
                     <li class="active"><a href="http://5minutes.youkidea.com/category/tech.html">Tech</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
@@ -115,6 +116,21 @@
 <p>I had the chance to bring up a not-yet-realistic idea of building a tool to help for Django upgrades. This project - codename <a href="https://github.com/iwoca/django-seven">django-seven</a> - aims to ease the process of upgrading your Django project from a version to another one, by making your code compatible with both version. It still needs a proof of concept, but several people from the Django core team have shown an interest in it. Let's try something!</p>
 <p>I can't wait for next Django conference!!</p>
     </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = '5minutes-youkidea';
+        var disqus_identifier = 'django-under-the-hood-2016-summary.html';
+        var disqus_url = 'http://5minutes.youkidea.com/django-under-the-hood-2016-summary.html';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//5minutes-youkidea.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
 
   </article>
 </section>
@@ -125,7 +141,6 @@
                             <li><a href="http://getpelican.com/">Pelican</a></li>
                             <li><a href="http://python.org/">Python.org</a></li>
                             <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
                         </ul>
                 </div><!-- /.blogroll -->
                 <div class="social">
@@ -133,8 +148,8 @@
                         <ul>
                             <li><a href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
+                            <li><a href="https://twitter.com/jrmipp/">@jrmi</a></li>
+                            <li><a href="https://twitter.com/rgarrigues/">@rgarrigues</a></li>
                         </ul>
                 </div><!-- /.social -->
         </section><!-- /#extras -->
@@ -147,5 +162,23 @@
                 <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
 
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-48336731-4', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = '5minutes-youkidea';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
 </body>
 </html>
