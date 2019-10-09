@@ -5,10 +5,6 @@
         <title>Django collector for objects related to a given one</title>
         <link rel="stylesheet" href="http://5minutes.youkidea.com/theme/css/main.css" />
         <link href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="5minutes Atom Feed" />
-
-        <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
 </head>
 
 <body id="index" class="home">
@@ -29,18 +25,18 @@
 
     <div class="entry-content">
 <footer class="post-info">
-        <abbr class="published" title="2016-02-25T23:51:00+01:00">
+        <abbr class="published" title="2016-02-25T23:51:00+00:00">
                 Published: jeu. 25 février 2016
         </abbr>
 		<br />
-        <abbr class="modified" title="2016-02-27T10:08:00+01:00">
+        <abbr class="modified" title="2016-02-27T10:08:00+00:00">
                 Updated: sam. 27 février 2016
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="http://5minutes.youkidea.com/author/romain-garrigues.html">Romain Garrigues</a>
         </address>
-<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>. </p>
+<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>.</p>
 <p>tags: <a href="http://5minutes.youkidea.com/tag/django.html">Django</a> <a href="http://5minutes.youkidea.com/tag/orm.html">orm</a> </p>
 </footer><!-- /.post-info -->      <p>I was working on a download feature for one of my project: I needed to get all objects that
 were related to my user.
@@ -70,16 +66,16 @@ both directions (direct and reverse),
 - Disable some relations to be followed.</p>
 <h1>Usage</h1>
 <p>The only thing you have to do is call the <code>collect</code> method:</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">deep_collector.core</span> <span class="kn">import</span> <span class="n">RelatedObjectsCollector</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deep_collector.core</span> <span class="kn">import</span> <span class="n">RelatedObjectsCollector</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
 
 <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">collector</span> <span class="o">=</span> <span class="n">RelatedObjectsCollector</span><span class="p">()</span>
 
-<span class="c"># We give &quot;user&quot; as a starting point of this collection</span>
+<span class="c1"># We give &quot;user&quot; as a starting point of this collection</span>
 <span class="n">collector</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
 
-<span class="c"># related_objects contains a list of all objects linked to &quot;user&quot;</span>
+<span class="c1"># related_objects contains a list of all objects linked to &quot;user&quot;</span>
 <span class="n">related_objects</span> <span class="o">=</span> <span class="n">collector</span><span class="o">.</span><span class="n">get_collected_objects</span><span class="p">()</span>
 </pre></div>
 
@@ -87,49 +83,35 @@ both directions (direct and reverse),
 <h1>Import</h1>
 <p>If, like me, you wanted to download some data from a website and import it in another one, you can get the collected objects
 as a serialized json to be directly used by default Django load_data command:</p>
-<div class="highlight"><pre>string_buffer = collector.get_json_serialized_objects()
+<div class="highlight"><pre><span></span><span class="n">string_buffer</span> <span class="o">=</span> <span class="n">collector</span><span class="p">.</span><span class="n">get_json_serialized_objects</span><span class="p">()</span>
 </pre></div>
 
 
 <p>This string can be saved in a file...</p>
-<div class="highlight"><pre>with open(&quot;string_buffer.json&quot;) as string_buffer_file:
-    string_buffer_file.write(string_buffer)
+<div class="highlight"><pre><span></span><span class="k">with</span> <span class="k">open</span><span class="p">(</span><span class="ss">&quot;string_buffer.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">string_buffer_file</span><span class="p">:</span>
+    <span class="n">string_buffer_file</span><span class="p">.</span><span class="k">write</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">)</span>
 </pre></div>
 
 
 <p>...and imported in another instance of Django for example (from production to local env):</p>
-<div class="highlight"><pre>manage.py load_data string_buffer.json
+<div class="highlight"><pre><span></span><span class="n">manage</span><span class="p">.</span><span class="n">py</span> <span class="n">load_data</span> <span class="n">string_buffer</span><span class="p">.</span><span class="n">json</span>
 </pre></div>
 
 
 <p>You will find more details on the github page of the project (https://github.com/iwoca/django-deep-collector), feel free
 to leave any comment/bug/feature request !!</p>
     </div><!-- /.entry-content -->
-    <div class="comments">
-      <h2>Comments !</h2>
-      <div id="disqus_thread"></div>
-      <script type="text/javascript">
-        var disqus_shortname = '5minutes-youkidea';
-        var disqus_identifier = 'drafts/django-deep-collector.html';
-        var disqus_url = 'http://5minutes.youkidea.com/drafts/django-deep-collector.html';
-        (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//5minutes-youkidea.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the comments.</noscript>
-    </div>
 
   </article>
 </section>
         <section id="extras" class="body">
                 <div class="blogroll">
-                        <h2>blogroll</h2>
+                        <h2>links</h2>
                         <ul>
                             <li><a href="http://getpelican.com/">Pelican</a></li>
                             <li><a href="http://python.org/">Python.org</a></li>
                             <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
                         </ul>
                 </div><!-- /.blogroll -->
                 <div class="social">
@@ -137,8 +119,8 @@ to leave any comment/bug/feature request !!</p>
                         <ul>
                             <li><a href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
-                            <li><a href="https://twitter.com/jrmipp/">@jrmi</a></li>
-                            <li><a href="https://twitter.com/rgarrigues/">@rgarrigues</a></li>
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
                         </ul>
                 </div><!-- /.social -->
         </section><!-- /#extras -->
@@ -151,24 +133,5 @@ to leave any comment/bug/feature request !!</p>
                 <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
 
-    <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-48336731-4']);
-    _gaq.push(['_trackPageview']);
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-    </script>
-<script type="text/javascript">
-    var disqus_shortname = '5minutes-youkidea';
-    (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-    }());
-</script>
 </body>
 </html>

@@ -1,14 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>5minutes</title><link href="http://5minutes.youkidea.com/" rel="alternate"></link><link href="http://5minutes.youkidea.com/feeds/tech.atom.xml" rel="self"></link><id>http://5minutes.youkidea.com/</id><updated>2016-05-19T23:31:00+02:00</updated><entry><title>TransactionTestCase and keepdb issues in Django</title><link href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html" rel="alternate"></link><updated>2016-05-19T23:31:00+02:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2016-02-25:transactiontestcase-keepdb-django-issues.html</id><summary type="html">&lt;p&gt;Few days ago, I had several issues with some data (from migrations) that were no more in my database after running tests,
+<feed xmlns="http://www.w3.org/2005/Atom"><title>5minutes - Tech</title><link href="http://5minutes.youkidea.com/" rel="alternate"></link><link href="http://5minutes.youkidea.com/feeds/tech.atom.xml" rel="self"></link><id>http://5minutes.youkidea.com/</id><updated>2016-11-07T19:32:00+00:00</updated><entry><title>Django Under the Hood 2016 summary</title><link href="http://5minutes.youkidea.com/django-under-the-hood-2016-summary.html" rel="alternate"></link><published>2016-11-07T19:32:00+00:00</published><updated>2016-11-07T19:32:00+00:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2016-11-07:/django-under-the-hood-2016-summary.html</id><summary type="html">&lt;p&gt;Django Under the Hood 2016 summary&lt;/p&gt;</summary><content type="html">&lt;p&gt;I attended this year &lt;a href="https://www.djangounderthehood.com/"&gt;DjangoUnderTheHood&lt;/a&gt;, an event hosted in Amsterdam. This is a highly technical conference focussed on the Django web framework. Talks are usually given by Django core developers, or experienced people, which means there are always interesting talks to hear. DjangoUnderTheHood is probably the best event to meet Django core developers, this year there were 20+ gathered for this event.&lt;/p&gt;
+&lt;p&gt;The event in itself is held in a nice place, &lt;a href="https://www.google.co.uk/maps/place/Pakhuis+De+Zwijger/@52.3768451,4.9221174,15z/data=!4m2!3m1!1s0x0:0x2d9e404fc8f71f8d?sa=X&amp;amp;ved=0ahUKEwjgufLsyq_PAhVBK8AKHSloCKAQ_BIIgQEwDQ"&gt;Pakhuis de Zwijger&lt;/a&gt;, which is starting to become too small as the number of attendees increases over the years (this was the third annual conference).&lt;/p&gt;
+&lt;p&gt;The format is quite unusual, with only 9 talks of 1 hour each, which leave the speakers enough space to dive deeply under the hood of Django.&lt;/p&gt;
+&lt;p&gt;Here we go for the talks!&lt;/p&gt;
+&lt;h1&gt;Channels&lt;/h1&gt;
+&lt;p&gt;The first talk started by explaining the goal of this project, which is one of the most exciting in the Django ecosystem.&lt;/p&gt;
+&lt;p&gt;The original idea - to open Django to the non-http-request-response cycle - is an impressive ambition, defining the equivalent of WSGI in an asynchronous world: ASGI.&lt;/p&gt;
+&lt;p&gt;This ambition would cover more than what everyone had hoped for - web sockets in Django - by generalising this approach to other protocols, and not sticking closely to the Django project.&lt;/p&gt;
+&lt;p&gt;So now, we have a ASGI norm that some web servers can stick to - like &lt;a href="https://github.com/django/daphne"&gt;Daphne&lt;/a&gt; - and that can handle different protocols, like HTTP and web sockets. Channels is the adapter that allows Django to communicate with an ASGI-compatible server and make HTTP requests AND web sockets possible without any extra effort.&lt;/p&gt;
+&lt;p&gt;In production, you can even keep your traditional gunicorn - or anything else you already have - stack for http requests, and let your load-balancer redirect the web sockets’ requests to Daphne. This lets you begin slowly without any risk.&lt;/p&gt;
+&lt;p&gt;Plans are to extend the already implemented protocols with email / Slack (XMPP?), and have more than Daphne as ASGI servers.&lt;/p&gt;
+&lt;h1&gt;Testing&lt;/h1&gt;
+&lt;p&gt;Another topic I'm always curious about, as my way of testing has improved (hopefully!) during the past years...&lt;/p&gt;
+&lt;p&gt;The speaker told us some history about test classes used in Django over years.&lt;/p&gt;
+&lt;p&gt;It was nice to have a quick reminder of when using SimpleTestCase (no database access), TransactionTestCase (database + transactions), TestCase (database), LiveServerTestCase (live server for integration tests with Selenium for example) and &lt;a href="https://docs.djangoproject.com/en/1.10/ref/contrib/staticfiles/#django.contrib.staticfiles.testing.StaticLiveServerTestCase"&gt;StaticLiveServerTestCase&lt;/a&gt;&lt;/a&gt; (no need anymore for collectstatic? interesting...).&lt;/p&gt;
+&lt;p&gt;Some other tips, always useful, were given:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;don't forget MIRROR parameter in your test settings if you want to create test databases for your replica,&lt;/li&gt;
+&lt;li&gt;use @tag to group your tests, so that you can run tests with only a specific tag, or exclude it,&lt;/li&gt;
+&lt;li&gt;think about setUpTestData if you have several tests that need the same set of data, not altered during these tests.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;coverage was also a part of the talk, with an accurate reminder about "low coverage is bad, but high coverage is not ensuring anything".&lt;/p&gt;
+&lt;p&gt;But this time, the speaker talked about an interesting alternative: "mutation testing".&lt;/p&gt;
+&lt;p&gt;The idea is to mutate your code at test runtime, for example an AND-condition changed to OR-condition. The mutation library (mutpy) will then consider the tests that were passing and failing when mutated as good, and the ones that don't change their status as bad.&lt;/p&gt;
+&lt;p&gt;That gives then a percentage of mutation that you can correlate with your percentage of coverage to increase code trust, which sounds interesting if you want to detect which parts of your system are less reliable.&lt;/p&gt;
+&lt;h1&gt;Debugging&lt;/h1&gt;
+&lt;p&gt;This talk was about slow request debugging.&lt;/p&gt;
+&lt;p&gt;A complex stack is involved every time an end-user accesses our website, from the redirects (?), AppCache, DNS resolution, TCP transfer, Request handling, Response result, browser processing, ...&lt;/p&gt;
+&lt;p&gt;A non-intuitive statistic showed that only 10-20% of the request is spent on the backend stack. It gives food for thought to invest some time on DNS - CDN configuration, and on HTML/CSS/JavaScript loading.&lt;/p&gt;
+&lt;p&gt;Going through the different states of document.readyState, and understanding the dependencies between DOM building, CSSOM building and JavaScript execution seems essential for efficient optimisations on the front-end side.&lt;/p&gt;
+&lt;p&gt;That reminds me to spend a bit of time in the future to go a bit more deeply into it.&lt;/p&gt;
+&lt;p&gt;He also gave us some insights about the server-side:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;use pgbench,&lt;/li&gt;
+&lt;li&gt;list_select_related in Django admin to prefetch some fields and avoid query spamming,&lt;/li&gt;
+&lt;li&gt;think that ForeignKey nullable or not can change the type of JOIN (nullable - LEFT OUTER, non-null - INNER),&lt;/li&gt;
+&lt;li&gt;iterator() on query can save Django model instantiation,&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Mental health&lt;/h1&gt;
+&lt;p&gt;Definitely a habit from Django conference, people are talking about their mental illness. This time, a psychologist was telling her own story being bipolar, and gave crazy statistics. Following them, almost half of the room in Amsterdam was anxious and taking medication for that, almost 10% bipolar. Hopefully that’s just about statistics, and it’s well-known that the Django community is much more mentally sane than other ones ;-).&lt;/p&gt;
+&lt;p&gt;I definitely think well-being is a serious matter and can help people to work in a better way. We also improved our well-being at iwoca over time, from a much better onboarding process to the activities organised to ease communication.&lt;/p&gt;
+&lt;p&gt;If you are in a situation where you feel bad, find somebody to talk to. Sounds naive. But it works. Really. Do it.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://devpressed.com"&gt;Devpressed&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;Validation&lt;/h1&gt;
+&lt;p&gt;Did you already ask yourself where you should validate data in the whole Django stack?&lt;/p&gt;
+&lt;p&gt;Between the front-end (html/js validation), the view, the form (clean* methods), the model (save/full_clean) and the database (have a look at CHECK keyword), there are a lot of different ways to validate the data coming from an user/external system.&lt;/p&gt;
+&lt;p&gt;There is no perfect way to do it. You should play with a mix of all these layers, depending on how critical your data are used for, and what are your business perspectives. And databases constraints/checks are still the best way to be sure that you won’t finish with crappy data in your database.&lt;/p&gt;
+&lt;p&gt;I heard that some Djangonauts were trying to think about an uniform data serialisation to improve the current situation, but it's still more an idea than anything concrete.&lt;/p&gt;
+&lt;h1&gt;Javascript&lt;/h1&gt;
+&lt;p&gt;This Javascript-only talk was a summary of the current JavaScript ecosystem. I will spare you the traditional tools (node, npm, grunt/gulp, ...), but it's still nice to have heard about:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Babel: indispensable library to enjoy ECMA6 enhancements (sugar syntax, arrow functions, ...) and be still compatible with ECMA5,&lt;/li&gt;
+&lt;li&gt;A new - faster - alternative to npm named &lt;a href="https://github.com/yarnpkg/yarn"&gt;YARN&lt;/a&gt; from Facebook,&lt;/li&gt;
+&lt;li&gt;The JavaScript PEP8 equivalent named &lt;a href="http://standardjs.com/rules.html"&gt;StandardJS&lt;/a&gt;,&lt;/li&gt;
+&lt;li&gt;While &lt;a href="http://mypy-lang.org/"&gt;mypy&lt;/a&gt; seems to gain some popularity amongst python lovers, &lt;a href="https://flowtype.org/"&gt;Flow&lt;/a&gt; and &lt;a href="https://www.typescriptlang.org/"&gt;TypeScript&lt;/a&gt; are the most popular type checking libraries in JavaScript,&lt;/li&gt;
+&lt;li&gt;Webpack and its &lt;a href="https://webpack.github.io/docs/hot-module-replacement.html"&gt;hot module replacement&lt;/a&gt;&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Database backend&lt;/h1&gt;
+&lt;p&gt;If you have ever thought about creating your own database backend to make the ORM work with other databases than SQLite, MySQL, PostgreSQL and Oracle (the 4 officially supported databases), the creator of django-mssql - backend for Microsoft SQL Server - explained how to create a new backend.&lt;/p&gt;
+&lt;p&gt;And the conclusion of this talk was: "do it only if you really have to do it". Achieving this kind of project is really complex, complicated and lead to a lot of hacks to take into account the database you want to make compatible with the Django ORM.&lt;/p&gt;
+&lt;h1&gt;Django @ Instagram&lt;/h1&gt;
+&lt;p&gt;This talk was just brilliant. Funny, technical, high-level and deep explanations, probably the best talk of the conference for me.&lt;/p&gt;
+&lt;p&gt;The speaker talked about the system evolution from the first months to nowadays:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Started with a classic Django stack,&lt;/li&gt;
+&lt;li&gt;Written a custom ORM to manage sharded queries across PostgreSQL databases,&lt;/li&gt;
+&lt;li&gt;Added memcached with each PostgreSQL database,&lt;/li&gt;
+&lt;li&gt;Used pg_queue for multi-region cache invalidation (each PostgreSQL - memcached couple should sync with all other couples),&lt;/li&gt;
+&lt;li&gt;Integrated Tao (Facebook MySQL + memcached custom stack),&lt;/li&gt;
+&lt;li&gt;Migrated from Django 1.3 to 1.8 (making their project 1.3 AND 1.8 compatible to make the switch seamless),&lt;/li&gt;
+&lt;li&gt;Full stack being: Proxygen, Django/WSGI, TAO, Cassandra, Everstore, Celery/RabbitMQ,&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;A part of the talk was related to performance measures, aiming to maximise the servers utilisation (user per server as the main metric).&lt;/p&gt;
+&lt;p&gt;They were also using Django middlewares to grab samples of production data to measure the system performances, through cProfile, Cython, …&lt;/p&gt;
+&lt;h1&gt;Sprints&lt;/h1&gt;
+&lt;p&gt;After this day and a half of intense talks, 2 days of sprints were organised to contribute to Django or other open-source projects.&lt;/p&gt;
+&lt;p&gt;The venue (ImpactHub) was quite nice and calm.&lt;/p&gt;
+&lt;p&gt;That was the perfect occasion for me to discuss about my pending tickets related to TransactionTestCase and &lt;a href="https://code.djangoproject.com/ticket/25251"&gt;--keepdb&lt;/a&gt; option (patch &lt;a href="https://github.com/django/django/pull/7528"&gt;on its way&lt;/a&gt;), and &lt;a href="https://code.djangoproject.com/ticket/26822"&gt;--parallel&lt;/a&gt; issues. And as expected, the issues are progressing so much when you can discuss directly with the person, instead of back and forth on GitHub merge requests. Refreshing and motivating!&lt;/p&gt;
+&lt;p&gt;I had the chance to bring up a not-yet-realistic idea of building a tool to help for Django upgrades. This project - codename &lt;a href="https://github.com/iwoca/django-seven"&gt;django-seven&lt;/a&gt; - aims to ease the process of upgrading your Django project from a version to another one, by making your code compatible with both version. It still needs a proof of concept, but several people from the Django core team have shown an interest in it. Let's try something!&lt;/p&gt;
+&lt;p&gt;I can't wait for next Django conference!!&lt;/p&gt;</content><category term="Django Conference"></category></entry><entry><title>TransactionTestCase and keepdb issues in Django</title><link href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html" rel="alternate"></link><published>2016-02-25T23:51:00+00:00</published><updated>2016-05-19T23:31:00+01:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2016-02-25:/transactiontestcase-keepdb-django-issues.html</id><summary type="html">&lt;p&gt;Using keepdb with TransactionTestCase in Django test suite&lt;/p&gt;</summary><content type="html">&lt;p&gt;Few days ago, I had several issues with some data (from migrations) that were no more in my database after running tests,
 even with &lt;code&gt;--keepdb&lt;/code&gt; option.
 Let's see what happened, but before that, here is a quick reminder of how database test cleaning is working in Django.&lt;/p&gt;
 &lt;h1&gt;TestCase&lt;/h1&gt;
 &lt;p&gt;If you inherit from TestCase, each test you are writing is wrapped in a transaction (and since Django 1.9, there is also
 a transaction wrapping all tests, which makes setUpClass and tearDownClass really useful, specially for test speed).
 It means, for each test:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;- Before: database in state A,
-- During: you can change some data in your database, which will be in state B,
-- After: there is a rollback that brings you back to state A.
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="k"&gt;Before&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;database&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="k"&gt;state&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;During&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;you&lt;/span&gt; &lt;span class="n"&gt;can&lt;/span&gt; &lt;span class="n"&gt;change&lt;/span&gt; &lt;span class="k"&gt;some&lt;/span&gt; &lt;span class="k"&gt;data&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="n"&gt;your&lt;/span&gt; &lt;span class="k"&gt;database&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;which&lt;/span&gt; &lt;span class="n"&gt;will&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="k"&gt;state&lt;/span&gt; &lt;span class="n"&gt;B&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="k"&gt;After&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;there&lt;/span&gt; &lt;span class="k"&gt;is&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="k"&gt;rollback&lt;/span&gt; &lt;span class="n"&gt;that&lt;/span&gt; &lt;span class="n"&gt;brings&lt;/span&gt; &lt;span class="n"&gt;you&lt;/span&gt; &lt;span class="n"&gt;back&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="k"&gt;state&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -17,9 +96,9 @@ It means, for each test:&lt;/p&gt;
 &lt;p&gt;If you need to test some &lt;a href="https://docs.djangoproject.com/en/1.9/topics/testing/tools/#django.test.TransactionTestCase"&gt;specific database behaviours&lt;/a&gt;,
 you may need to use a &lt;code&gt;TransactionTestCase&lt;/code&gt;, that is no more wrapping each test in a transaction.
 What happens for each test is:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;- Before: database in state A,
-- During: you can change some data in your database, which will be in state B,
-- After: all tables are emptied (TRUNCATE), your database is in state E (Empty).
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="k"&gt;Before&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;database&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="k"&gt;state&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;During&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;you&lt;/span&gt; &lt;span class="n"&gt;can&lt;/span&gt; &lt;span class="n"&gt;change&lt;/span&gt; &lt;span class="k"&gt;some&lt;/span&gt; &lt;span class="k"&gt;data&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="n"&gt;your&lt;/span&gt; &lt;span class="k"&gt;database&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;which&lt;/span&gt; &lt;span class="n"&gt;will&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="k"&gt;state&lt;/span&gt; &lt;span class="n"&gt;B&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="k"&gt;After&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;all&lt;/span&gt; &lt;span class="n"&gt;tables&lt;/span&gt; &lt;span class="k"&gt;are&lt;/span&gt; &lt;span class="n"&gt;emptied&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;TRUNCATE&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;your&lt;/span&gt; &lt;span class="k"&gt;database&lt;/span&gt; &lt;span class="k"&gt;is&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="k"&gt;state&lt;/span&gt; &lt;span class="n"&gt;E&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Empty&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -29,21 +108,21 @@ The second one will be run with an empty database, which is maybe not what you w
 &lt;p&gt;To be sure that your &lt;code&gt;TransactionTestCase&lt;/code&gt; are not dependent from each others, you can use &lt;code&gt;serialised_rollback = True&lt;/code&gt; option.&lt;/p&gt;
 &lt;p&gt;If you use it, at the beginning (&lt;code&gt;SetUp&lt;/code&gt; step) of each test, Django will load the data coming from initial data migrations.&lt;/p&gt;
 &lt;p&gt;What will happens then is:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;- Database initial state: A
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="k"&gt;Database&lt;/span&gt; &lt;span class="n"&gt;initial&lt;/span&gt; &lt;span class="k"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;
 
-- First TransactionTestCase with `serialized_rollback = True`:
+&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="k"&gt;First&lt;/span&gt; &lt;span class="n"&gt;TransactionTestCase&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="o"&gt;`&lt;/span&gt;&lt;span class="n"&gt;serialized_rollback&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;True&lt;/span&gt;&lt;span class="o"&gt;`&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 
-    - Pre-setup db state: A
-    - &amp;gt;&amp;gt;&amp;gt; SetUp step: loading initial data -&amp;gt; db in state A (unchanged) &amp;lt;&amp;lt;&amp;lt;
-    - Test: some data created -&amp;gt; db in state B
-    - TearDown step: flushing everything, db in state E
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Pre&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;setup&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="k"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;SetUp&lt;/span&gt; &lt;span class="n"&gt;step&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;loading&lt;/span&gt; &lt;span class="n"&gt;initial&lt;/span&gt; &lt;span class="k"&gt;data&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="k"&gt;state&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;unchanged&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Test&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;some&lt;/span&gt; &lt;span class="k"&gt;data&lt;/span&gt; &lt;span class="n"&gt;created&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="k"&gt;state&lt;/span&gt; &lt;span class="n"&gt;B&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;TearDown&lt;/span&gt; &lt;span class="n"&gt;step&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;flushing&lt;/span&gt; &lt;span class="n"&gt;everything&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="k"&gt;state&lt;/span&gt; &lt;span class="n"&gt;E&lt;/span&gt;
 
-- Second TransactionTestCase with `serialized_rollback = True`:
+&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="k"&gt;Second&lt;/span&gt; &lt;span class="n"&gt;TransactionTestCase&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="o"&gt;`&lt;/span&gt;&lt;span class="n"&gt;serialized_rollback&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;True&lt;/span&gt;&lt;span class="o"&gt;`&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 
-    - Pre-setup db state: E (cleaned by previous TransactionTestCase)
-    - &amp;gt;&amp;gt;&amp;gt; SetUp step: loading initial data -&amp;gt; db in state A &amp;lt;&amp;lt;&amp;lt;
-    - Test: some data created -&amp;gt; db in state C
-    - TearDown step: flushing everything, db in state E
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Pre&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;setup&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="k"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;E&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cleaned&lt;/span&gt; &lt;span class="k"&gt;by&lt;/span&gt; &lt;span class="n"&gt;previous&lt;/span&gt; &lt;span class="n"&gt;TransactionTestCase&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;SetUp&lt;/span&gt; &lt;span class="n"&gt;step&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;loading&lt;/span&gt; &lt;span class="n"&gt;initial&lt;/span&gt; &lt;span class="k"&gt;data&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="k"&gt;state&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Test&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;some&lt;/span&gt; &lt;span class="k"&gt;data&lt;/span&gt; &lt;span class="n"&gt;created&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="k"&gt;state&lt;/span&gt; &lt;span class="k"&gt;C&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;TearDown&lt;/span&gt; &lt;span class="n"&gt;step&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;flushing&lt;/span&gt; &lt;span class="n"&gt;everything&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="k"&gt;state&lt;/span&gt; &lt;span class="n"&gt;E&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -51,14 +130,14 @@ The second one will be run with an empty database, which is maybe not what you w
 &lt;p&gt;&lt;em&gt;But there are still some issues, even with this option.&lt;/em&gt;&lt;/p&gt;
 &lt;h1&gt;Issue 1: Constraints errors&lt;/h1&gt;
 &lt;p&gt;If you are working with Django 1.7.x/1.8.x, you have maybe encountered this error:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;IntegrityError&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;duplicate&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="n"&gt;violates&lt;/span&gt; &lt;span class="n"&gt;unique&lt;/span&gt; &lt;span class="n"&gt;constraint&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;django_content_type_app_label_&amp;lt;some_hex&amp;gt;_uniq&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;IntegrityError&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;duplicate&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="n"&gt;violates&lt;/span&gt; &lt;span class="n"&gt;unique&lt;/span&gt; &lt;span class="n"&gt;constraint&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;django_content_type_app_label_&amp;lt;some_hex&amp;gt;_uniq&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;There is a &lt;a href="http://stackoverflow.com/questions/29226869/django-transactiontestcase-with-rollback-emulation/35359897"&gt;StackOverflow thread&lt;/a&gt; about this topic.&lt;/p&gt;
 &lt;p&gt;A &lt;a href="https://github.com/django/django/commit/d3fdaf907db6a5be4d0391532d7e65688c19e851"&gt;patch&lt;/a&gt; has been created and shipped with django 1.9.x.
 But if, like me, you can't always work with latest stable version of Django, you can add a setting:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;TEST_NON_SERIALIZED_APPS = [&amp;#39;django.contrib.contenttypes&amp;#39;]
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;TEST_NON_SERIALIZED_APPS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;django.contrib.contenttypes&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -66,21 +145,21 @@ But if, like me, you can't always work with latest stable version of Django, you
 &lt;p&gt;If you want to keep the database for future tests with &lt;code&gt;-—keepdb&lt;/code&gt; option, the last &lt;code&gt;TransactionTestCase&lt;/code&gt; run will still delete all the data in the database.
 There is an &lt;a href="https://code.djangoproject.com/ticket/25251"&gt;open ticket&lt;/a&gt; related to that issue.&lt;/p&gt;
 &lt;p&gt;I have proposed a &lt;a href="https://github.com/django/django/pull/6137"&gt;solution&lt;/a&gt; that resolves this problem by updating where we load the initial data.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;- Database initial state: A
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="k"&gt;Database&lt;/span&gt; &lt;span class="n"&gt;initial&lt;/span&gt; &lt;span class="n"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;
 
-- First TransactionTestCase with `serialized_rollback = True`:
+&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;First&lt;/span&gt; &lt;span class="n"&gt;TransactionTestCase&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="ss"&gt;`serialized_rollback = True`&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 
-    - Pre-setup db state: A
-    - Test: some data created -&amp;gt; db in state B
-    - TearDown step: flushing everything, db in state E
-    - &amp;gt;&amp;gt;&amp;gt; Post-TearDown step: loading initial data -&amp;gt; db in state A &amp;lt;&amp;lt;&amp;lt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Pre&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;setup&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="n"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Test&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;some&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="n"&gt;created&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="n"&gt;state&lt;/span&gt; &lt;span class="n"&gt;B&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;TearDown&lt;/span&gt; &lt;span class="n"&gt;step&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;flushing&lt;/span&gt; &lt;span class="n"&gt;everything&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="n"&gt;state&lt;/span&gt; &lt;span class="n"&gt;E&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Post&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;TearDown&lt;/span&gt; &lt;span class="n"&gt;step&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;loading&lt;/span&gt; &lt;span class="n"&gt;initial&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="n"&gt;state&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt;
 
-- Second TransactionTestCase with `serialized_rollback = True`:
+&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Second&lt;/span&gt; &lt;span class="n"&gt;TransactionTestCase&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="ss"&gt;`serialized_rollback = True`&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 
-    - Pre-setup db state: A (loaded after the last flush from previous `TransactionTestCase`)
-    - Test: some data created -&amp;gt; db in state C
-    - TearDown step: flushing everything, db in state E
-    - &amp;gt;&amp;gt;&amp;gt; Post-TearDown step: loading initial data -&amp;gt; db in state A &amp;lt;&amp;lt;&amp;lt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Pre&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;setup&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="n"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nf"&gt;A&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;loaded&lt;/span&gt; &lt;span class="n"&gt;after&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;last&lt;/span&gt; &lt;span class="k"&gt;flush&lt;/span&gt; &lt;span class="k"&gt;from&lt;/span&gt; &lt;span class="n"&gt;previous&lt;/span&gt; &lt;span class="ss"&gt;`TransactionTestCase`&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Test&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;some&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="n"&gt;created&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="n"&gt;state&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;TearDown&lt;/span&gt; &lt;span class="n"&gt;step&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;flushing&lt;/span&gt; &lt;span class="n"&gt;everything&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="n"&gt;state&lt;/span&gt; &lt;span class="n"&gt;E&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Post&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;TearDown&lt;/span&gt; &lt;span class="n"&gt;step&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;loading&lt;/span&gt; &lt;span class="n"&gt;initial&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;db&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="n"&gt;state&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -88,16 +167,16 @@ There is an &lt;a href="https://code.djangoproject.com/ticket/25251"&gt;open tic
 &lt;h1&gt;Update: Issue 3 from Issue 2&lt;/h1&gt;
 &lt;p&gt;After some discussions about the ticket I created in Django tracker, I realized that the approach described below is not working well.
 Indeed, as soon as you have at least 1 &lt;code&gt;TransactionTestCase&lt;/code&gt; class without &lt;code&gt;serialized_rollback&lt;/code&gt; set to &lt;code&gt;True&lt;/code&gt;, you still won't have your data at the end of the test suite.&lt;/p&gt;
-&lt;p&gt;I have proposed another &lt;a href="https://github.com/django/django/pull/6297"&gt;solution&lt;/a&gt; that seems to be right now the best fix: not modify the current &lt;code&gt;TransactionTestCase&lt;/code&gt; logic anymore but load the initial data migration at the end of the test suite, only in &lt;code&gt;--keepdb&lt;/code&gt; mode.&lt;/p&gt;</summary><category term="Django"></category><category term="database"></category><category term="tests"></category></entry><entry><title>How to deploy a python package on PyPi with GitHub and Travis CI</title><link href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html" rel="alternate"></link><updated>2015-05-06T08:12:00+02:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2015-05-06:howto-deploy-python-package-on-pypi-with-github-and-travis.html</id><summary type="html">&lt;p&gt;You want to make a python package available on &lt;code&gt;PyPi&lt;/code&gt; without spending ages to learn how to do it ?&lt;/p&gt;
+&lt;p&gt;I have proposed another &lt;a href="https://github.com/django/django/pull/6297"&gt;solution&lt;/a&gt; that seems to be right now the best fix: not modify the current &lt;code&gt;TransactionTestCase&lt;/code&gt; logic anymore but load the initial data migration at the end of the test suite, only in &lt;code&gt;--keepdb&lt;/code&gt; mode.&lt;/p&gt;</content><category term="Django"></category><category term="database"></category><category term="tests"></category></entry><entry><title>How to deploy a python package on PyPi with GitHub and Travis CI</title><link href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html" rel="alternate"></link><published>2015-05-06T08:12:00+01:00</published><updated>2015-05-06T08:12:00+01:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2015-05-06:/howto-deploy-python-package-on-pypi-with-github-and-travis.html</id><summary type="html">&lt;p&gt;How to deploy a python package on PyPi with GitHub and Travis CI&lt;/p&gt;</summary><content type="html">&lt;p&gt;You want to make a python package available on &lt;code&gt;PyPi&lt;/code&gt; without spending ages to learn how to do it ?&lt;/p&gt;
 &lt;p&gt;If you are using &lt;code&gt;GitHub&lt;/code&gt; to host your project, this article is for you !&lt;/p&gt;
 &lt;h1&gt;Create your setup.py file&lt;/h1&gt;
 &lt;p&gt;Every python package needs a &lt;code&gt;setup.py&lt;/code&gt; file to be deployed with &lt;code&gt;pip&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;You can use a &lt;code&gt;setup.py&lt;/code&gt; example available on &lt;a href="https://docs.djangoproject.com/fr/1.8/intro/reusable-apps/"&gt;Django website&lt;/a&gt; to create yours.&lt;/p&gt;
 &lt;p&gt;Then, your &lt;code&gt;GitHub&lt;/code&gt; repository seems like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;.
-+-- my_python_package &amp;lt;-- The package you want to deploy on PyPi
-+-- setup.py
-+-- README.rst
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- my_python_package &amp;lt;-- The package you want to deploy on PyPi&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- setup.py&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- README.rst&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -105,7 +184,7 @@ Indeed, as soon as you have at least 1 &lt;code&gt;TransactionTestCase&lt;/code&
 &lt;p&gt;You need to configure &lt;code&gt;Tracis CI&lt;/code&gt; to use continuous integration for your &lt;code&gt;GitHub&lt;/code&gt; repository.&lt;/p&gt;
 &lt;p&gt;If it's your first time, go to &lt;a href="http://travis-ci.org/"&gt;Tracis CI&lt;/a&gt;, sign-in with &lt;code&gt;GitHub&lt;/code&gt;, and activate your &lt;code&gt;GitHub&lt;/code&gt; repository (&lt;code&gt;Travis CI&lt;/code&gt; has access to your repositories, but they are disabled by default).&lt;/p&gt;
 &lt;p&gt;Then add a &lt;code&gt;.travis.yml&lt;/code&gt; file, on your &lt;code&gt;GitHub&lt;/code&gt; repository root, with this content:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;language&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;language&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;
 
 &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
   &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;2.7&amp;quot;&lt;/span&gt;
@@ -118,7 +197,7 @@ Indeed, as soon as you have at least 1 &lt;code&gt;TransactionTestCase&lt;/code&
 &lt;p&gt;For now, your &lt;code&gt;Travis CI&lt;/code&gt; configuration is executing something totally useless (&lt;code&gt;touch foo&lt;/code&gt;) on each commit, but usually people are using it to run tests.&lt;/p&gt;
 &lt;h1&gt;Configure PyPi deployment with travis-ci&lt;/h1&gt;
 &lt;p&gt;Now we also want our project to be deployed on &lt;code&gt;PyPi&lt;/code&gt;. &lt;code&gt;Travis CI&lt;/code&gt; can do that for us if we add a &lt;code&gt;deploy&lt;/code&gt; section in &lt;code&gt;.travis.yml&lt;/code&gt;, that is now:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;language&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;language&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;
 
 &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
   &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;2.7&amp;quot;&lt;/span&gt;
@@ -142,34 +221,34 @@ Indeed, as soon as you have at least 1 &lt;code&gt;TransactionTestCase&lt;/code&
 &lt;p&gt;The &lt;code&gt;user&lt;/code&gt; name is the one you have used to register on &lt;a href="http://pypi.python.org/"&gt;Pypi&lt;/a&gt;. Yes, you have to create an account on &lt;code&gt;Pypi&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;You also need to replace &lt;code&gt;my_secure_password&lt;/code&gt; with your secure password, generated with &lt;code&gt;Travis CI&lt;/code&gt; command line client.&lt;/p&gt;
 &lt;p&gt;To install it (more details on &lt;a href="http://blog.travis-ci.com/2013-01-14-new-client/"&gt;Travis blog&lt;/a&gt;):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;gem install travis
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ gem install travis
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Maybe you will miss rdoc gem in some cases, depending on your OS. Just install it before:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;gem install rdoc
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ gem install rdoc
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Then encrypt your PyPi password with &lt;code&gt;travis&lt;/code&gt; cli:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;travis encrypt --add deploy.password
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ travis encrypt --add deploy.password
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;The generated password will be automatically added to your &lt;code&gt;.travis.yml&lt;/code&gt; config file.&lt;/p&gt;
 &lt;h1&gt;Finally&lt;/h1&gt;
-&lt;p&gt;At the end, you have a repository that is automatically deploying a new version of your python package each time you add a new tag on &lt;code&gt;master&lt;/code&gt; !! Well done.&lt;/p&gt;</summary><category term="GitHub"></category><category term="travis-ci"></category><category term="python"></category><category term="PyPi"></category></entry><entry><title>How to manage GitHub Pages on front-end project</title><link href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html" rel="alternate"></link><updated>2015-04-08T20:47:00+02:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2015-04-08:howto-manage-ghpages-project.html</id><summary type="html">&lt;p&gt;You are working on a frond-end project hosted on GitHub, with lot of useful tools (grunt/gulp, sass, ...), and you want to properly manage generated files from this project on GitHub Pages ?&lt;/p&gt;
+&lt;p&gt;At the end, you have a repository that is automatically deploying a new version of your python package each time you add a new tag on &lt;code&gt;master&lt;/code&gt; !! Well done.&lt;/p&gt;</content><category term="GitHub"></category><category term="travis-ci"></category><category term="python"></category><category term="PyPi"></category></entry><entry><title>How to manage GitHub Pages on front-end project</title><link href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html" rel="alternate"></link><published>2015-04-08T20:47:00+01:00</published><updated>2015-04-08T20:47:00+01:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2015-04-08:/howto-manage-ghpages-project.html</id><summary type="html">&lt;p&gt;How to manage GitHub Pages on front-end project&lt;/p&gt;</summary><content type="html">&lt;p&gt;You are working on a frond-end project hosted on GitHub, with lot of useful tools (grunt/gulp, sass, ...), and you want to properly manage generated files from this project on GitHub Pages ?&lt;/p&gt;
 &lt;p&gt;Let's imagine this kind of folder on your &lt;code&gt;master&lt;/code&gt; branch:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;.
-+-- Gruntfile.js
-+-- bower.json
-+-- package.json
-+-- README.md
-+-- dist  &amp;lt;-- You need this folder to be the root of the gh-pages branch
-|   +-- index.html
-|   +-- other_page.html
-|   +-- theme
-|   |    +-- main.css
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- Gruntfile.js&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- bower.json&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- package.json&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- README.md&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- dist  &amp;lt;-- You need this folder to be the root of the gh-pages branch&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- index.html&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- other_page.html&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- theme&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;|&lt;/span&gt;    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- main.css&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -179,11 +258,11 @@ Indeed, as soon as you have at least 1 &lt;code&gt;TransactionTestCase&lt;/code&
 &lt;li&gt;have all your static files at the branch root (including &lt;code&gt;index.html&lt;/code&gt;).&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;So that, when you checkout &lt;code&gt;gh-pages&lt;/code&gt;, you need to have:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;.
-+-- index.html
-+-- other_page.html
-+-- theme
-|   +-- main.css
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- index.html&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- other_page.html&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- theme&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- main.css&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -193,73 +272,73 @@ We feel easily that it's not a clean way to manage it, we will have to manually 
 &lt;p&gt;A script could be written to do this kind of task each time we need to deploy on &lt;code&gt;gh-pages&lt;/code&gt;, but
  somebody has already done that for us : &lt;a href="https://github.com/davisp/ghp-import"&gt;ghp-import&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;You can install it via &lt;code&gt;pip&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;pip install ghp-import
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;pip&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;ghp&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;import&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;And then, go to your &lt;code&gt;master&lt;/code&gt; branch, and to deploy your &lt;code&gt;dist&lt;/code&gt; folder:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;ghp&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;dist&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;ghp&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;dist&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;It will then create a new commit (and push it) on your &lt;code&gt;gh-pages&lt;/code&gt; branch with the current files of your &lt;code&gt;dist&lt;/code&gt; folder.&lt;/p&gt;
 &lt;h1&gt;Solution 2&lt;/h1&gt;
 &lt;p&gt;Clone another time your project in the same project folder:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;.
-+-- Gruntfile.js
-+-- bower.json
-+-- package.json
-+-- README.md
-+-- dist
-|   +-- index.html
-|   +-- other_page.html
-|   +-- theme
-|   |    +-- main.css
-+-- your_project &amp;lt;-- Your cloned project repository on master branch
-    +-- Gruntfile.js
-    +-- bower.json
-    +-- package.json
-    +-- README.md
-    +-- dist
-    |   +-- index.html
-    |   +-- other_page.html
-    |   +-- theme
-    |   |    +-- main.css
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- Gruntfile.js&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- bower.json&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- package.json&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- README.md&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- dist&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- index.html&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- other_page.html&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- theme&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;|&lt;/span&gt;    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- main.css&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- your_project &amp;lt;-- Your cloned project repository on master branch&lt;/span&gt;
+    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- Gruntfile.js&lt;/span&gt;
+    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- bower.json&lt;/span&gt;
+    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- package.json&lt;/span&gt;
+    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- README.md&lt;/span&gt;
+    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- dist&lt;/span&gt;
+    &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- index.html&lt;/span&gt;
+    &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- other_page.html&lt;/span&gt;
+    &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- theme&lt;/span&gt;
+    &lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;|&lt;/span&gt;    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- main.css&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Checkout your sub-cloned project to gh-pages branch, and remove everything no more needed in your &lt;code&gt;gh-pages&lt;/code&gt; branch.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;.
-+-- Gruntfile.js
-+-- bower.json
-+-- package.json
-+-- README.md
-+-- dist
-|   +-- index.html
-|   +-- other_page.html
-|   +-- theme
-|   |    +-- main.css
-+-- your_project &amp;lt;-- Your cloned project repository on gh-pages branch
-    +-- index.html
-    +-- other_page.html
-    +-- theme
-    |    +-- main.css
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- Gruntfile.js&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- bower.json&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- package.json&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- README.md&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- dist&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- index.html&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- other_page.html&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- theme&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt;   &lt;span class="o"&gt;|&lt;/span&gt;    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- main.css&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- your_project &amp;lt;-- Your cloned project repository on gh-pages branch&lt;/span&gt;
+    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- index.html&lt;/span&gt;
+    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- other_page.html&lt;/span&gt;
+    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- theme&lt;/span&gt;
+    &lt;span class="o"&gt;|&lt;/span&gt;    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- main.css&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Remove &lt;code&gt;dist&lt;/code&gt; folder in your &lt;code&gt;master branch&lt;/code&gt;, and replace it with a symbolic link to &lt;code&gt;your_project&lt;/code&gt; repository:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;.
-+-- Gruntfile.js
-+-- bower.json
-+-- package.json
-+-- README.md
-+-- dist &amp;lt;-- Now a symlink to your_project
-+-- your_project &amp;lt;-- Your cloned project repository on gh-pages branch
-    +-- index.html
-    +-- other_page.html
-    +-- theme
-    |    +-- main.css
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- Gruntfile.js&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- bower.json&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- package.json&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- README.md&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- dist &amp;lt;-- Now a symlink to your_project&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- your_project &amp;lt;-- Your cloned project repository on gh-pages branch&lt;/span&gt;
+    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- index.html&lt;/span&gt;
+    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- other_page.html&lt;/span&gt;
+    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- theme&lt;/span&gt;
+    &lt;span class="o"&gt;|&lt;/span&gt;    &lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;-- main.css&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Your tools, that were working on &lt;code&gt;dist&lt;/code&gt; folder, will now generate new content on the project &lt;code&gt;gh-pages&lt;/code&gt; branch, and you can commit them when you want.&lt;/p&gt;</summary><category term="GitHub"></category><category term="front-end"></category></entry></feed>
+&lt;p&gt;Your tools, that were working on &lt;code&gt;dist&lt;/code&gt; folder, will now generate new content on the project &lt;code&gt;gh-pages&lt;/code&gt; branch, and you can commit them when you want.&lt;/p&gt;</content><category term="GitHub"></category><category term="front-end"></category></entry></feed>

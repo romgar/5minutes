@@ -5,10 +5,6 @@
         <title>5minutes - Django</title>
         <link rel="stylesheet" href="http://5minutes.youkidea.com/theme/css/main.css" />
         <link href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="5minutes Atom Feed" />
-
-        <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
 </head>
 
 <body id="index" class="home">
@@ -24,18 +20,18 @@
                 <article>
                     <h1 class="entry-title"><a href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html">TransactionTestCase and keepdb issues in Django</a></h1>
 <footer class="post-info">
-        <abbr class="published" title="2016-02-25T23:51:00+01:00">
+        <abbr class="published" title="2016-02-25T23:51:00+00:00">
                 Published: jeu. 25 février 2016
         </abbr>
 		<br />
-        <abbr class="modified" title="2016-05-19T23:31:00+02:00">
+        <abbr class="modified" title="2016-05-19T23:31:00+01:00">
                 Updated: jeu. 19 mai 2016
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="http://5minutes.youkidea.com/author/romain-garrigues.html">Romain Garrigues</a>
         </address>
-<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>. </p>
+<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>.</p>
 <p>tags: <a href="http://5minutes.youkidea.com/tag/django.html">Django</a> <a href="http://5minutes.youkidea.com/tag/database.html">database</a> <a href="http://5minutes.youkidea.com/tag/tests.html">tests</a> </p>
 </footer><!-- /.post-info --><p>Few days ago, I had several issues with some data (from migrations) that were no more in my database after running tests,
 even with <code>--keepdb</code> option.
@@ -44,9 +40,9 @@ Let's see what happened, but before that, here is a quick reminder of how databa
 <p>If you inherit from TestCase, each test you are writing is wrapped in a transaction (and since Django 1.9, there is also
 a transaction wrapping all tests, which makes setUpClass and tearDownClass really useful, specially for test speed).
 It means, for each test:</p>
-<div class="highlight"><pre>- Before: database in state A,
-- During: you can change some data in your database, which will be in state B,
-- After: there is a rollback that brings you back to state A.
+<div class="highlight"><pre><span></span><span class="o">-</span> <span class="k">Before</span><span class="p">:</span> <span class="k">database</span> <span class="k">in</span> <span class="k">state</span> <span class="n">A</span><span class="p">,</span>
+<span class="o">-</span> <span class="n">During</span><span class="p">:</span> <span class="n">you</span> <span class="n">can</span> <span class="n">change</span> <span class="k">some</span> <span class="k">data</span> <span class="k">in</span> <span class="n">your</span> <span class="k">database</span><span class="p">,</span> <span class="n">which</span> <span class="n">will</span> <span class="n">be</span> <span class="k">in</span> <span class="k">state</span> <span class="n">B</span><span class="p">,</span>
+<span class="o">-</span> <span class="k">After</span><span class="p">:</span> <span class="n">there</span> <span class="k">is</span> <span class="n">a</span> <span class="k">rollback</span> <span class="n">that</span> <span class="n">brings</span> <span class="n">you</span> <span class="n">back</span> <span class="k">to</span> <span class="k">state</span> <span class="n">A</span><span class="p">.</span>
 </pre></div>
 
 
@@ -55,9 +51,9 @@ It means, for each test:</p>
 <p>If you need to test some <a href="https://docs.djangoproject.com/en/1.9/topics/testing/tools/#django.test.TransactionTestCase">specific database behaviours</a>,
 you may need to use a <code>TransactionTestCase</code>, that is no more wrapping each test in a transaction.
 What happens for each test is:</p>
-<div class="highlight"><pre>- Before: database in state A,
-- During: you can change some data in your database, which will be in state B,
-- After: all tables are emptied (TRUNCATE), your database is in state E (Empty).
+<div class="highlight"><pre><span></span><span class="o">-</span> <span class="k">Before</span><span class="p">:</span> <span class="k">database</span> <span class="k">in</span> <span class="k">state</span> <span class="n">A</span><span class="p">,</span>
+<span class="o">-</span> <span class="n">During</span><span class="p">:</span> <span class="n">you</span> <span class="n">can</span> <span class="n">change</span> <span class="k">some</span> <span class="k">data</span> <span class="k">in</span> <span class="n">your</span> <span class="k">database</span><span class="p">,</span> <span class="n">which</span> <span class="n">will</span> <span class="n">be</span> <span class="k">in</span> <span class="k">state</span> <span class="n">B</span><span class="p">,</span>
+<span class="o">-</span> <span class="k">After</span><span class="p">:</span> <span class="k">all</span> <span class="n">tables</span> <span class="k">are</span> <span class="n">emptied</span> <span class="p">(</span><span class="k">TRUNCATE</span><span class="p">),</span> <span class="n">your</span> <span class="k">database</span> <span class="k">is</span> <span class="k">in</span> <span class="k">state</span> <span class="n">E</span> <span class="p">(</span><span class="n">Empty</span><span class="p">).</span>
 </pre></div>
 
 
@@ -67,21 +63,21 @@ The second one will be run with an empty database, which is maybe not what you w
 <p>To be sure that your <code>TransactionTestCase</code> are not dependent from each others, you can use <code>serialised_rollback = True</code> option.</p>
 <p>If you use it, at the beginning (<code>SetUp</code> step) of each test, Django will load the data coming from initial data migrations.</p>
 <p>What will happens then is:</p>
-<div class="highlight"><pre>- Database initial state: A
+<div class="highlight"><pre><span></span><span class="o">-</span> <span class="k">Database</span> <span class="n">initial</span> <span class="k">state</span><span class="p">:</span> <span class="n">A</span>
 
-- First TransactionTestCase with `serialized_rollback = True`:
+<span class="o">-</span> <span class="k">First</span> <span class="n">TransactionTestCase</span> <span class="k">with</span> <span class="o">`</span><span class="n">serialized_rollback</span> <span class="o">=</span> <span class="k">True</span><span class="o">`</span><span class="p">:</span>
 
-    - Pre-setup db state: A
-    - &gt;&gt;&gt; SetUp step: loading initial data -&gt; db in state A (unchanged) &lt;&lt;&lt;
-    - Test: some data created -&gt; db in state B
-    - TearDown step: flushing everything, db in state E
+    <span class="o">-</span> <span class="n">Pre</span><span class="o">-</span><span class="n">setup</span> <span class="n">db</span> <span class="k">state</span><span class="p">:</span> <span class="n">A</span>
+    <span class="o">-</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">SetUp</span> <span class="n">step</span><span class="p">:</span> <span class="n">loading</span> <span class="n">initial</span> <span class="k">data</span> <span class="o">-&gt;</span> <span class="n">db</span> <span class="k">in</span> <span class="k">state</span> <span class="n">A</span> <span class="p">(</span><span class="n">unchanged</span><span class="p">)</span> <span class="o">&lt;&lt;&lt;</span>
+    <span class="o">-</span> <span class="n">Test</span><span class="p">:</span> <span class="k">some</span> <span class="k">data</span> <span class="n">created</span> <span class="o">-&gt;</span> <span class="n">db</span> <span class="k">in</span> <span class="k">state</span> <span class="n">B</span>
+    <span class="o">-</span> <span class="n">TearDown</span> <span class="n">step</span><span class="p">:</span> <span class="n">flushing</span> <span class="n">everything</span><span class="p">,</span> <span class="n">db</span> <span class="k">in</span> <span class="k">state</span> <span class="n">E</span>
 
-- Second TransactionTestCase with `serialized_rollback = True`:
+<span class="o">-</span> <span class="k">Second</span> <span class="n">TransactionTestCase</span> <span class="k">with</span> <span class="o">`</span><span class="n">serialized_rollback</span> <span class="o">=</span> <span class="k">True</span><span class="o">`</span><span class="p">:</span>
 
-    - Pre-setup db state: E (cleaned by previous TransactionTestCase)
-    - &gt;&gt;&gt; SetUp step: loading initial data -&gt; db in state A &lt;&lt;&lt;
-    - Test: some data created -&gt; db in state C
-    - TearDown step: flushing everything, db in state E
+    <span class="o">-</span> <span class="n">Pre</span><span class="o">-</span><span class="n">setup</span> <span class="n">db</span> <span class="k">state</span><span class="p">:</span> <span class="n">E</span> <span class="p">(</span><span class="n">cleaned</span> <span class="k">by</span> <span class="n">previous</span> <span class="n">TransactionTestCase</span><span class="p">)</span>
+    <span class="o">-</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">SetUp</span> <span class="n">step</span><span class="p">:</span> <span class="n">loading</span> <span class="n">initial</span> <span class="k">data</span> <span class="o">-&gt;</span> <span class="n">db</span> <span class="k">in</span> <span class="k">state</span> <span class="n">A</span> <span class="o">&lt;&lt;&lt;</span>
+    <span class="o">-</span> <span class="n">Test</span><span class="p">:</span> <span class="k">some</span> <span class="k">data</span> <span class="n">created</span> <span class="o">-&gt;</span> <span class="n">db</span> <span class="k">in</span> <span class="k">state</span> <span class="k">C</span>
+    <span class="o">-</span> <span class="n">TearDown</span> <span class="n">step</span><span class="p">:</span> <span class="n">flushing</span> <span class="n">everything</span><span class="p">,</span> <span class="n">db</span> <span class="k">in</span> <span class="k">state</span> <span class="n">E</span>
 </pre></div>
 
 
@@ -89,14 +85,14 @@ The second one will be run with an empty database, which is maybe not what you w
 <p><em>But there are still some issues, even with this option.</em></p>
 <h1>Issue 1: Constraints errors</h1>
 <p>If you are working with Django 1.7.x/1.8.x, you have maybe encountered this error:</p>
-<div class="highlight"><pre><span class="n">IntegrityError</span><span class="o">:</span> <span class="n">duplicate</span> <span class="n">key</span> <span class="n">value</span> <span class="n">violates</span> <span class="n">unique</span> <span class="n">constraint</span> <span class="s2">&quot;django_content_type_app_label_&lt;some_hex&gt;_uniq&quot;</span>
+<div class="highlight"><pre><span></span><span class="n">IntegrityError</span><span class="o">:</span> <span class="n">duplicate</span> <span class="n">key</span> <span class="n">value</span> <span class="n">violates</span> <span class="n">unique</span> <span class="n">constraint</span> <span class="s2">&quot;django_content_type_app_label_&lt;some_hex&gt;_uniq&quot;</span>
 </pre></div>
 
 
 <p>There is a <a href="http://stackoverflow.com/questions/29226869/django-transactiontestcase-with-rollback-emulation/35359897">StackOverflow thread</a> about this topic.</p>
 <p>A <a href="https://github.com/django/django/commit/d3fdaf907db6a5be4d0391532d7e65688c19e851">patch</a> has been created and shipped with django 1.9.x.
 But if, like me, you can't always work with latest stable version of Django, you can add a setting:</p>
-<div class="highlight"><pre>TEST_NON_SERIALIZED_APPS = [&#39;django.contrib.contenttypes&#39;]
+<div class="highlight"><pre><span></span><span class="n">TEST_NON_SERIALIZED_APPS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;django.contrib.contenttypes&#39;</span><span class="p">]</span>
 </pre></div>
 
 
@@ -104,21 +100,21 @@ But if, like me, you can't always work with latest stable version of Django, you
 <p>If you want to keep the database for future tests with <code>-—keepdb</code> option, the last <code>TransactionTestCase</code> run will still delete all the data in the database.
 There is an <a href="https://code.djangoproject.com/ticket/25251">open ticket</a> related to that issue.</p>
 <p>I have proposed a <a href="https://github.com/django/django/pull/6137">solution</a> that resolves this problem by updating where we load the initial data.</p>
-<div class="highlight"><pre>- Database initial state: A
+<div class="highlight"><pre><span></span><span class="o">-</span> <span class="k">Database</span> <span class="n">initial</span> <span class="n">state</span><span class="p">:</span> <span class="n">A</span>
 
-- First TransactionTestCase with `serialized_rollback = True`:
+<span class="o">-</span> <span class="n">First</span> <span class="n">TransactionTestCase</span> <span class="k">with</span> <span class="ss">`serialized_rollback = True`</span><span class="p">:</span>
 
-    - Pre-setup db state: A
-    - Test: some data created -&gt; db in state B
-    - TearDown step: flushing everything, db in state E
-    - &gt;&gt;&gt; Post-TearDown step: loading initial data -&gt; db in state A &lt;&lt;&lt;
+    <span class="o">-</span> <span class="n">Pre</span><span class="o">-</span><span class="n">setup</span> <span class="n">db</span> <span class="n">state</span><span class="p">:</span> <span class="n">A</span>
+    <span class="o">-</span> <span class="n">Test</span><span class="p">:</span> <span class="n">some</span> <span class="n">data</span> <span class="n">created</span> <span class="o">-&gt;</span> <span class="n">db</span> <span class="k">in</span> <span class="n">state</span> <span class="n">B</span>
+    <span class="o">-</span> <span class="n">TearDown</span> <span class="n">step</span><span class="p">:</span> <span class="n">flushing</span> <span class="n">everything</span><span class="p">,</span> <span class="n">db</span> <span class="k">in</span> <span class="n">state</span> <span class="n">E</span>
+    <span class="o">-</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">Post</span><span class="o">-</span><span class="n">TearDown</span> <span class="n">step</span><span class="p">:</span> <span class="n">loading</span> <span class="n">initial</span> <span class="n">data</span> <span class="o">-&gt;</span> <span class="n">db</span> <span class="k">in</span> <span class="n">state</span> <span class="n">A</span> <span class="o">&lt;&lt;&lt;</span>
 
-- Second TransactionTestCase with `serialized_rollback = True`:
+<span class="o">-</span> <span class="n">Second</span> <span class="n">TransactionTestCase</span> <span class="k">with</span> <span class="ss">`serialized_rollback = True`</span><span class="p">:</span>
 
-    - Pre-setup db state: A (loaded after the last flush from previous `TransactionTestCase`)
-    - Test: some data created -&gt; db in state C
-    - TearDown step: flushing everything, db in state E
-    - &gt;&gt;&gt; Post-TearDown step: loading initial data -&gt; db in state A &lt;&lt;&lt;
+    <span class="o">-</span> <span class="n">Pre</span><span class="o">-</span><span class="n">setup</span> <span class="n">db</span> <span class="n">state</span><span class="p">:</span> <span class="nf">A</span> <span class="p">(</span><span class="n">loaded</span> <span class="n">after</span> <span class="n">the</span> <span class="n">last</span> <span class="k">flush</span> <span class="k">from</span> <span class="n">previous</span> <span class="ss">`TransactionTestCase`</span><span class="p">)</span>
+    <span class="o">-</span> <span class="n">Test</span><span class="p">:</span> <span class="n">some</span> <span class="n">data</span> <span class="n">created</span> <span class="o">-&gt;</span> <span class="n">db</span> <span class="k">in</span> <span class="n">state</span> <span class="n">C</span>
+    <span class="o">-</span> <span class="n">TearDown</span> <span class="n">step</span><span class="p">:</span> <span class="n">flushing</span> <span class="n">everything</span><span class="p">,</span> <span class="n">db</span> <span class="k">in</span> <span class="n">state</span> <span class="n">E</span>
+    <span class="o">-</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">Post</span><span class="o">-</span><span class="n">TearDown</span> <span class="n">step</span><span class="p">:</span> <span class="n">loading</span> <span class="n">initial</span> <span class="n">data</span> <span class="o">-&gt;</span> <span class="n">db</span> <span class="k">in</span> <span class="n">state</span> <span class="n">A</span> <span class="o">&lt;&lt;&lt;</span>
 </pre></div>
 
 
@@ -126,18 +122,16 @@ There is an <a href="https://code.djangoproject.com/ticket/25251">open ticket</a
 <h1>Update: Issue 3 from Issue 2</h1>
 <p>After some discussions about the ticket I created in Django tracker, I realized that the approach described below is not working well.
 Indeed, as soon as you have at least 1 <code>TransactionTestCase</code> class without <code>serialized_rollback</code> set to <code>True</code>, you still won't have your data at the end of the test suite.</p>
-<p>I have proposed another <a href="https://github.com/django/django/pull/6297">solution</a> that seems to be right now the best fix: not modify the current <code>TransactionTestCase</code> logic anymore but load the initial data migration at the end of the test suite, only in <code>--keepdb</code> mode.</p><p>There are <a href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html#disqus_thread">comments</a>.</p>                </article>
-<p class="paginator">
-    Page 1 / 1
-</p>
+<p>I have proposed another <a href="https://github.com/django/django/pull/6297">solution</a> that seems to be right now the best fix: not modify the current <code>TransactionTestCase</code> logic anymore but load the initial data migration at the end of the test suite, only in <code>--keepdb</code> mode.</p>                </article>
             </aside><!-- /#featured -->
         <section id="extras" class="body">
                 <div class="blogroll">
-                        <h2>blogroll</h2>
+                        <h2>links</h2>
                         <ul>
                             <li><a href="http://getpelican.com/">Pelican</a></li>
                             <li><a href="http://python.org/">Python.org</a></li>
                             <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
                         </ul>
                 </div><!-- /.blogroll -->
                 <div class="social">
@@ -145,8 +139,8 @@ Indeed, as soon as you have at least 1 <code>TransactionTestCase</code> class wi
                         <ul>
                             <li><a href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
-                            <li><a href="https://twitter.com/jrmipp/">@jrmi</a></li>
-                            <li><a href="https://twitter.com/rgarrigues/">@rgarrigues</a></li>
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
                         </ul>
                 </div><!-- /.social -->
         </section><!-- /#extras -->
@@ -159,24 +153,5 @@ Indeed, as soon as you have at least 1 <code>TransactionTestCase</code> class wi
                 <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
 
-    <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-48336731-4']);
-    _gaq.push(['_trackPageview']);
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-    </script>
-<script type="text/javascript">
-    var disqus_shortname = '5minutes-youkidea';
-    (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-    }());
-</script>
 </body>
 </html>

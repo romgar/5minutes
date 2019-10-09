@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>5minutes</title>
+        <title>Django Under the Hood 2016 summary</title>
         <link rel="stylesheet" href="http://5minutes.youkidea.com/theme/css/main.css" />
         <link href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="5minutes Atom Feed" />
 </head>
@@ -12,13 +12,18 @@
                 <h1><a href="http://5minutes.youkidea.com/">5minutes </a></h1>
                 <nav><ul>
                     <li><a href="http://5minutes.youkidea.com/pages/about-us.html">About</a></li>
-                    <li><a href="http://5minutes.youkidea.com/category/tech.html">Tech</a></li>
+                    <li class="active"><a href="http://5minutes.youkidea.com/category/tech.html">Tech</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://5minutes.youkidea.com/django-under-the-hood-2016-summary.html" rel="bookmark"
+           title="Permalink to Django Under the Hood 2016 summary">Django Under the Hood 2016 summary</a></h1>
+    </header>
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="http://5minutes.youkidea.com/django-under-the-hood-2016-summary.html">Django Under the Hood 2016 summary</a></h1>
+    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2016-11-07T19:32:00+00:00">
                 Published: lun. 07 novembre 2016
@@ -29,7 +34,7 @@
         </address>
 <p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>.</p>
 <p>tags: <a href="http://5minutes.youkidea.com/tag/django-conference.html">Django Conference</a> </p>
-</footer><!-- /.post-info --><p>I attended this year <a href="https://www.djangounderthehood.com/">DjangoUnderTheHood</a>, an event hosted in Amsterdam. This is a highly technical conference focussed on the Django web framework. Talks are usually given by Django core developers, or experienced people, which means there are always interesting talks to hear. DjangoUnderTheHood is probably the best event to meet Django core developers, this year there were 20+ gathered for this event.</p>
+</footer><!-- /.post-info -->      <p>I attended this year <a href="https://www.djangounderthehood.com/">DjangoUnderTheHood</a>, an event hosted in Amsterdam. This is a highly technical conference focussed on the Django web framework. Talks are usually given by Django core developers, or experienced people, which means there are always interesting talks to hear. DjangoUnderTheHood is probably the best event to meet Django core developers, this year there were 20+ gathered for this event.</p>
 <p>The event in itself is held in a nice place, <a href="https://www.google.co.uk/maps/place/Pakhuis+De+Zwijger/@52.3768451,4.9221174,15z/data=!4m2!3m1!1s0x0:0x2d9e404fc8f71f8d?sa=X&amp;ved=0ahUKEwjgufLsyq_PAhVBK8AKHSloCKAQ_BIIgQEwDQ">Pakhuis de Zwijger</a>, which is starting to become too small as the number of attendees increases over the years (this was the third annual conference).</p>
 <p>The format is quite unusual, with only 9 talks of 1 hour each, which leave the speakers enough space to dive deeply under the hood of Django.</p>
 <p>Here we go for the talks!</p>
@@ -108,92 +113,11 @@
 <p>The venue (ImpactHub) was quite nice and calm.</p>
 <p>That was the perfect occasion for me to discuss about my pending tickets related to TransactionTestCase and <a href="https://code.djangoproject.com/ticket/25251">--keepdb</a> option (patch <a href="https://github.com/django/django/pull/7528">on its way</a>), and <a href="https://code.djangoproject.com/ticket/26822">--parallel</a> issues. And as expected, the issues are progressing so much when you can discuss directly with the person, instead of back and forth on GitHub merge requests. Refreshing and motivating!</p>
 <p>I had the chance to bring up a not-yet-realistic idea of building a tool to help for Django upgrades. This project - codename <a href="https://github.com/iwoca/django-seven">django-seven</a> - aims to ease the process of upgrading your Django project from a version to another one, by making your code compatible with both version. It still needs a proof of concept, but several people from the Django core team have shown an interest in it. Let's try something!</p>
-<p>I can't wait for next Django conference!!</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<p>I can't wait for next Django conference!!</p>
+    </div><!-- /.entry-content -->
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html" rel="bookmark"
-                           title="Permalink to TransactionTestCase and keepdb issues in Django">TransactionTestCase and keepdb issues in Django</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2016-02-25T23:51:00+00:00">
-                Published: jeu. 25 février 2016
-        </abbr>
-		<br />
-        <abbr class="modified" title="2016-05-19T23:31:00+01:00">
-                Updated: jeu. 19 mai 2016
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="http://5minutes.youkidea.com/author/romain-garrigues.html">Romain Garrigues</a>
-        </address>
-<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>.</p>
-<p>tags: <a href="http://5minutes.youkidea.com/tag/django.html">Django</a> <a href="http://5minutes.youkidea.com/tag/database.html">database</a> <a href="http://5minutes.youkidea.com/tag/tests.html">tests</a> </p>
-</footer><!-- /.post-info -->                <p>Using keepdb with TransactionTestCase in Django test suite</p>
-                <a class="readmore" href="http://5minutes.youkidea.com/transactiontestcase-keepdb-django-issues.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html" rel="bookmark"
-                           title="Permalink to How to deploy a python package on PyPi with GitHub and Travis CI">How to deploy a python package on PyPi with GitHub and Travis CI</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2015-05-06T08:12:00+01:00">
-                Published: mer. 06 mai 2015
-        </abbr>
-		<br />
-        <abbr class="modified" title="2015-05-06T08:12:00+01:00">
-                Updated: mer. 06 mai 2015
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="http://5minutes.youkidea.com/author/romain-garrigues.html">Romain Garrigues</a>
-        </address>
-<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>.</p>
-<p>tags: <a href="http://5minutes.youkidea.com/tag/github.html">GitHub</a> <a href="http://5minutes.youkidea.com/tag/travis-ci.html">travis-ci</a> <a href="http://5minutes.youkidea.com/tag/python.html">python</a> <a href="http://5minutes.youkidea.com/tag/pypi.html">PyPi</a> </p>
-</footer><!-- /.post-info -->                <p>How to deploy a python package on PyPi with GitHub and Travis CI</p>
-                <a class="readmore" href="http://5minutes.youkidea.com/howto-deploy-python-package-on-pypi-with-github-and-travis.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html" rel="bookmark"
-                           title="Permalink to How to manage GitHub Pages on front-end project">How to manage GitHub Pages on front-end project</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2015-04-08T20:47:00+01:00">
-                Published: mer. 08 avril 2015
-        </abbr>
-		<br />
-        <abbr class="modified" title="2015-04-08T20:47:00+01:00">
-                Updated: mer. 08 avril 2015
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="http://5minutes.youkidea.com/author/romain-garrigues.html">Romain Garrigues</a>
-        </address>
-<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>.</p>
-<p>tags: <a href="http://5minutes.youkidea.com/tag/github.html">GitHub</a> <a href="http://5minutes.youkidea.com/tag/front-end.html">front-end</a> </p>
-</footer><!-- /.post-info -->                <p>How to manage GitHub Pages on front-end project</p>
-                <a class="readmore" href="http://5minutes.youkidea.com/howto-manage-ghpages-project.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>

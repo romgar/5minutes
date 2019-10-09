@@ -5,10 +5,6 @@
         <title>How to manage GitHub Pages on front-end project</title>
         <link rel="stylesheet" href="http://5minutes.youkidea.com/theme/css/main.css" />
         <link href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="5minutes Atom Feed" />
-
-        <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
 </head>
 
 <body id="index" class="home">
@@ -29,31 +25,31 @@
 
     <div class="entry-content">
 <footer class="post-info">
-        <abbr class="published" title="2015-04-08T20:47:00+02:00">
+        <abbr class="published" title="2015-04-08T20:47:00+01:00">
                 Published: mer. 08 avril 2015
         </abbr>
 		<br />
-        <abbr class="modified" title="2015-04-08T20:47:00+02:00">
+        <abbr class="modified" title="2015-04-08T20:47:00+01:00">
                 Updated: mer. 08 avril 2015
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="http://5minutes.youkidea.com/author/romain-garrigues.html">Romain Garrigues</a>
         </address>
-<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>. </p>
+<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>.</p>
 <p>tags: <a href="http://5minutes.youkidea.com/tag/github.html">GitHub</a> <a href="http://5minutes.youkidea.com/tag/front-end.html">front-end</a> </p>
 </footer><!-- /.post-info -->      <p>You are working on a frond-end project hosted on GitHub, with lot of useful tools (grunt/gulp, sass, ...), and you want to properly manage generated files from this project on GitHub Pages ?</p>
 <p>Let's imagine this kind of folder on your <code>master</code> branch:</p>
-<div class="highlight"><pre>.
-+-- Gruntfile.js
-+-- bower.json
-+-- package.json
-+-- README.md
-+-- dist  &lt;-- You need this folder to be the root of the gh-pages branch
-|   +-- index.html
-|   +-- other_page.html
-|   +-- theme
-|   |    +-- main.css
+<div class="highlight"><pre><span></span><span class="p">.</span>
+<span class="o">+</span><span class="c1">-- Gruntfile.js</span>
+<span class="o">+</span><span class="c1">-- bower.json</span>
+<span class="o">+</span><span class="c1">-- package.json</span>
+<span class="o">+</span><span class="c1">-- README.md</span>
+<span class="o">+</span><span class="c1">-- dist  &lt;-- You need this folder to be the root of the gh-pages branch</span>
+<span class="o">|</span>   <span class="o">+</span><span class="c1">-- index.html</span>
+<span class="o">|</span>   <span class="o">+</span><span class="c1">-- other_page.html</span>
+<span class="o">|</span>   <span class="o">+</span><span class="c1">-- theme</span>
+<span class="o">|</span>   <span class="o">|</span>    <span class="o">+</span><span class="c1">-- main.css</span>
 </pre></div>
 
 
@@ -63,11 +59,11 @@
 <li>have all your static files at the branch root (including <code>index.html</code>).</li>
 </ol>
 <p>So that, when you checkout <code>gh-pages</code>, you need to have:</p>
-<div class="highlight"><pre>.
-+-- index.html
-+-- other_page.html
-+-- theme
-|   +-- main.css
+<div class="highlight"><pre><span></span><span class="p">.</span>
+<span class="o">+</span><span class="c1">-- index.html</span>
+<span class="o">+</span><span class="c1">-- other_page.html</span>
+<span class="o">+</span><span class="c1">-- theme</span>
+<span class="o">|</span>   <span class="o">+</span><span class="c1">-- main.css</span>
 </pre></div>
 
 
@@ -77,102 +73,88 @@ We feel easily that it's not a clean way to manage it, we will have to manually 
 <p>A script could be written to do this kind of task each time we need to deploy on <code>gh-pages</code>, but
  somebody has already done that for us : <a href="https://github.com/davisp/ghp-import">ghp-import</a></p>
 <p>You can install it via <code>pip</code>:</p>
-<div class="highlight"><pre>pip install ghp-import
+<div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">ghp</span><span class="o">-</span><span class="n">import</span>
 </pre></div>
 
 
 <p>And then, go to your <code>master</code> branch, and to deploy your <code>dist</code> folder:</p>
-<div class="highlight"><pre><span class="n">ghp</span><span class="o">-</span><span class="kn">import</span> <span class="nn">dist</span>
+<div class="highlight"><pre><span></span><span class="n">ghp</span><span class="o">-</span><span class="kn">import</span> <span class="nn">dist</span>
 </pre></div>
 
 
 <p>It will then create a new commit (and push it) on your <code>gh-pages</code> branch with the current files of your <code>dist</code> folder.</p>
 <h1>Solution 2</h1>
 <p>Clone another time your project in the same project folder:</p>
-<div class="highlight"><pre>.
-+-- Gruntfile.js
-+-- bower.json
-+-- package.json
-+-- README.md
-+-- dist
-|   +-- index.html
-|   +-- other_page.html
-|   +-- theme
-|   |    +-- main.css
-+-- your_project &lt;-- Your cloned project repository on master branch
-    +-- Gruntfile.js
-    +-- bower.json
-    +-- package.json
-    +-- README.md
-    +-- dist
-    |   +-- index.html
-    |   +-- other_page.html
-    |   +-- theme
-    |   |    +-- main.css
+<div class="highlight"><pre><span></span><span class="p">.</span>
+<span class="o">+</span><span class="c1">-- Gruntfile.js</span>
+<span class="o">+</span><span class="c1">-- bower.json</span>
+<span class="o">+</span><span class="c1">-- package.json</span>
+<span class="o">+</span><span class="c1">-- README.md</span>
+<span class="o">+</span><span class="c1">-- dist</span>
+<span class="o">|</span>   <span class="o">+</span><span class="c1">-- index.html</span>
+<span class="o">|</span>   <span class="o">+</span><span class="c1">-- other_page.html</span>
+<span class="o">|</span>   <span class="o">+</span><span class="c1">-- theme</span>
+<span class="o">|</span>   <span class="o">|</span>    <span class="o">+</span><span class="c1">-- main.css</span>
+<span class="o">+</span><span class="c1">-- your_project &lt;-- Your cloned project repository on master branch</span>
+    <span class="o">+</span><span class="c1">-- Gruntfile.js</span>
+    <span class="o">+</span><span class="c1">-- bower.json</span>
+    <span class="o">+</span><span class="c1">-- package.json</span>
+    <span class="o">+</span><span class="c1">-- README.md</span>
+    <span class="o">+</span><span class="c1">-- dist</span>
+    <span class="o">|</span>   <span class="o">+</span><span class="c1">-- index.html</span>
+    <span class="o">|</span>   <span class="o">+</span><span class="c1">-- other_page.html</span>
+    <span class="o">|</span>   <span class="o">+</span><span class="c1">-- theme</span>
+    <span class="o">|</span>   <span class="o">|</span>    <span class="o">+</span><span class="c1">-- main.css</span>
 </pre></div>
 
 
 <p>Checkout your sub-cloned project to gh-pages branch, and remove everything no more needed in your <code>gh-pages</code> branch.</p>
-<div class="highlight"><pre>.
-+-- Gruntfile.js
-+-- bower.json
-+-- package.json
-+-- README.md
-+-- dist
-|   +-- index.html
-|   +-- other_page.html
-|   +-- theme
-|   |    +-- main.css
-+-- your_project &lt;-- Your cloned project repository on gh-pages branch
-    +-- index.html
-    +-- other_page.html
-    +-- theme
-    |    +-- main.css
+<div class="highlight"><pre><span></span><span class="p">.</span>
+<span class="o">+</span><span class="c1">-- Gruntfile.js</span>
+<span class="o">+</span><span class="c1">-- bower.json</span>
+<span class="o">+</span><span class="c1">-- package.json</span>
+<span class="o">+</span><span class="c1">-- README.md</span>
+<span class="o">+</span><span class="c1">-- dist</span>
+<span class="o">|</span>   <span class="o">+</span><span class="c1">-- index.html</span>
+<span class="o">|</span>   <span class="o">+</span><span class="c1">-- other_page.html</span>
+<span class="o">|</span>   <span class="o">+</span><span class="c1">-- theme</span>
+<span class="o">|</span>   <span class="o">|</span>    <span class="o">+</span><span class="c1">-- main.css</span>
+<span class="o">+</span><span class="c1">-- your_project &lt;-- Your cloned project repository on gh-pages branch</span>
+    <span class="o">+</span><span class="c1">-- index.html</span>
+    <span class="o">+</span><span class="c1">-- other_page.html</span>
+    <span class="o">+</span><span class="c1">-- theme</span>
+    <span class="o">|</span>    <span class="o">+</span><span class="c1">-- main.css</span>
 </pre></div>
 
 
 <p>Remove <code>dist</code> folder in your <code>master branch</code>, and replace it with a symbolic link to <code>your_project</code> repository:</p>
-<div class="highlight"><pre>.
-+-- Gruntfile.js
-+-- bower.json
-+-- package.json
-+-- README.md
-+-- dist &lt;-- Now a symlink to your_project
-+-- your_project &lt;-- Your cloned project repository on gh-pages branch
-    +-- index.html
-    +-- other_page.html
-    +-- theme
-    |    +-- main.css
+<div class="highlight"><pre><span></span><span class="p">.</span>
+<span class="o">+</span><span class="c1">-- Gruntfile.js</span>
+<span class="o">+</span><span class="c1">-- bower.json</span>
+<span class="o">+</span><span class="c1">-- package.json</span>
+<span class="o">+</span><span class="c1">-- README.md</span>
+<span class="o">+</span><span class="c1">-- dist &lt;-- Now a symlink to your_project</span>
+<span class="o">+</span><span class="c1">-- your_project &lt;-- Your cloned project repository on gh-pages branch</span>
+    <span class="o">+</span><span class="c1">-- index.html</span>
+    <span class="o">+</span><span class="c1">-- other_page.html</span>
+    <span class="o">+</span><span class="c1">-- theme</span>
+    <span class="o">|</span>    <span class="o">+</span><span class="c1">-- main.css</span>
 </pre></div>
 
 
 <p>Your tools, that were working on <code>dist</code> folder, will now generate new content on the project <code>gh-pages</code> branch, and you can commit them when you want.</p>
     </div><!-- /.entry-content -->
-    <div class="comments">
-      <h2>Comments !</h2>
-      <div id="disqus_thread"></div>
-      <script type="text/javascript">
-        var disqus_shortname = '5minutes-youkidea';
-        var disqus_identifier = 'howto-manage-ghpages-project.html';
-        var disqus_url = 'http://5minutes.youkidea.com/howto-manage-ghpages-project.html';
-        (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//5minutes-youkidea.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the comments.</noscript>
-    </div>
 
   </article>
 </section>
         <section id="extras" class="body">
                 <div class="blogroll">
-                        <h2>blogroll</h2>
+                        <h2>links</h2>
                         <ul>
                             <li><a href="http://getpelican.com/">Pelican</a></li>
                             <li><a href="http://python.org/">Python.org</a></li>
                             <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
                         </ul>
                 </div><!-- /.blogroll -->
                 <div class="social">
@@ -180,8 +162,8 @@ We feel easily that it's not a clean way to manage it, we will have to manually 
                         <ul>
                             <li><a href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
-                            <li><a href="https://twitter.com/jrmipp/">@jrmi</a></li>
-                            <li><a href="https://twitter.com/rgarrigues/">@rgarrigues</a></li>
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
                         </ul>
                 </div><!-- /.social -->
         </section><!-- /#extras -->
@@ -194,24 +176,5 @@ We feel easily that it's not a clean way to manage it, we will have to manually 
                 <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
 
-    <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-48336731-4']);
-    _gaq.push(['_trackPageview']);
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-    </script>
-<script type="text/javascript">
-    var disqus_shortname = '5minutes-youkidea';
-    (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-    }());
-</script>
 </body>
 </html>

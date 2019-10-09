@@ -5,10 +5,6 @@
         <title>Migrations on monkey-patched Django core model</title>
         <link rel="stylesheet" href="http://5minutes.youkidea.com/theme/css/main.css" />
         <link href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="5minutes Atom Feed" />
-
-        <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
 </head>
 
 <body id="index" class="home">
@@ -29,18 +25,18 @@
 
     <div class="entry-content">
 <footer class="post-info">
-        <abbr class="published" title="2016-02-25T23:51:00+01:00">
+        <abbr class="published" title="2016-02-25T23:51:00+00:00">
                 Published: jeu. 25 février 2016
         </abbr>
 		<br />
-        <abbr class="modified" title="2016-02-27T10:08:00+01:00">
+        <abbr class="modified" title="2016-02-27T10:08:00+00:00">
                 Updated: sam. 27 février 2016
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="http://5minutes.youkidea.com/author/romain-garrigues.html">Romain Garrigues</a>
         </address>
-<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>. </p>
+<p>In <a href="http://5minutes.youkidea.com/category/tech.html">Tech</a>.</p>
 <p>tags: <a href="http://5minutes.youkidea.com/tag/django.html">Django</a> <a href="http://5minutes.youkidea.com/tag/migrations.html">migrations</a> </p>
 </footer><!-- /.post-info -->      <p>I was in charge of a Django upgrade from 1.4 to 1.8 on a quite big project, and one big step was to switch from south
 to Django built-in migrations.
@@ -52,37 +48,37 @@ It will generate a migration with our change for both <code>User</code> and <cod
 <h1>First idea: create a custom migration</h1>
 <p>The idea was to create a migration with a <code>RunPython</code> function to use <code>schema_editor</code> to manually write the changes
 provoked by our monkey-patching.</p>
-<div class="highlight"><pre>def manual_update(apps, schema_editor):
-    schema_editor.add_field(User, last_password_changed, ...)
+<div class="highlight"><pre><span></span><span class="n">def</span> <span class="n">manual_update</span><span class="p">(</span><span class="n">apps</span><span class="p">,</span> <span class="n">schema_editor</span><span class="p">):</span>
+    <span class="n">schema_editor</span><span class="p">.</span><span class="n">add_field</span><span class="p">(</span><span class="k">User</span><span class="p">,</span> <span class="n">last_password_changed</span><span class="p">,</span> <span class="p">...)</span>
 
-class CustomMigration(migrations.Migration):
+<span class="k">class</span> <span class="n">CustomMigration</span><span class="p">(</span><span class="n">migrations</span><span class="p">.</span><span class="n">Migration</span><span class="p">):</span>
 
-    dependencies = []
-    operations = [
-        migrations.RunPython(manual_update)
-    ]
+    <span class="n">dependencies</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">operations</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">migrations</span><span class="p">.</span><span class="n">RunPython</span><span class="p">(</span><span class="n">manual_update</span><span class="p">)</span>
+    <span class="p">]</span>
 </pre></div>
 
 
 <p>That works, the migrations are correctly applied and <code>makemigrations</code> is no more generating migrations in django lib
 folder !
 But...</p>
-<div class="highlight"><pre>def manual_update(apps, schema_editor):
-    schema_editor.add_field(User, last_password_changed, ...)
+<div class="highlight"><pre><span></span><span class="n">def</span> <span class="n">manual_update</span><span class="p">(</span><span class="n">apps</span><span class="p">,</span> <span class="n">schema_editor</span><span class="p">):</span>
+    <span class="n">schema_editor</span><span class="p">.</span><span class="n">add_field</span><span class="p">(</span><span class="k">User</span><span class="p">,</span> <span class="n">last_password_changed</span><span class="p">,</span> <span class="p">...)</span>
 
-    User = apps.get_model(&#39;auth&#39;, &#39;User&#39;)
-    user = User.objects.all().first()
-    user.last_password_changed = True
+    <span class="k">User</span> <span class="o">=</span> <span class="n">apps</span><span class="p">.</span><span class="n">get_model</span><span class="p">(</span><span class="s1">&#39;auth&#39;</span><span class="p">,</span> <span class="s1">&#39;User&#39;</span><span class="p">)</span>
+    <span class="k">user</span> <span class="o">=</span> <span class="k">User</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="k">all</span><span class="p">().</span><span class="k">first</span><span class="p">()</span>
+    <span class="k">user</span><span class="p">.</span><span class="n">last_password_changed</span> <span class="o">=</span> <span class="k">True</span>
 
-    # BOOM: last_password_changed is not a field of User
-    user.save()
+    <span class="o">#</span> <span class="n">BOOM</span><span class="p">:</span> <span class="n">last_password_changed</span> <span class="k">is</span> <span class="k">not</span> <span class="n">a</span> <span class="n">field</span> <span class="k">of</span> <span class="k">User</span>
+    <span class="k">user</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
 
-class CustomMigration(migrations.Migration):
+<span class="k">class</span> <span class="n">CustomMigration</span><span class="p">(</span><span class="n">migrations</span><span class="p">.</span><span class="n">Migration</span><span class="p">):</span>
 
-    dependencies = []
-    operations = [
-        migrations.RunPython(manual_update)
-    ]
+    <span class="n">dependencies</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">operations</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">migrations</span><span class="p">.</span><span class="n">RunPython</span><span class="p">(</span><span class="n">manual_update</span><span class="p">)</span>
+    <span class="p">]</span>
 </pre></div>
 
 
@@ -91,24 +87,24 @@ class CustomMigration(migrations.Migration):
 <p>From Django 1.?, we can specify in which folder an app will look for its migrations.
 Sounds nice to give a try: let's Django generate the proper migrations for the monkey-patched models in its own folder,
 then copy/paste all migrations related to <code>auth</code> and <code>site</code> apps in our own folder.</p>
-<div class="highlight"><pre>MIGRATED_APPS = {
-    &#39;auth&#39;: &#39;our_custom_folder.auth_migrations&#39;,
-    &#39;site&#39;: &#39;our_custom_folder.site_migrations&#39;,
-}
+<div class="highlight"><pre><span></span><span class="n">MIGRATED_APPS</span> <span class="o">=</span> <span class="err">{</span>
+    <span class="s1">&#39;auth&#39;</span><span class="p">:</span> <span class="s1">&#39;our_custom_folder.auth_migrations&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;site&#39;</span><span class="p">:</span> <span class="s1">&#39;our_custom_folder.site_migrations&#39;</span><span class="p">,</span>
+<span class="err">}</span>
 </pre></div>
 
 
 <p>With this file system:</p>
-<div class="highlight"><pre>.
-+-- my_custom_app
-+-- settings.py
-+-- our_custom_folder
-|   +-- auth_migrations
-|   |   +-- 0001_initial.py } Copied from Django core django.contrib.auth.migrations folder
-|   |   +-- [...]
-|   +-- site_migrations
-|   |   +-- 0001_initial.py } Copied from Django core django.contrib.sites.migrations folder
-|   |   +-- [...]
+<div class="highlight"><pre><span></span><span class="p">.</span>
+<span class="o">+</span><span class="c1">-- my_custom_app</span>
+<span class="o">+</span><span class="c1">-- settings.py</span>
+<span class="o">+</span><span class="c1">-- our_custom_folder</span>
+<span class="o">|</span>   <span class="o">+</span><span class="c1">-- auth_migrations</span>
+<span class="o">|</span>   <span class="o">|</span>   <span class="o">+</span><span class="c1">-- 0001_initial.py } Copied from Django core django.contrib.auth.migrations folder</span>
+<span class="o">|</span>   <span class="o">|</span>   <span class="o">+</span><span class="c1">-- [...]</span>
+<span class="o">|</span>   <span class="o">+</span><span class="c1">-- site_migrations</span>
+<span class="o">|</span>   <span class="o">|</span>   <span class="o">+</span><span class="c1">-- 0001_initial.py } Copied from Django core django.contrib.sites.migrations folder</span>
+<span class="o">|</span>   <span class="o">|</span>   <span class="o">+</span><span class="c1">-- [...]</span>
 </pre></div>
 
 
@@ -118,31 +114,17 @@ that's the best compromise I found so far.</p>
 <p>I will probably remove the monkey-patching on these models at some point, but that requires some extra work, and a Django
 upgrade from an LTS to another one is enough work :-)</p>
     </div><!-- /.entry-content -->
-    <div class="comments">
-      <h2>Comments !</h2>
-      <div id="disqus_thread"></div>
-      <script type="text/javascript">
-        var disqus_shortname = '5minutes-youkidea';
-        var disqus_identifier = 'drafts/migrations-monkey-patched-model.html';
-        var disqus_url = 'http://5minutes.youkidea.com/drafts/migrations-monkey-patched-model.html';
-        (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//5minutes-youkidea.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the comments.</noscript>
-    </div>
 
   </article>
 </section>
         <section id="extras" class="body">
                 <div class="blogroll">
-                        <h2>blogroll</h2>
+                        <h2>links</h2>
                         <ul>
                             <li><a href="http://getpelican.com/">Pelican</a></li>
                             <li><a href="http://python.org/">Python.org</a></li>
                             <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
                         </ul>
                 </div><!-- /.blogroll -->
                 <div class="social">
@@ -150,8 +132,8 @@ upgrade from an LTS to another one is enough work :-)</p>
                         <ul>
                             <li><a href="http://5minutes.youkidea.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
 
-                            <li><a href="https://twitter.com/jrmipp/">@jrmi</a></li>
-                            <li><a href="https://twitter.com/rgarrigues/">@rgarrigues</a></li>
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
                         </ul>
                 </div><!-- /.social -->
         </section><!-- /#extras -->
@@ -164,24 +146,5 @@ upgrade from an LTS to another one is enough work :-)</p>
                 <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
         </footer><!-- /#contentinfo -->
 
-    <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-48336731-4']);
-    _gaq.push(['_trackPageview']);
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-    </script>
-<script type="text/javascript">
-    var disqus_shortname = '5minutes-youkidea';
-    (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-    }());
-</script>
 </body>
 </html>
