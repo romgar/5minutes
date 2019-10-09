@@ -1,12 +1,10 @@
 Title: Why it is good for companies to contribute to the open-source world
-Date: 2016-02-25 23:51
-Modified: 2016-02-27 10:08
+Date: 2016-07-07 11:34
 Category: Tech
 Tags: open-source
 Slug: open-source-in-companies
 Authors: Romain Garrigues
 Summary: Why it is good for companies to contribute to the open-source world
-Status: Draft
 
 Some companies think contributing to open-source is a waste of time. It takes work to ensure that your code is generic and widely reusable, and releasing everything into the open can feel like you’re turning over your proprietary technology to the competition.
 
