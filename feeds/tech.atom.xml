@@ -78,7 +78,67 @@
 &lt;p&gt;The venue (ImpactHub) was quite nice and calm.&lt;/p&gt;
 &lt;p&gt;That was the perfect occasion for me to discuss about my pending tickets related to TransactionTestCase and &lt;a href="https://code.djangoproject.com/ticket/25251"&gt;--keepdb&lt;/a&gt; option (patch &lt;a href="https://github.com/django/django/pull/7528"&gt;on its way&lt;/a&gt;), and &lt;a href="https://code.djangoproject.com/ticket/26822"&gt;--parallel&lt;/a&gt; issues. And as expected, the issues are progressing so much when you can discuss directly with the person, instead of back and forth on GitHub merge requests. Refreshing and motivating!&lt;/p&gt;
 &lt;p&gt;I had the chance to bring up a not-yet-realistic idea of building a tool to help for Django upgrades. This project - codename &lt;a href="https://github.com/iwoca/django-seven"&gt;django-seven&lt;/a&gt; - aims to ease the process of upgrading your Django project from a version to another one, by making your code compatible with both version. It still needs a proof of concept, but several people from the Django core team have shown an interest in it. Let's try something!&lt;/p&gt;
-&lt;p&gt;I can't wait for next Django conference!!&lt;/p&gt;</content><category term="Django Conference"></category></entry><entry><title>Why it is good for companies to contribute to the open-source world</title><link href="http://5minutes.youkidea.com/open-source-in-companies.html" rel="alternate"></link><published>2016-07-07T11:34:00+01:00</published><updated>2016-07-07T11:34:00+01:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2016-07-07:/open-source-in-companies.html</id><summary type="html">&lt;p&gt;Why it is good for companies to contribute to the open-source world&lt;/p&gt;</summary><content type="html">&lt;p&gt;Some companies think contributing to open-source is a waste of time. It takes work to ensure that your code is generic and widely reusable, and releasing everything into the open can feel like you’re turning over your proprietary technology to the competition.&lt;/p&gt;
+&lt;p&gt;I can't wait for next Django conference!!&lt;/p&gt;</content><category term="Django Conference"></category></entry><entry><title>Django object collector</title><link href="http://5minutes.youkidea.com/django-deep-collector.html" rel="alternate"></link><published>2016-07-15T09:32:00+01:00</published><updated>2016-07-15T09:32:00+01:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2016-07-15:/django-deep-collector.html</id><summary type="html">&lt;p&gt;Collecting related objects in Django&lt;/p&gt;</summary><content type="html">&lt;p&gt;I was working on a download feature for one of my project: I needed to get all objects that
+were related to my user. How can I get all these objects easily?
+You can directly have a look at the &lt;a href="https://github.com/iwoca/django-deep-collector"&gt;github project&lt;/a&gt; or start by reading this article!&lt;/p&gt;
+&lt;h1&gt;Django built-in &lt;code&gt;NestedCollector&lt;/code&gt;&lt;/h1&gt;
+&lt;p&gt;There is a built-in feature in Django that is doing something really close to that: &lt;code&gt;NestedCollector&lt;/code&gt;.
+You have maybe never seen that class, but there is a high chance that you have used it without knowing: when you delete
+an entry in the Django admin.
+Do you remember that Django is displaying the whole list of objects that will be deleted with the current one if you do it ?&lt;/p&gt;
+&lt;p&gt;Django is following all reverse foreign key / one-to-one relations to determine which data are related to the one you are deleting
+and also delete them, on a recursive way.
+For information, you can change the default behaviour (delete &lt;code&gt;ON_CASCADE&lt;/code&gt;) and you will have to define it explicitly from Django 1.9.&lt;/p&gt;
+&lt;p&gt;This is nice, but not enough for us, as we also want to get the direct foreign keys and many-to-many relations.&lt;/p&gt;
+&lt;h1&gt;Django Deep Collector&lt;/h1&gt;
+&lt;p&gt;I have tried to spend some time to extend the &lt;code&gt;NestedCollector&lt;/code&gt; without a lot of success, so I decided to write a "full" collector from scratch.&lt;/p&gt;
+&lt;p&gt;The algorithm is quite simple:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Start with a given object &lt;code&gt;A&lt;/code&gt;,&lt;/li&gt;
+&lt;li&gt;Collect all objects that are linked to the object &lt;code&gt;A&lt;/code&gt;, following all relations (one-to-one, foreign keys and many-to-many) in
+   both directions (direct and reverse),&lt;/li&gt;
+&lt;li&gt;For each collected objects, come back to step 2, but &lt;code&gt;A&lt;/code&gt; is now each of collected objects.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;There are some rules/parameters that allows the algorithm to be effective:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Never collect again an object already collected,&lt;/li&gt;
+&lt;li&gt;Disable some models to be collected.&lt;/li&gt;
+&lt;li&gt;Disable some relations to be followed.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Usage&lt;/h1&gt;
+&lt;p&gt;The only thing you have to do is call the &lt;code&gt;collect&lt;/code&gt; method:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;deep_collector.core&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;DeepCollector&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.contrib.auth.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;User&lt;/span&gt;
+
+&lt;span class="n"&gt;collector&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;DeepCollector&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;user&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;User&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;first&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="c1"&gt;# We give &amp;quot;user&amp;quot; as a starting point of this collection&lt;/span&gt;
+&lt;span class="n"&gt;collector&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;collect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# related_objects contains a list of all objects linked to &amp;quot;user&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;related_objects&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;collector&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_collected_objects&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Import&lt;/h1&gt;
+&lt;p&gt;If, like me, you wanted to download some data from a website and import it in another one, you can get the collected objects as a serialized json to be directly used by default Django load_data command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;string_buffer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;collector&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_json_serialized_objects&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This string can be saved in a file...&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="k"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;&amp;quot;string_buffer.json&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;string_buffer_file&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;string_buffer_file&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;string_buffer&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;...and imported in another instance of Django for example (from production to local env):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;manage&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt; &lt;span class="n"&gt;load_data&lt;/span&gt; &lt;span class="n"&gt;string_buffer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You will find more details on the github page of the &lt;a href="https://github.com/iwoca/django-deep-collector"&gt;project&lt;/a&gt;, feel free to leave any comment/bug/feature request !!&lt;/p&gt;</content><category term="Django"></category><category term="orm"></category></entry><entry><title>Why it is good for companies to contribute to the open-source world</title><link href="http://5minutes.youkidea.com/open-source-in-companies.html" rel="alternate"></link><published>2016-07-07T11:34:00+01:00</published><updated>2016-07-07T11:34:00+01:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2016-07-07:/open-source-in-companies.html</id><summary type="html">&lt;p&gt;Why it is good for companies to contribute to the open-source world&lt;/p&gt;</summary><content type="html">&lt;p&gt;Some companies think contributing to open-source is a waste of time. It takes work to ensure that your code is generic and widely reusable, and releasing everything into the open can feel like you’re turning over your proprietary technology to the competition.&lt;/p&gt;
 &lt;p&gt;However, since I joined iwoca I have been trying to “liberate” some of our code and have encouraged my colleagues to do the same. Why? Far from being hell-bent on slowing us down, it’s because I know that contributing to open-source can help your tech become more nimble, more stable and more respected. Here’s why:&lt;/p&gt;
 &lt;h1&gt;It improves your code quality&lt;/h1&gt;
 &lt;p&gt;Contributing to open-source can enhance your programming skills by forcing you to identify the aspects of your code that are unique to your business from those which are generic. This means that you have to be more mindful of separation of concerns and backward compatibility when developing the code that you contribute. This is bound to make your company’s internal code more robust and adaptable whilst reducing the chance that a library or framework update breaks your code.&lt;/p&gt;
