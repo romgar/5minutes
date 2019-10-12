@@ -126,7 +126,7 @@ She suspects that being authentic and with integrity was a way to galvanise peop
 Her message was around "Use your voice, and not afraid to be different".
 That's the kind of talk that usually give you hope in starting initiatives and wanting to be better as a human being.
 
-## How to Inspire Growth
+# How to Inspire Growth
 
 _Speaker: Patrick Cournoyer_
 
@@ -140,7 +140,7 @@ The 3 pillars around being a good leadership were for him:
 
 He also mentioned that giving feedback is important, as well as FIT (Focus Time-bound Impactful) actions.
 
-## Empowering Authenticity in Leadership
+# Empowering Authenticity in Leadership
 
 _Speakers: people from Monzo, Asda, Atomico_
 
@@ -158,7 +158,7 @@ Different topics were covered during this panel, mainly focused around leadershi
 * Grow emotionally, be an "adult" (I highly recommend [Emotional Intelligence](https://www.amazon.co.uk/Emotional-Intelligence-Matter-More-Than/dp/0747528306) on that topic)),
 * Develop people skills (coaching/mentoring, ...)
 
-## Miscellaneous
+# Miscellaneous
 
 The venue was really beautiful (The Brewery) and the food excellent, which is a small detail but shows the efforts Peakon wants to put in building a community.
 
