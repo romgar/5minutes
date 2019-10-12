@@ -155,7 +155,7 @@ Different topics were covered during this panel, mainly focused around leadershi
 
 * Detect points of interest in people to make them focus on the right things,
 * Guide people in your organisation,
-* Grow emotionally, be an "adult" (I highly recommend [Emotional Intelligence](https://www.amazon.co.uk/Emotional-Intelligence-Matter-More-Than/dp/0747528306) on that topic)),
+* Grow emotionally, be an "adult" (I highly recommend [Emotional Intelligence](https://www.amazon.co.uk/Emotional-Intelligence-Matter-More-Than/dp/0747528306) on that topic),
 * Develop people skills (coaching/mentoring, ...)
 
 # Miscellaneous
