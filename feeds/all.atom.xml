@@ -1,5 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>5minutes</title><link href="http://5minutes.youkidea.com/" rel="alternate"></link><link href="http://5minutes.youkidea.com/feeds/all.atom.xml" rel="self"></link><id>http://5minutes.youkidea.com/</id><updated>2019-10-09T21:20:00+01:00</updated><entry><title>Prepare your career path session</title><link href="http://5minutes.youkidea.com/prepare-your-career-path-session.html" rel="alternate"></link><published>2019-10-09T21:20:00+01:00</published><updated>2019-10-09T21:20:00+01:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2019-10-09:/prepare-your-career-path-session.html</id><summary type="html">&lt;p&gt;How to be prepared to have a constructive career path discussion&lt;/p&gt;</summary><content type="html">&lt;p&gt;Ok, as manager we decided to do the big jump and start a career path discussion with our direct reports!&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>5minutes</title><link href="http://5minutes.youkidea.com/" rel="alternate"></link><link href="http://5minutes.youkidea.com/feeds/all.atom.xml" rel="self"></link><id>http://5minutes.youkidea.com/</id><updated>2019-10-12T11:58:00+01:00</updated><entry><title>Summary of the Belong (by Peakon) 2019 conference</title><link href="http://5minutes.youkidea.com/summary-belong-peakon-2019.html" rel="alternate"></link><published>2019-10-12T11:58:00+01:00</published><updated>2019-10-12T11:58:00+01:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2019-10-12:/summary-belong-peakon-2019.html</id><summary type="html">&lt;p&gt;Summary of the Belong (by Peakon) 2019 conference&lt;/p&gt;</summary><content type="html">&lt;p&gt;I have attended the one-day &lt;a href="https://peakon.com/belong/"&gt;Belong&lt;/a&gt; conference organised by &lt;a href="https://peakon.com/"&gt;Peakon&lt;/a&gt; and I wanted to share my insights from this conference, where the general standard of speakers was really high.&lt;/p&gt;
+&lt;h1&gt;TL;DR&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;A refreshing day to boost your motivation as a people manager, surrounded by people that care about being better and developing people around them,&lt;/li&gt;
+&lt;li&gt;The society/industry is getting more and more conscious about well-being, and we adapt ourselves to it as well,&lt;/li&gt;
+&lt;li&gt;Inspiring people that make you feel that you should have more impact that you currently have and be a better leader:&lt;/li&gt;
+&lt;li&gt;Be authentic / have integrity / be consistent,&lt;/li&gt;
+&lt;li&gt;Care about people around you,&lt;/li&gt;
+&lt;li&gt;A lot of good practices and insights around how to introduce a tool to measure people engagement in a company:&lt;/li&gt;
+&lt;li&gt;Use data to know what to improve in your company,&lt;/li&gt;
+&lt;li&gt;Share results is key to avoid a survey fatigue,&lt;/li&gt;
+&lt;li&gt;Train managers to handle feedback appropriately is important (help from HR?)&lt;/li&gt;
+&lt;li&gt;A various set of talks, from showing how we can improve the impact of the information we share (with data visualisation) to unexpected ways to improve our daily life (with sounds).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You will find a summary of each talk below.&lt;/p&gt;
+&lt;h1&gt;Peakon general insights&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;Speaker: Philip Chambers, Peakon CEO&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;This was mostly a sales speech in favor of Peakon (not really surprising), but was also shared some metrics:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;52M+ total responses,&lt;/li&gt;
+&lt;li&gt;11M+ total comments,&lt;/li&gt;
+&lt;li&gt;160 countries&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;He used these data to prove how much the "True Benchmark" (comparing data between companies of the same size/domain/stage) was relevant and unique in the industry.
+He also introduced their new product, "Elevate" (I didn't find any online resource yet), which aims to create a community around Peakon, with exclusive events, networking, etc.&lt;/p&gt;
+&lt;h1&gt;Data is beautiful&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;Speaker: David McCandless, Founder of Information is Beautiful&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;My favorite talk of the day, a mind-blowing presentation by the writer of &lt;a href="https://www.amazon.co.uk/Information-Beautiful-New-David-McCandless/dp/0007492898/kib-21"&gt;"Information is beautiful"&lt;/a&gt;.
+This data journalist was trying to convince us (and succeeded on me) that the way we can use visualisation to analyse data can give a more powerful message than just words or numbers.
+He went through numerous use cases:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Showing that disease announcements in the media follow a pattern that makes them definitely "fake" (like every year at the same time),&lt;/li&gt;
+&lt;li&gt;Explaining the brexit situation in 3 minutes (based on a &lt;a href="https://informationisbeautiful.net/visualizations/the-uks-brexit-options-in-the-eurozone-landscape-visualized/"&gt;brilliant data visualisation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Showing the importance of putting data in context, not just in absolute numbers (the USA has the biggest army in the world, but North Korea is the one that has the biggest percentage of men involved in the army of their country).&lt;/li&gt;
+&lt;li&gt;Demonstrating that some announcement effects like the government investing £100M can be at the end quite minimal when the overall budget is over £1000B. As a matter of fact, we are not good at visualising really big numbers and can sometimes be flawed by it. He liked to remind people that 1M secs is ~11 days when 1B secs ~31 years, which is way easier to apprehend as a massive difference.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;While all the concepts were not brand-new, the way they were conveyed through clever data visualisation was bringing way more impact to the topic.
+Definitely inspiring...&lt;/p&gt;
+&lt;h1&gt;Moving to Continuous listening&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;Speaker: Anouska Ramsay, VP of Talent at CapGemini&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;CapGemini is a massive company (218,000 people worldwide with 5,450 managers).
+She described how they cared about culture and introduced a tool to measure it (not sure if it was Peakon as far as I remember...).&lt;/p&gt;
+&lt;p&gt;They followed a sensible approach, introducing it to a subset of their workers (2.5% of the total, which is still massive - 5450)
+That was a success and showed a positive trend in employee engagement, they rolled it out to 60% then 100% of the company afterwards.&lt;/p&gt;
+&lt;p&gt;Her main takeaways were:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Don't consider that HR will be straight away onboard with the concept. They were the most reluctant to introduce it at the end,&lt;/li&gt;
+&lt;li&gt;Think about supporting the managers: they will have to handle the feedback from the survey and act upon them,&lt;/li&gt;
+&lt;li&gt;They will never communicate enough. They could have done better with the different teams involved in the pilot to make it even more effective (why they do it, when will it happen, etc.)&lt;/li&gt;
+&lt;li&gt;It's important to build a network of "early adopters" that will help spread the word and motivation around this new initiative,&lt;/li&gt;
+&lt;li&gt;Sharing results was key to avoid the classic survey fatigue where people don't see any result and progress on feedback they gave.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;A Global Pursuit of Happiness&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;Speaker: Meik Wiking, Founder &amp;amp; CEO of The Happiness Research Institute&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;The main focus of this talk was about showing how our governments (in particular Nordic countries) transform wealth in well-being.
+This general trend of well-being is happening in a lot of countries right now and showed examples of people using money to get closer to their workplace (again transforming wealth in well-being).&lt;/p&gt;
+&lt;p&gt;He also showed that, when money has a massive impact on happiness between low and mid incomes, it has less of an effect between mid and high incomes (as we have enough money to be able to live comfortably, we need to focus on other areas to improve our well-being).&lt;/p&gt;
+&lt;p&gt;The general advice he gave at the end of his talk was about getting data and diagnosing first (Peakon here we go!) before trying to make your company "happier".&lt;/p&gt;
+&lt;h1&gt;Peakon Customer Panel: The Employee Experience&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;Speakers: people from EasyJet, Adecco, QiniteQ, Edelman&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Here the main attention was to highlight that there were a lot of changes in "traditional" company culture in the recent days.
+The top-down policy (where only information flow from the top of the company) seems obsolete, switching from seniors "knowing the answers" to get and accept different/fresher insights.
+The cost-driven vision (being efficient at all cost) shifts to be more people-driven (realise that investing efforts in people can make them more motivated, productive and staying longer in the company).&lt;/p&gt;
+&lt;p&gt;There were mentions again of the role of HR evolving nowadays to add more and more support to managers, that have to handle people aspects they are not necessarily familiar with.
+There were also mentions of the survey fatigue if no actions are made after receiving feedback from people.&lt;/p&gt;
+&lt;p&gt;On a different topic, the advantage of having pulse surveys (regular every 2-3 weeks) allows to get exposure to more day-to-day problematics, compared to a big one every 3 months for example.
+This change in culture can only happen if it's acknowledged by the leaders of the company though.&lt;/p&gt;
+&lt;p&gt;I liked the conclusion of this panel: "Our objective to keep in mind is to always be better than yourself".&lt;/p&gt;
+&lt;h1&gt;Sound Advice&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;Speaker: Julian Treasure, Founder of The Sound Agency&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;That was a whole talk about the sound and its effect on our body:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Its impact is unconscious (we will run away from annoying sounds, like a fire alarm, or be appeased by other ones, like chirping birds),&lt;/li&gt;
+&lt;li&gt;The noise has been proven to decrease productivity and impacts our health (a study showed the heartbeat rate of a teacher compared to the noise in his class, and they were completely related),&lt;/li&gt;
+&lt;li&gt;35% of people feel listened at work, which means that we should be better listener.&lt;/li&gt;
+&lt;li&gt;Make people aware of the noise they are doing to minimise it.&lt;/li&gt;
+&lt;li&gt;Improve your environment, which is decomposed in 4 steps:&lt;/li&gt;
+&lt;li&gt;Use better acoustics (make the building/room you are working in absorbing more sounds),&lt;/li&gt;
+&lt;li&gt;Work on noise reduction: create private areas in open-offices to discuss privately (when open-offices are often described as improving collaboration, some studies have shown that it also decreases it (!) when people have to find online ways to communicate when they don't want to be overheard),&lt;/li&gt;
+&lt;li&gt;Have a good sound system: if your company broadcast some music/sounds around, better to invest in a good hardware for maximal effect,&lt;/li&gt;
+&lt;li&gt;Choose the right content: biophilic sounds (water, birds, weather, ...) seems to have a positive effect on our health. He quoted his own company named &lt;a href="https://www.moodsonic.com/"&gt;Moodsonic&lt;/a&gt; that produces this kind of sound.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;A Journey Towards Purpose&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;Speaker: Lizzie Carr, Founder of PlasticPatrol&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;This talk was part of the "Inspiration" track, aiming to inspire us to be better leaders.
+She was diagnosed with cancer a few years ago (and got cured) and that news changed her life, going from a "earn-more, get-promoted, earn-more" cycle to a "I show make myself useful" mode.&lt;/p&gt;
+&lt;p&gt;In this example, the inspiration came from her anger towards the state of the UK coastal areas (she fell in love with paddling), which made her start initiatives to make it better and inspire other people to follow her steps.&lt;/p&gt;
+&lt;p&gt;She suspects that being authentic and with integrity was a way to galvanise people to help her in her journey.
+Her message was around "Use your voice, and not afraid to be different".
+That's the kind of talk that usually give you hope in starting initiatives and wanting to be better as a human being.&lt;/p&gt;
+&lt;h2&gt;How to Inspire Growth&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Speaker: Patrick Cournoyer&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Still part of the "inspiration" track, the speaker put a lot of emphasis around the need for people to develop to have good mentors they can refer to.
+If you have somebody helping you to improve in your early career, it will have a massive boost in your life.
+The 3 pillars around being a good leadership were for him:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Authenticity: believe in ourselves, being consistent as a leader (treat all people in the same team in a similar way to avoid exclusion/unfairness),&lt;/li&gt;
+&lt;li&gt;Care: show almost as much attention as if they were friends. Helping them to grow after a mistake, instead of blaming them,&lt;/li&gt;
+&lt;li&gt;Truth: not compromise who you are, keep your integrity (and not be afraid to say no to save this integrity).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;He also mentioned that giving feedback is important, as well as FIT (Focus Time-bound Impactful) actions.&lt;/p&gt;
+&lt;h2&gt;Empowering Authenticity in Leadership&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Speakers: people from Monzo, Asda, Atomico&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Different topics were covered during this panel, mainly focused around leadership qualities:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;empathy (understand your audience),&lt;/li&gt;
+&lt;li&gt;self-awareness (understand who you are, your strengths/weaknesses),&lt;/li&gt;
+&lt;li&gt;be transparent,&lt;/li&gt;
+&lt;li&gt;have a sense of purpose,&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;share vulnerabilities (could resonate with people)
+  The advices given there for leaders were:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Detect points of interest in people to make them focus on the right things,&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Guide people in your organisation,&lt;/li&gt;
+&lt;li&gt;Grow emotionally, be an "adult" (I highly recommend &lt;a href="https://www.amazon.co.uk/Emotional-Intelligence-Matter-More-Than/dp/0747528306"&gt;Emotional Intelligence&lt;/a&gt; on that topic)),&lt;/li&gt;
+&lt;li&gt;Develop people skills (coaching/mentoring, ...)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Miscellaneous&lt;/h2&gt;
+&lt;p&gt;The venue was really beautiful (The Brewery) and the food excellent, which is a small detail but shows the efforts Peakon wants to put in building a community.&lt;/p&gt;
+&lt;p&gt;It was overall a very refreshing day, surrounded by people that care so much about people.
+It put back my manager motivation to its highest, with a lot of ideas and concepts coming out of these various talks.&lt;/p&gt;</content><category term="Career"></category><category term="Management"></category><category term="Coaching"></category></entry><entry><title>Prepare your career path session</title><link href="http://5minutes.youkidea.com/prepare-your-career-path-session.html" rel="alternate"></link><published>2019-10-09T21:20:00+01:00</published><updated>2019-10-09T21:20:00+01:00</updated><author><name>Romain Garrigues</name></author><id>tag:5minutes.youkidea.com,2019-10-09:/prepare-your-career-path-session.html</id><summary type="html">&lt;p&gt;How to be prepared to have a constructive career path discussion&lt;/p&gt;</summary><content type="html">&lt;p&gt;Ok, as manager we decided to do the big jump and start a career path discussion with our direct reports!&lt;/p&gt;
 &lt;p&gt;From there, we can roughly be in 3 situations:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;They don't know at all where they want to be in 5 years (80%),&lt;/li&gt;
